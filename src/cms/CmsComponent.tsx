@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { classNames } from '..';
 import { buildForm, formatForm } from './cms-functions';
 import CmsCheckbox from './CmsCheckbox';
 import CmsInputField from './CmsInputField';
 import { CmsContext } from './CmsProvider';
 import { ICms, ICmsField } from './CmsTypes';
 
-const CmsComponent = ({ fields, onSubmit }: ICms) => {
+const CmsComponent = ({ fields, onSubmit, className, formOptions }: ICms) => {
   const [form, setForm] = useState<ICmsField[]>([]);
 
   const contextState = useContext(CmsContext);
@@ -58,73 +59,72 @@ const CmsComponent = ({ fields, onSubmit }: ICms) => {
   };
 
   return (
-    <div>
-      <form
-        className="mx-8 my-6 space-y-4"
-        onSubmit={e => onSubmit(e, formatForm(form))}
-      >
-        {form.map((field, idx) => {
-          switch (field.type) {
-            case 'number': {
-              if (contextState.components?.number) {
-                return (
-                  <div id="custom-cms-number-component" key={idx}>
-                    {contextState.components.number(field, e =>
-                      handleInputNumberChange(e, field.name)
-                    )}
-                  </div>
-                );
-              }
+    <form
+      className={classNames('mx-8 my-6 space-y-4', className)}
+      onSubmit={e => onSubmit(e, formatForm(form))}
+      {...formOptions}
+    >
+      {form.map((field, idx) => {
+        switch (field.type) {
+          case 'number': {
+            if (contextState.components?.number) {
+              return (
+                <div id="custom-cms-number-component" key={idx}>
+                  {contextState.components.number(field, e =>
+                    handleInputNumberChange(e, field.name)
+                  )}
+                </div>
+              );
+            }
 
-              return (
-                <CmsInputField
-                  key={idx}
-                  field={field}
-                  onChange={e => handleInputNumberChange(e, field.name)}
-                />
-              );
-            }
-            case 'checkbox': {
-              if (contextState.components?.checkbox) {
-                return (
-                  <div id="custom-cms-number-component" key={idx}>
-                    {contextState.components.checkbox(field, e =>
-                      handleInputBooleanChange(e, field.name)
-                    )}
-                  </div>
-                );
-              }
-              return (
-                <CmsCheckbox
-                  key={idx}
-                  field={field}
-                  onChange={e => handleInputBooleanChange(e, field.name)}
-                />
-              );
-            }
-            default: {
-              if (contextState.components?.text) {
-                return (
-                  <div id="custom-cms-text-component" key={idx}>
-                    {contextState.components.text(field, e =>
-                      handleInputChange(e, field.name)
-                    )}
-                  </div>
-                );
-              }
-              return (
-                <CmsInputField
-                  key={idx}
-                  field={field}
-                  onChange={e => handleInputChange(e, field.name)}
-                />
-              );
-            }
+            return (
+              <CmsInputField
+                key={idx}
+                field={field}
+                onChange={e => handleInputNumberChange(e, field.name)}
+              />
+            );
           }
-        })}
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+          case 'checkbox': {
+            if (contextState.components?.checkbox) {
+              return (
+                <div id="custom-cms-number-component" key={idx}>
+                  {contextState.components.checkbox(field, e =>
+                    handleInputBooleanChange(e, field.name)
+                  )}
+                </div>
+              );
+            }
+            return (
+              <CmsCheckbox
+                key={idx}
+                field={field}
+                onChange={e => handleInputBooleanChange(e, field.name)}
+              />
+            );
+          }
+          default: {
+            if (contextState.components?.text) {
+              return (
+                <div id="custom-cms-text-component" key={idx}>
+                  {contextState.components.text(field, e =>
+                    handleInputChange(e, field.name)
+                  )}
+                </div>
+              );
+            }
+            return (
+              <CmsInputField
+                key={idx}
+                field={field}
+                onChange={e => handleInputChange(e, field.name)}
+              />
+            );
+          }
+        }
+      })}
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 

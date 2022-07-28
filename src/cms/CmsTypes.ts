@@ -1,16 +1,19 @@
+import React from "react";
 
 export type FieldType = "text" | "checkbox" | "number"
 
 export interface ICms {
     fields: ICmsField[];
     onSubmit: (e: React.FormEvent<HTMLFormElement>, data: any) => void;
+    className?: string;
+    formOptions?: React.DetailedHTMLProps<React.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>;
 }
 
 export interface ICmsField {
     name: string;
     label?: string;
     type: FieldType;
-    value: any;
+    value?: any;
     className?: string;
     optional?: boolean;
     placeholder?: string;
