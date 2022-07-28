@@ -20,11 +20,26 @@ const formatPascalAndSpace = (str: string) => {
 
 const getDefaultValue = (type: FieldType) => {
     switch (type) {
-        case "text":
+        case "checkbox":
             return false;
         default:
             return "";
     }
 }
 
-export { formatForm, formatPascalAndSpace, getDefaultValue };
+const buildForm = (fields: ICmsField[]) => {
+    let form: ICmsField[] = [];
+    fields.forEach(field => {
+        let val = field.value;
+        if (val === undefined) {
+            val = getDefaultValue(field.type);
+        }
+        form.push({
+            ...field,
+            value: val
+        });
+    });
+    return form;
+}
+
+export { formatForm, formatPascalAndSpace, getDefaultValue, buildForm };

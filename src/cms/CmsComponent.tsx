@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import { formatForm } from './cms-functions';
+import React, { useEffect, useState } from 'react';
+import { buildForm, formatForm } from './cms-functions';
 import CmsInputField from './CmsInputField';
 import { ICms, ICmsField } from './CmsTypes';
 
 const CmsComponent = ({ fields, onSubmit }: ICms) => {
-  const [form, setForm] = useState(fields);
+  const [form, setForm] = useState<ICmsField[]>([]);
+
+  useEffect(() => {
+    if (form.length <= 0) {
+      setForm(buildForm(fields));
+    }
+  }, [fields]);
 
   const getObjectIndexAndArray = (name: string) => {
     let newArr = [...form];
