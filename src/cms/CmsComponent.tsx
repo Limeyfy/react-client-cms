@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { buildForm, formatForm } from './cms-functions';
 import CmsCheckbox from './CmsCheckbox';
 import CmsInputField from './CmsInputField';
+import { CmsContext } from './CmsProvider';
 import { ICms, ICmsField } from './CmsTypes';
 
 const CmsComponent = ({ fields, onSubmit }: ICms) => {
   const [form, setForm] = useState<ICmsField[]>([]);
 
-  // const contextState = useContext(CmsContext);
+  const contextState = useContext(CmsContext);
 
   useEffect(() => {
     if (form.length <= 0) {
@@ -65,6 +66,16 @@ const CmsComponent = ({ fields, onSubmit }: ICms) => {
         {form.map((field, idx) => {
           switch (field.type) {
             case 'number': {
+              if (contextState.components?.number) {
+                return (
+                  <div id="custom-cms-number-component" key={idx}>
+                    {contextState.components.number(field, e =>
+                      handleInputNumberChange(e, field.name)
+                    )}
+                  </div>
+                );
+              }
+
               return (
                 <CmsInputField
                   key={idx}
@@ -74,6 +85,15 @@ const CmsComponent = ({ fields, onSubmit }: ICms) => {
               );
             }
             case 'checkbox': {
+              if (contextState.components?.checkbox) {
+                return (
+                  <div id="custom-cms-number-component" key={idx}>
+                    {contextState.components.checkbox(field, e =>
+                      handleInputBooleanChange(e, field.name)
+                    )}
+                  </div>
+                );
+              }
               return (
                 <CmsCheckbox
                   key={idx}
@@ -83,6 +103,15 @@ const CmsComponent = ({ fields, onSubmit }: ICms) => {
               );
             }
             default: {
+              if (contextState.components?.text) {
+                return (
+                  <div id="custom-cms-text-component" key={idx}>
+                    {contextState.components.text(field, e =>
+                      handleInputChange(e, field.name)
+                    )}
+                  </div>
+                );
+              }
               return (
                 <CmsInputField
                   key={idx}

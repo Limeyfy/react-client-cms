@@ -17,5 +17,7 @@ export interface ICmsField {
 }
 
 export interface ICmsComponents {
-    textComponent?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
+    text?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
+    number?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
+    checkbox?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
 }

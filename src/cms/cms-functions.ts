@@ -22,6 +22,8 @@ const getDefaultValue = (type: FieldType) => {
     switch (type) {
         case "checkbox":
             return false;
+        case "number":
+            return 0;
         default:
             return "";
     }
