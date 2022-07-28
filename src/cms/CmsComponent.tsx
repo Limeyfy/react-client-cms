@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { buildForm, formatForm } from './cms-functions';
+import CmsCheckbox from './CmsCheckbox';
 import CmsInputField from './CmsInputField';
 import { ICms, ICmsField } from './CmsTypes';
 
@@ -48,7 +49,10 @@ const CmsComponent = ({ fields, onSubmit }: ICms) => {
 
   return (
     <div>
-      <form className="mx-8 my-6" onSubmit={e => onSubmit(e, formatForm(form))}>
+      <form
+        className="mx-8 my-6 space-y-4"
+        onSubmit={e => onSubmit(e, formatForm(form))}
+      >
         {form.map((field, idx) => {
           switch (field.type) {
             case 'number': {
@@ -57,6 +61,15 @@ const CmsComponent = ({ fields, onSubmit }: ICms) => {
                   key={idx}
                   field={field}
                   onChange={e => handleInputNumberChange(e, field.name)}
+                />
+              );
+            }
+            case 'checkbox': {
+              return (
+                <CmsCheckbox
+                  key={idx}
+                  field={field}
+                  onChange={e => console.log(e, field.name)}
                 />
               );
             }
