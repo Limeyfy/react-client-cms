@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { classNames } from '..';
 import { buildForm, formatForm } from './cms-functions';
 import CmsCheckbox from './CmsCheckbox';
 import CmsImageSelect from './CmsImageSelect';
 import CmsInputField from './CmsInputField';
-import { CmsContext } from './CmsProvider';
 import { ICms, ICmsField } from './CmsTypes';
 
 const CmsComponent = ({
@@ -15,8 +14,6 @@ const CmsComponent = ({
     errorHandling,
 }: ICms) => {
     const [form, setForm] = useState<ICmsField[]>([]);
-
-    const contextState = useContext(CmsContext);
 
     useEffect(() => {
         if (form.length <= 0) {
@@ -86,21 +83,6 @@ const CmsComponent = ({
             {form.map((field, idx) => {
                 switch (field.type) {
                     case 'number': {
-                        if (contextState.components?.number) {
-                            return (
-                                <div id="custom-cms-number-component" key={idx}>
-                                    {contextState.components.number(
-                                        field,
-                                        (e) =>
-                                            handleInputNumberChange(
-                                                e,
-                                                field.name
-                                            )
-                                    )}
-                                </div>
-                            );
-                        }
-
                         return (
                             <CmsInputField
                                 key={idx}
@@ -112,20 +94,6 @@ const CmsComponent = ({
                         );
                     }
                     case 'checkbox': {
-                        if (contextState.components?.checkbox) {
-                            return (
-                                <div id="custom-cms-number-component" key={idx}>
-                                    {contextState.components.checkbox(
-                                        field,
-                                        (e) =>
-                                            handleInputBooleanChange(
-                                                e,
-                                                field.name
-                                            )
-                                    )}
-                                </div>
-                            );
-                        }
                         return (
                             <CmsCheckbox
                                 key={idx}
@@ -166,15 +134,6 @@ const CmsComponent = ({
                     }
 
                     default: {
-                        if (contextState.components?.text) {
-                            return (
-                                <div id="custom-cms-text-component" key={idx}>
-                                    {contextState.components.text(field, (e) =>
-                                        handleInputChange(e, field.name)
-                                    )}
-                                </div>
-                            );
-                        }
                         return (
                             <CmsInputField
                                 key={idx}

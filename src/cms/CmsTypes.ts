@@ -1,6 +1,6 @@
 import React from "react";
 
-export type FieldType = "text" | "checkbox" | "number" | "password" | "email" | "image" | "images";
+export type FieldType = "text" | "checkbox" | "number" | "password" | "email" | "image" | "images" | "array" | "object";
 
 export interface ICms {
     fields: ICmsField[];
@@ -19,6 +19,7 @@ export interface ICmsField {
     optional?: boolean;
     placeholder?: string;
     options?: ICmsFieldOptions;
+    of?: "object" | "string";
 }
 
 export interface ICmsErrorHandling {
@@ -32,8 +33,11 @@ export interface ICmsFieldOptions {
 
 export interface ICmsComponents {
     text?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
+    password?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
+    email?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
     number?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
     checkbox?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
+    image?: (field: ICmsField, onChange: (file: File) => void) => JSX.Element;
 }
 
 /*
