@@ -15,3 +15,7 @@ export interface ICmsField {
     optional?: boolean;
     placeholder?: string;
 }
+
+export interface ICmsComponents {
+    textComponent?: (field: ICmsField) => JSX.Element;
+}

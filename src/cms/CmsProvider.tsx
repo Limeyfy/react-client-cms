@@ -1,0 +1,19 @@
+import React, { createContext } from 'react';
+import { ICms, ICmsComponents } from './CmsTypes';
+
+export interface ICmsProviderProps {
+  children: React.ReactNode;
+  components?: ICmsComponents;
+}
+
+export const CmsContext = createContext<ICmsProviderProps>({
+  children: null,
+});
+
+const CmsProvider: React.FC<ICmsProviderProps> = (props: ICmsProviderProps) => {
+  return (
+    <CmsContext.Provider value={props}>{props.children}</CmsContext.Provider>
+  );
+};
+
+export default CmsProvider;
