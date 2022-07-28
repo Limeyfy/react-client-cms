@@ -1,6 +1,6 @@
 import React from 'react';
 import { classNames } from '..';
-import { ICmsField } from './CmsTypes';
+import { ICmsField, types } from './CmsTypes';
 
 interface ICmsFieldProps {
   field: ICmsField;
@@ -13,31 +13,35 @@ const CmsInputField = ({ field, onChange }: ICmsFieldProps) => {
       <div className="flex justify-between">
         <label
           htmlFor="email"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-200"
         >
           {field.name}
         </label>
-        <span className="text-sm text-gray-500" id="email-optional">
-          Optional
-        </span>
+        {field.optional === undefined ||
+          (field.optional === true && (
+            <span
+              className="text-sm text-gray-500 dark:text-gray-400"
+              id="email-optional"
+            >
+              Optional
+            </span>
+          ))}
       </div>
       <div className="mt-1">
         <input
-          type="email"
+          type={types[field.type]}
           name={field.name}
           id="email"
           className={classNames(
             'shadow-sm block w-full sm:text-sm  rounded-md',
-            !(field.validation && field.validation(field.value))
-              ? ' focus:ring-indigo-500 focus:border-indigo-500 border-gray-300'
-              : 'focus:ring-red-500 focus:border-red-500 border-gray-300',
+            'focus:ring-limeyfy-500 focus:border-limeyfy-500 border-gray-300 dark:border-stone-700 dark:text-gray-200 dark:bg-stone-800',
             field.className
           )}
-          placeholder="you@example.com"
-          aria-describedby="email-optional"
+          placeholder={field.placeholder}
           value={field.value ?? ''}
           onChange={onChange}
         />
+        <p className="text-xs text-red-500"></p>
       </div>
     </div>
   );

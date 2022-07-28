@@ -6,7 +6,13 @@ export interface ICms {
 export interface ICmsField {
     name: string;
     type: "string" | "boolean";
-    validation?: (val: any) => boolean;
     value: any;
     className?: string;
+    optional?: boolean;
+    placeholder?: string;
+}
+
+export const types = {
+    string: "text",
+    boolean: "checkbox"
 }
