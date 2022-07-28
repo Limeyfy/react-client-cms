@@ -42,7 +42,6 @@ const CmsInputField = ({ field, onChange }: ICmsFieldProps) => (
                 value={field.value ?? ''}
                 onChange={onChange}
             />
-            <p className="text-xs text-red-500"></p>
         </div>
     </div>
 );

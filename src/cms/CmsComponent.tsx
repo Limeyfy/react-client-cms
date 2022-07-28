@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { classNames, CmsContext } from '..';
 import { buildForm, formatForm } from './cms-functions';
+import CmsArray from './CmsArray';
 import CmsCheckbox from './CmsCheckbox';
 import CmsImageSelect from './CmsImageSelect';
 import CmsInputField from './CmsInputField';
@@ -72,6 +73,16 @@ const CmsComponent = ({
     const handleRemoveFromArray = (i: number, name: string) => {
         let { newArr, objectIdx } = getObjectIndexAndArray(name);
         newArr[objectIdx].value.splice(i, 1);
+        setForm(newArr);
+    };
+
+    const handleAddToArray = (name: string, val: any) => {
+        let { newArr, objectIdx } = getObjectIndexAndArray(name);
+        if (newArr[objectIdx]?.value?.length <= 0) {
+            newArr[objectIdx].value = [val];
+        } else {
+            newArr[objectIdx].value.push(val);
+        }
         setForm(newArr);
     };
 
@@ -166,6 +177,18 @@ const CmsComponent = ({
                                     handleRemoveFromArray(i, field.name)
                                 }
                                 multiple
+                            />
+                        );
+                    }
+
+                    case 'array': {
+                        return (
+                            <CmsArray
+                                key={idx}
+                                field={field}
+                                onChange={(val) =>
+                                    handleAddToArray(field.name, val)
+                                }
                             />
                         );
                     }

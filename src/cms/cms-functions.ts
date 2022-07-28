@@ -24,6 +24,8 @@ const getDefaultValue = (type: FieldType) => {
         case "number": return 0;
         case "image": return null;
         case "images": return [];
+        case "array": return [];
+        case "object": return {};
         default: return "";
     }
 }
