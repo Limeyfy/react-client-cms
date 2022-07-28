@@ -47,6 +47,15 @@ const CmsComponent = ({ fields, onSubmit }: ICms) => {
     setForm(newArr);
   };
 
+  const handleInputBooleanChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    name: string
+  ) => {
+    const { newArr, objectIdx } = getObjectIndexAndArray(name);
+    newArr[objectIdx].value = e.target.checked;
+    setForm(newArr);
+  };
+
   return (
     <div>
       <form
@@ -69,7 +78,7 @@ const CmsComponent = ({ fields, onSubmit }: ICms) => {
                 <CmsCheckbox
                   key={idx}
                   field={field}
-                  onChange={e => console.log(e, field.name)}
+                  onChange={e => handleInputBooleanChange(e, field.name)}
                 />
               );
             }
