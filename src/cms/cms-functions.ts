@@ -8,4 +8,10 @@ const formatForm = (form: ICmsField[]) => {
     return obj;
 }
 
-export { formatForm };
+const formatPascalAndSpace = (str: string) => {
+    str = str.replace(/([A-Z])/g, ' $1').trim()
+    str = (str.charAt(0).toUpperCase() + str.slice(1));
+    return str;
+};
+
+export { formatForm, formatPascalAndSpace };

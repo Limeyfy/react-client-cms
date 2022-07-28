@@ -1,5 +1,6 @@
 import React from 'react';
 import { classNames } from '..';
+import { formatPascalAndSpace } from './cms-functions';
 import { ICmsField, types } from './CmsTypes';
 
 interface ICmsFieldProps {
@@ -15,7 +16,7 @@ const CmsInputField = ({ field, onChange }: ICmsFieldProps) => {
           htmlFor={field.name}
           className="block text-sm font-medium text-gray-700 dark:text-gray-200"
         >
-          {field.label ?? field.name}
+          {field.label ?? formatPascalAndSpace(field.name)}
         </label>
         {field.optional === undefined ||
           (field.optional === true && (
