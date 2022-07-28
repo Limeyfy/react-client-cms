@@ -1,5 +1,5 @@
 
-export type FieldType = "text" | "checkbox"
+export type FieldType = "text" | "checkbox" | "number"
 
 export interface ICms {
     fields: ICmsField[];
