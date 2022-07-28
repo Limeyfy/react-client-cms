@@ -37,8 +37,8 @@ export interface ICmsComponents {
 }
 
 /*
-Error codes
-1001: File too large
-1002: File type not allowed
-1003: File not found
+    Error codes
+    1001: File too large
+    1002: File type not allowed
+    1003: File not found
 */

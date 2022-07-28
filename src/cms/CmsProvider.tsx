@@ -2,18 +2,20 @@ import React, { createContext } from 'react';
 import { ICmsComponents } from './CmsTypes';
 
 export interface ICmsProviderProps {
-  children: React.ReactNode;
-  components?: ICmsComponents;
+    children: React.ReactNode;
+    components?: ICmsComponents;
 }
 
 export const CmsContext = createContext<ICmsProviderProps>({
-  children: null,
+    children: null,
 });
 
 export const CmsProvider: React.FC<ICmsProviderProps> = (
-  props: ICmsProviderProps
+    props: ICmsProviderProps
 ) => {
-  return (
-    <CmsContext.Provider value={props}>{props.children}</CmsContext.Provider>
-  );
+    return (
+        <CmsContext.Provider value={props}>
+            {props.children}
+        </CmsContext.Provider>
+    );
 };
