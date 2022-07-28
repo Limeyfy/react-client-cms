@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { classNames } from '..';
+import React, { useContext, useEffect, useState } from 'react';
+import { classNames, CmsContext } from '..';
 import { buildForm, formatForm } from './cms-functions';
 import CmsCheckbox from './CmsCheckbox';
 import CmsImageSelect from './CmsImageSelect';
@@ -14,6 +14,7 @@ const CmsComponent = ({
     errorHandling,
 }: ICms) => {
     const [form, setForm] = useState<ICmsField[]>([]);
+    const components = useContext(CmsContext).components;
 
     useEffect(() => {
         if (form.length <= 0) {
@@ -83,6 +84,15 @@ const CmsComponent = ({
             {form.map((field, idx) => {
                 switch (field.type) {
                     case 'number': {
+                        if (components?.number) {
+                            return (
+                                <div id="client-cms-custom-number-component">
+                                    {components.number(field, (e) =>
+                                        handleInputNumberChange(e, field.name)
+                                    )}
+                                </div>
+                            );
+                        }
                         return (
                             <CmsInputField
                                 key={idx}
@@ -94,6 +104,15 @@ const CmsComponent = ({
                         );
                     }
                     case 'checkbox': {
+                        if (components?.checkbox) {
+                            return (
+                                <div id="client-cms-custom-checkbox-component">
+                                    {components.checkbox(field, (e) =>
+                                        handleInputBooleanChange(e, field.name)
+                                    )}
+                                </div>
+                            );
+                        }
                         return (
                             <CmsCheckbox
                                 key={idx}
@@ -105,6 +124,15 @@ const CmsComponent = ({
                         );
                     }
                     case 'image': {
+                        if (components?.image) {
+                            return (
+                                <div id="client-cms-custom-checkbox-component">
+                                    {components.image(field, (file) =>
+                                        handleFileChange(file, field.name)
+                                    )}
+                                </div>
+                            );
+                        }
                         return (
                             <CmsImageSelect
                                 key={idx}
@@ -117,6 +145,15 @@ const CmsComponent = ({
                         );
                     }
                     case 'images': {
+                        if (components?.images) {
+                            return (
+                                <div id="client-cms-custom-checkbox-component">
+                                    {components.images(field, (files) =>
+                                        handleFileChange(files, field.name)
+                                    )}
+                                </div>
+                            );
+                        }
                         return (
                             <CmsImageSelect
                                 key={idx}
@@ -134,6 +171,15 @@ const CmsComponent = ({
                     }
 
                     default: {
+                        if (components?.text) {
+                            return (
+                                <div id="client-cms-custom-checkbox-component">
+                                    {components.text(field, (e) =>
+                                        handleInputChange(e, field.name)
+                                    )}
+                                </div>
+                            );
+                        }
                         return (
                             <CmsInputField
                                 key={idx}

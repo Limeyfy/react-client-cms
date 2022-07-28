@@ -38,6 +38,7 @@ export interface ICmsComponents {
     number?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
     checkbox?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
     image?: (field: ICmsField, onChange: (file: File) => void) => JSX.Element;
+    images?: (field: ICmsField, onChange: (files: File[]) => void) => JSX.Element;
 }
 
 /*
