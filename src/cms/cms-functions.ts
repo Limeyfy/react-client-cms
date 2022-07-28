@@ -30,6 +30,10 @@ const getDefaultValue = (type: FieldType) => {
 const buildForm = (fields: ICmsField[]) => {
     let form: ICmsField[] = [];
     fields.forEach(field => {
+        const existing = form.find(x => x.name === field.name);
+        if (existing) {
+            throw Error("('client-cms' <CmsComponent />) Duplicate field name: " + field.name);
+        }
         let val = field.value;
         if (val === undefined) {
             val = getDefaultValue(field.type);
