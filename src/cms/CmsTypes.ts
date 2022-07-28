@@ -5,6 +5,7 @@ export interface ICms {
 
 export interface ICmsField {
     name: string;
+    label?: string;
     type: "string" | "boolean";
     value: any;
     className?: string;

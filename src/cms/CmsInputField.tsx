@@ -12,10 +12,10 @@ const CmsInputField = ({ field, onChange }: ICmsFieldProps) => {
     <div>
       <div className="flex justify-between">
         <label
-          htmlFor="email"
+          htmlFor={field.name}
           className="block text-sm font-medium text-gray-700 dark:text-gray-200"
         >
-          {field.name}
+          {field.label ?? field.name}
         </label>
         {field.optional === undefined ||
           (field.optional === true && (
@@ -31,7 +31,7 @@ const CmsInputField = ({ field, onChange }: ICmsFieldProps) => {
         <input
           type={types[field.type]}
           name={field.name}
-          id="email"
+          id={field.name + '-cmsInput'}
           className={classNames(
             'shadow-sm block w-full sm:text-sm  rounded-md',
             'focus:ring-limeyfy-500 focus:border-limeyfy-500 border-gray-300 dark:border-stone-700 dark:text-gray-200 dark:bg-stone-800',
