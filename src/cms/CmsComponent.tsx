@@ -2,11 +2,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import { classNames } from '..';
 import { buildForm, formatForm } from './cms-functions';
 import CmsCheckbox from './CmsCheckbox';
+import CmsImageSelect from './CmsImageSelect';
 import CmsInputField from './CmsInputField';
 import { CmsContext } from './CmsProvider';
 import { ICms, ICmsField } from './CmsTypes';
 
-const CmsComponent = ({ fields, onSubmit, className, formOptions }: ICms) => {
+const CmsComponent = ({
+  fields,
+  onSubmit,
+  className,
+  formOptions,
+  errorHandling,
+}: ICms) => {
   const [form, setForm] = useState<ICmsField[]>([]);
 
   const contextState = useContext(CmsContext);
@@ -58,10 +65,16 @@ const CmsComponent = ({ fields, onSubmit, className, formOptions }: ICms) => {
     setForm(newArr);
   };
 
+  const handleFileChange = (val: File, name: string) => {
+    const { newArr, objectIdx } = getObjectIndexAndArray(name);
+    newArr[objectIdx].value = val;
+    setForm(newArr);
+  };
+
   return (
     <form
       className={classNames('mx-8 my-6 space-y-4', className)}
-      onSubmit={e => onSubmit(e, formatForm(form))}
+      onSubmit={(e) => onSubmit(e, formatForm(form))}
       {...formOptions}
     >
       {form.map((field, idx) => {
@@ -70,7 +83,7 @@ const CmsComponent = ({ fields, onSubmit, className, formOptions }: ICms) => {
             if (contextState.components?.number) {
               return (
                 <div id="custom-cms-number-component" key={idx}>
-                  {contextState.components.number(field, e =>
+                  {contextState.components.number(field, (e) =>
                     handleInputNumberChange(e, field.name)
                   )}
                 </div>
@@ -81,7 +94,7 @@ const CmsComponent = ({ fields, onSubmit, className, formOptions }: ICms) => {
               <CmsInputField
                 key={idx}
                 field={field}
-                onChange={e => handleInputNumberChange(e, field.name)}
+                onChange={(e) => handleInputNumberChange(e, field.name)}
               />
             );
           }
@@ -89,7 +102,7 @@ const CmsComponent = ({ fields, onSubmit, className, formOptions }: ICms) => {
             if (contextState.components?.checkbox) {
               return (
                 <div id="custom-cms-number-component" key={idx}>
-                  {contextState.components.checkbox(field, e =>
+                  {contextState.components.checkbox(field, (e) =>
                     handleInputBooleanChange(e, field.name)
                   )}
                 </div>
@@ -99,15 +112,26 @@ const CmsComponent = ({ fields, onSubmit, className, formOptions }: ICms) => {
               <CmsCheckbox
                 key={idx}
                 field={field}
-                onChange={e => handleInputBooleanChange(e, field.name)}
+                onChange={(e) => handleInputBooleanChange(e, field.name)}
               />
             );
           }
+          case 'image': {
+            return (
+              <CmsImageSelect
+                key={idx}
+                field={field}
+                onChange={(e) => handleFileChange(e, field.name)}
+                errorHanding={errorHandling}
+              />
+            );
+          }
+
           default: {
             if (contextState.components?.text) {
               return (
                 <div id="custom-cms-text-component" key={idx}>
-                  {contextState.components.text(field, e =>
+                  {contextState.components.text(field, (e) =>
                     handleInputChange(e, field.name)
                   )}
                 </div>
@@ -117,7 +141,7 @@ const CmsComponent = ({ fields, onSubmit, className, formOptions }: ICms) => {
               <CmsInputField
                 key={idx}
                 field={field}
-                onChange={e => handleInputChange(e, field.name)}
+                onChange={(e) => handleInputChange(e, field.name)}
               />
             );
           }

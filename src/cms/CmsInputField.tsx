@@ -35,7 +35,7 @@ const CmsInputField = ({ field, onChange }: ICmsFieldProps) => (
         id={field.name + '-cmsInput'}
         className={classNames(
           'shadow-sm block w-full sm:text-sm  rounded-md',
-          'focus:ring-limeyfy-500 focus:border-limeyfy-500 border-gray-300 dark:border-stone-700 dark:text-gray-200 dark:bg-stone-800',
+          'focus:ring-blue-500 focus:border-blue-500 border-gray-300 dark:border-stone-700 dark:text-gray-200 dark:bg-stone-800',
           field.className
         )}
         placeholder={field.placeholder}

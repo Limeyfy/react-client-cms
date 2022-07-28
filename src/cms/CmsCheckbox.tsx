@@ -26,9 +26,9 @@ const CmsCheckbox: React.FC<ICmsCheckboxProps> = ({
           type="checkbox"
           name={field.name}
           id={field.name}
-          className="focus:ring-limeyfy-500 h-5 w-5 text-limeyfy-600 border-gray-300 dark:border-stone-700 dark:bg-stone-800 rounded"
+          className="focus:ring-blue-400 h-5 w-5 text-blue-500 border-gray-300 dark:border-stone-700 dark:bg-stone-800 rounded"
           checked={field.value}
-          onChange={e => onChange(e)}
+          onChange={(e) => onChange(e)}
         />
       </div>
     </div>
