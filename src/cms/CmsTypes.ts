@@ -1,6 +1,6 @@
 import React from "react";
 
-export type FieldType = "text" | "checkbox" | "number"
+export type FieldType = "text" | "checkbox" | "number" | "password" | "email";
 
 export interface ICms {
     fields: ICmsField[];
