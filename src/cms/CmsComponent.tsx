@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { buildForm, formatForm } from './cms-functions';
 import CmsInputField from './CmsInputField';
+import { CmsContext } from './CmsProvider';
 import { ICms, ICmsField } from './CmsTypes';
 
 const CmsComponent = ({ fields, onSubmit }: ICms) => {
   const [form, setForm] = useState<ICmsField[]>([]);
+
+  const contextState = useContext(CmsContext);
 
   useEffect(() => {
     if (form.length <= 0) {
@@ -33,13 +36,20 @@ const CmsComponent = ({ fields, onSubmit }: ICms) => {
   return (
     <div>
       <form className="mx-8 my-6" onSubmit={e => onSubmit(e, formatForm(form))}>
-        {form.map((field, idx) => (
-          <CmsInputField
-            key={idx}
-            field={field}
-            onChange={e => handleInputChange(e, field.name)}
-          />
-        ))}
+        {form.map((field, idx) => {
+          if (field.type === 'text' && contextState.components?.textComponent) {
+            return contextState.components.textComponent(field, event =>
+              handleInputChange(event, field.name)
+            );
+          }
+          return (
+            <CmsInputField
+              key={idx}
+              field={field}
+              onChange={e => handleInputChange(e, field.name)}
+            />
+          );
+        })}
         <button type="submit">Submit</button>
       </form>
     </div>

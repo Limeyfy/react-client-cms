@@ -17,5 +17,5 @@ export interface ICmsField {
 }
 
 export interface ICmsComponents {
-    textComponent?: (field: ICmsField) => JSX.Element;
+    textComponent?: (field: ICmsField, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => JSX.Element;
 }

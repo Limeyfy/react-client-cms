@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { ICms, ICmsComponents } from './CmsTypes';
+import { ICmsComponents } from './CmsTypes';
 
 export interface ICmsProviderProps {
   children: React.ReactNode;
@@ -10,10 +10,10 @@ export const CmsContext = createContext<ICmsProviderProps>({
   children: null,
 });
 
-const CmsProvider: React.FC<ICmsProviderProps> = (props: ICmsProviderProps) => {
+export const CmsProvider: React.FC<ICmsProviderProps> = (
+  props: ICmsProviderProps
+) => {
   return (
     <CmsContext.Provider value={props}>{props.children}</CmsContext.Provider>
   );
 };
-
-export default CmsProvider;
