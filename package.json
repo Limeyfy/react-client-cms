@@ -18,7 +18,8 @@
     "prepare": "tsdx build && yarn build-tailwind",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "build-tailwind": "NODE_ENV=production npx tailwindcss -o ./dist/tailwind.css --minify"
+    "build-tailwind": "NODE_ENV=production npx tailwindcss -o ./dist/tailwind.css --minify",
+    "watch-tailwind": "tsdx watch --onSuccess yarn build-tailwind"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -55,8 +56,6 @@
     "autoprefixer": "^10.4.7",
     "husky": "^8.0.1",
     "postcss": "^8.4.14",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "size-limit": "^7.0.8",
     "tailwindcss": "^3.1.6",
     "tsdx": "^0.14.1",

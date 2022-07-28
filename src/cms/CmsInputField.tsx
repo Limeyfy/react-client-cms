@@ -1,37 +1,44 @@
 import React from 'react';
+import { classNames } from '..';
 import { ICmsField } from './CmsTypes';
-import { ExclamationCircleIcon } from '@heroicons/react/solid';
 
-const CmsInputField = ({ field }: { field: ICmsField }) => {
+interface ICmsFieldProps {
+  field: ICmsField;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const CmsInputField = ({ field, onChange }: ICmsFieldProps) => {
   return (
     <div>
-      <label
-        htmlFor="email"
-        className="block text-sm font-medium text-gray-700"
-      >
-        {field.name}
-      </label>
-      <div className="mt-1 relative rounded-md shadow-sm">
+      <div className="flex justify-between">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
+          {field.name}
+        </label>
+        <span className="text-sm text-gray-500" id="email-optional">
+          Optional
+        </span>
+      </div>
+      <div className="mt-1">
         <input
           type="email"
-          name="email"
+          name={field.name}
           id="email"
-          className="block w-full pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md"
+          className={classNames(
+            'shadow-sm block w-full sm:text-sm  rounded-md',
+            !(field.validation && field.validation(field.value))
+              ? ' focus:ring-indigo-500 focus:border-indigo-500 border-gray-300'
+              : 'focus:ring-red-500 focus:border-red-500 border-gray-300',
+            field.className
+          )}
           placeholder="you@example.com"
-          defaultValue="adamwathan"
-          aria-invalid="true"
-          aria-describedby="email-error"
+          aria-describedby="email-optional"
+          value={field.value ?? ''}
+          onChange={onChange}
         />
-        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-          <ExclamationCircleIcon
-            className="h-5 w-5 text-red-500"
-            aria-hidden="true"
-          />
-        </div>
       </div>
-      <p className="mt-2 text-sm text-red-600" id="email-error">
-        Your password must be less than 4 characters.
-      </p>
     </div>
   );
 };
