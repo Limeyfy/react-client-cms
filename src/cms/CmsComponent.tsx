@@ -3,8 +3,8 @@ import { formatForm } from './cms-functions';
 import CmsInputField from './CmsInputField';
 import { ICms, ICmsField } from './CmsTypes';
 
-const CmsComponent = (props: ICms) => {
-  const [form, setForm] = useState(props.fields);
+const CmsComponent = ({ fields, onSubmit }: ICms) => {
+  const [form, setForm] = useState(fields);
 
   const getObjectIndexAndArray = (name: string) => {
     let newArr = [...form];
@@ -24,14 +24,9 @@ const CmsComponent = (props: ICms) => {
     setForm(newArr);
   };
 
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(formatForm(form));
-  };
-
   return (
     <div>
-      <form className="mx-8 my-6" onSubmit={submit}>
+      <form className="mx-8 my-6" onSubmit={e => onSubmit(e, formatForm(form))}>
         {form.map((field, idx) => (
           <CmsInputField
             key={idx}

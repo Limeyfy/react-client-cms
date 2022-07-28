@@ -1,7 +1,7 @@
 import React from 'react';
 import { classNames } from '..';
 import { formatPascalAndSpace } from './cms-functions';
-import { ICmsField, types } from './CmsTypes';
+import { ICmsField } from './CmsTypes';
 
 interface ICmsFieldProps {
   field: ICmsField;
@@ -30,7 +30,7 @@ const CmsInputField = ({ field, onChange }: ICmsFieldProps) => {
       </div>
       <div className="mt-1">
         <input
-          type={types[field.type]}
+          type={field.type}
           name={field.name}
           id={field.name + '-cmsInput'}
           className={classNames(

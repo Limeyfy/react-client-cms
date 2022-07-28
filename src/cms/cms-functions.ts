@@ -1,9 +1,13 @@
-import { ICmsField } from "./CmsTypes";
+import { FieldType, ICmsField } from "./CmsTypes";
 
 const formatForm = (form: ICmsField[]) => {
     let obj: any = {};
     form.forEach(field => {
-        obj[field.name] = field.value;
+        let val = field.value;
+        if (!val) {
+            val = getDefaultValue(field.type);
+        }
+        obj[field.name] = field.value ?? "";
     });
     return obj;
 }
@@ -14,4 +18,13 @@ const formatPascalAndSpace = (str: string) => {
     return str;
 };
 
-export { formatForm, formatPascalAndSpace };
+const getDefaultValue = (type: FieldType) => {
+    switch (type) {
+        case "text":
+            return false;
+        default:
+            return "";
+    }
+}
+
+export { formatForm, formatPascalAndSpace, getDefaultValue };
