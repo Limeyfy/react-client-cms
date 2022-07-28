@@ -20,12 +20,11 @@ const formatPascalAndSpace = (str: string) => {
 
 const getDefaultValue = (type: FieldType) => {
     switch (type) {
-        case "checkbox":
-            return false;
-        case "number":
-            return 0;
-        default:
-            return "";
+        case "checkbox": return false;
+        case "number": return 0;
+        case "image": return null;
+        case "images": return [];
+        default: return "";
     }
 }
 

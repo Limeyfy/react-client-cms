@@ -4,14 +4,18 @@ import { ICmsErrorHandling, ICmsField } from './CmsTypes';
 
 export interface ICmsImageSelectProps {
   field: ICmsField;
-  onChange: (val: File) => void;
+  onChange: (val: File | File[]) => void;
   errorHanding?: ICmsErrorHandling;
+  multiple?: boolean;
+  removeFromArray?: (i: number) => void;
 }
 
 const CmsImageSelect = ({
   field,
   onChange,
   errorHanding,
+  multiple = false,
+  removeFromArray,
 }: ICmsImageSelectProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const divRef = useRef<HTMLDivElement>(null);
@@ -30,6 +34,15 @@ const CmsImageSelect = ({
         errorHanding.onError(`Only jpeg, png and gif images are allowed`, 1002);
       return;
     }
+    if (multiple) {
+      let prevFiles: File[] = field.value ?? [];
+      for (var i = 0; i < e.target.files!.length; i++) {
+        prevFiles.push(e.target.files![i]);
+      }
+      onChange(prevFiles);
+      return;
+    }
+
     if (file) onChange(file);
   };
 
@@ -81,7 +94,7 @@ const CmsImageSelect = ({
         onDragOver={(e) => handleDragOver(e)}
         ref={divRef}
       >
-        {field.value && (
+        {field.value && !multiple && (
           <p className="bg-black/10 dark:bg-white/10 px-2 py-1 rounded-md">
             {field.value.name}
           </p>
@@ -92,7 +105,28 @@ const CmsImageSelect = ({
           className="sr-only"
           type="file"
           onChange={handleFileChange}
+          multiple={multiple}
         />
+      </div>
+      <div className="flex-col flex space-y-2 py-6">
+        {field.value.length > 0 &&
+          field.value.map((item: File, idx: number) => (
+            <div
+              key={idx}
+              className="flex justify-between items-center border rounded-md border-gray-300 dark:border-stone-700 px-4 py-2"
+            >
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                {item.name}
+              </p>
+              <button
+                type="button"
+                onClick={() => removeFromArray && removeFromArray(idx)}
+                className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
       </div>
     </div>
   );

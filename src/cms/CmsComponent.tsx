@@ -65,9 +65,15 @@ const CmsComponent = ({
     setForm(newArr);
   };
 
-  const handleFileChange = (val: File, name: string) => {
+  const handleFileChange = (val: File | File[], name: string) => {
     const { newArr, objectIdx } = getObjectIndexAndArray(name);
     newArr[objectIdx].value = val;
+    setForm(newArr);
+  };
+
+  const handleRemoveFromArray = (i: number, name: string) => {
+    let { newArr, objectIdx } = getObjectIndexAndArray(name);
+    newArr[objectIdx].value.splice(i, 1);
     setForm(newArr);
   };
 
@@ -123,6 +129,18 @@ const CmsComponent = ({
                 field={field}
                 onChange={(e) => handleFileChange(e, field.name)}
                 errorHanding={errorHandling}
+              />
+            );
+          }
+          case 'images': {
+            return (
+              <CmsImageSelect
+                key={idx}
+                field={field}
+                onChange={(e) => handleFileChange(e, field.name)}
+                errorHanding={errorHandling}
+                removeFromArray={(i) => handleRemoveFromArray(i, field.name)}
+                multiple
               />
             );
           }
