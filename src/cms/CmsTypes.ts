@@ -20,6 +20,18 @@ export interface ICmsField {
     placeholder?: string;
     options?: ICmsFieldOptions;
     of?: "object" | "string";
+    fields?: ICmsFieldField[];
+}
+
+export interface ICmsFieldField {
+    name: string;
+    label?: string;
+    type: "text" | "checkbox" | "number" | "password" | "email" | "image";
+    value?: any;
+    className?: string;
+    optional?: boolean;
+    placeholder?: string;
+    options?: ICmsFieldOptions;
 }
 
 export interface ICmsErrorHandling {

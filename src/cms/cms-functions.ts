@@ -37,6 +37,9 @@ const buildForm = (fields: ICmsField[]) => {
         if (existing) {
             throw Error("('client-cms' <CmsComponent />) Duplicate field name: " + field.name);
         }
+        if (field.type === "array" && field.of === "object" && (!field.fields || field.fields.length === 0)) {
+            throw Error("('client-cms' <CmsComponent />) Array of objects requires at least one field");
+        }
         let val = field.value;
         if (val === undefined) {
             val = getDefaultValue(field.type);

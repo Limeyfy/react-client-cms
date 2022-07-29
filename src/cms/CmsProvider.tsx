@@ -4,6 +4,7 @@ import { ICmsComponents } from './CmsTypes';
 export interface ICmsProviderProps {
     children: React.ReactNode;
     components?: ICmsComponents;
+    dark?: boolean;
 }
 
 export const CmsContext = createContext<ICmsProviderProps>({

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { classNames } from '..';
+import { classNames, CmsInputField } from '..';
 import { formatPascalAndSpace } from './cms-functions';
-import { ICmsField } from './CmsTypes';
+import { ICmsField, ICmsFieldField } from './CmsTypes';
 import { PlusSmIcon } from '@heroicons/react/outline';
 
 interface ICmsArrayProps {
@@ -22,9 +22,13 @@ const CmsArray: React.FC<ICmsArrayProps> = ({
         setCurrent(null);
     };
 
+    const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCurrent(e.target.value);
+    };
+
     return (
         <div>
-            {(!field.of || field.of === 'string') && (
+            {!field.of || field.of === 'string' ? (
                 <>
                     <div className="flex justify-between">
                         <label
@@ -92,6 +96,48 @@ const CmsArray: React.FC<ICmsArrayProps> = ({
                                 aria-hidden="true"
                             />
                         </button>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div>
+                        <div className="flex justify-between">
+                            <label
+                                htmlFor={field.name}
+                                className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                            >
+                                {field.label ??
+                                    formatPascalAndSpace(field.name)}
+                            </label>
+                            {field.optional === undefined ||
+                                (field.optional === true && (
+                                    <span
+                                        className="text-sm text-gray-500 dark:text-gray-400"
+                                        id="email-optional"
+                                    >
+                                        Optional
+                                    </span>
+                                ))}
+                        </div>
+                    </div>
+                    <div className="border-l-2 border-l-gray-300 dark:border-l-stone-700 ml-12 py-4 mt-4 pl-4">
+                        {field.fields!.map(
+                            (subField: ICmsFieldField, subFieldIdx: number) => {
+                                switch (subField.type) {
+                                    default: {
+                                        return (
+                                            <CmsInputField
+                                                key={subFieldIdx}
+                                                field={subField}
+                                                onChange={(e) => {
+                                                    handleTextChange(e);
+                                                }}
+                                            />
+                                        );
+                                    }
+                                }
+                            }
+                        )}
                     </div>
                 </>
             )}
