@@ -1,4 +1,4 @@
-import { Input, InputNumber, Select } from 'antd';
+import { Checkbox, Input, InputNumber, Select } from 'antd';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '../helpers/classHelper';
@@ -114,12 +114,25 @@ const Component = ({
     const type = field.type;
     const props = type.props ? type.props : ({} as any);
     switch (type.type) {
+        case 'boolean':
+            return (
+                <Checkbox
+                    style={{ width: '100%' }}
+                    value={value}
+                    onChange={(e) => onChangeProp(e)}
+                    {...props}
+                >
+                    {field.label || unPascalCase(field.name)}
+                </Checkbox>
+            );
         case 'select':
             return (
                 <Select
                     defaultValue={type.defaultValue || type.options[0]}
                     style={{ width: '100%' }}
+                    value={value}
                     onChange={(val) => onChangeProp(val)}
+                    {...props}
                 >
                     {type.options.map((option, optionIdx) => (
                         <Select.Option
