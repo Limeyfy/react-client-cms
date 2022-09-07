@@ -71,6 +71,7 @@
     "@tailwindcss/typography": "^0.5.4",
     "antd": "^4.23.0",
     "prettier": "^2.7.1",
+    "react-hook-form": "^7.34.2",
     "react-hot-toast": "^2.3.0",
     "rollup-plugin-import-css": "^3.0.3",
     "rollup-plugin-postcss": "^4.0.2",

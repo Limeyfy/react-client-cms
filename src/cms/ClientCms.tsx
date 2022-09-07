@@ -1,5 +1,6 @@
 import { Input } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useForm, UseFormRegisterReturn } from 'react-hook-form';
 import { classNames } from '../helpers/classHelper';
 import { unPascalCase } from '../helpers/textHelper';
 import LabelContainer from './LabelContainer';
@@ -11,19 +12,28 @@ const ClientCms: React.FC<IClientCms> = <T,>({
     onSubmit,
     loading,
 }: IClientCms<T>) => {
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const { register, handleSubmit: reactHookSubmit } = useForm();
+
+    useEffect(() => {
+        const fieldNames = fields.map((field) => field.name);
+        const uniqueFieldNames = new Set(fieldNames);
+        if (fieldNames.length !== uniqueFieldNames.size) {
+            throw new Error('Two fields have the same name');
+        }
+    }, [fields]);
+
+    const handleSubmit = (data: T) => {
         if (onSubmit === undefined) {
             console.error('OnSubmit is not defined');
             return;
         }
-        onSubmit({} as T);
+        onSubmit(data);
         return;
     };
 
     return (
         <form
-            onSubmit={handleSubmit}
+            onSubmit={reactHookSubmit((data) => handleSubmit(data as T))}
             className={classNames(
                 className
                     ? className
@@ -35,7 +45,7 @@ const ClientCms: React.FC<IClientCms> = <T,>({
                     key={fieldIdx}
                     label={field.label || unPascalCase(field.name)}
                 >
-                    <Component field={field} />
+                    <Component register={register(field.name)} field={field} />
                 </LabelContainer>
             ))}
             <div className="flex justify-end">
@@ -69,14 +79,20 @@ const ClientCms: React.FC<IClientCms> = <T,>({
     );
 };
 
-const Component = ({ field }: { field: IClientCmsField }) => {
+const Component = ({
+    field,
+    register,
+}: {
+    field: IClientCmsField;
+    register: UseFormRegisterReturn<any>;
+}) => {
     const type = field.type;
     const props = type.props ? type.props : ({} as any);
     switch (type.type) {
         case 'text':
-            return <Input.TextArea {...props} />;
+            return <Input.TextArea {...register} {...props} />;
         default:
-            return <Input className="w-full" />;
+            return <Input {...register} className="w-full" />;
     }
 };
 
