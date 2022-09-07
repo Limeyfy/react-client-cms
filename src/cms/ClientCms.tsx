@@ -1,4 +1,5 @@
 import { Checkbox, DatePicker, Input, InputNumber, Select } from 'antd';
+import moment from 'moment';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '../helpers/classHelper';
@@ -10,7 +11,7 @@ function getDefaultValue(field: IClientCmsField) {
     const type = field.type.type;
     switch (type) {
         case 'date':
-            return new Date();
+            return moment();
         case 'boolean':
             return false;
         default:
