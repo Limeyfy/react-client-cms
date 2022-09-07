@@ -18,7 +18,7 @@
     "prepare": "tsdx build && yarn build-tailwind",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "build-tailwind": "NODE_ENV=production npx tailwindcss -o ./dist/tailwind.css --minify",
+    "build-tailwind": "NODE_ENV=production npx tailwindcss -o ./dist/main.css --minify",
     "watch-tailwind": "tsdx watch --onSuccess yarn build-tailwind"
   },
   "peerDependencies": {
@@ -69,6 +69,7 @@
     "@heroicons/react": "^1.0.6",
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/typography": "^0.5.4",
+    "antd": "^4.23.0",
     "prettier": "^2.7.1",
     "react-hot-toast": "^2.3.0",
     "rollup-plugin-import-css": "^3.0.3",
