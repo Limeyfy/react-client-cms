@@ -1,4 +1,4 @@
-import { InputNumberProps, SelectProps } from "antd";
+import { InputNumberProps, SelectProps, UploadFile, UploadProps } from "antd";
 import { TextAreaProps } from "antd/lib/input";
 
 export interface IClientCms<T = unknown> {
@@ -12,7 +12,7 @@ export interface IClientCms<T = unknown> {
 export interface IClientCmsField {
     name: string;
     label?: string;
-    type: IClientCmsDefaultType | IClientCmsTextAreaType | IClientCmsNumberType | IClientCmsSelectType;
+    type: IClientCmsDefaultType | IClientCmsTextAreaType | IClientCmsNumberType | IClientCmsSelectType | IClientCmsUploadType;
 }
 
 export type IClientCmsDefaultType = {
@@ -41,4 +41,10 @@ export type IClientCmsSelectType = {
     getIdentify?: (value: any) => string;
     getLabel?: (value: any) => string;
     props?: SelectProps;
+}
+
+export type IClientCmsUploadType = {
+    type: "upload";
+    props?: UploadProps;
+    onChange?: (value: UploadFile<any>[]) => any;
 }

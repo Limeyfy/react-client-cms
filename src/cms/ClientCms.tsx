@@ -1,10 +1,19 @@
-import { Checkbox, DatePicker, Input, InputNumber, Select } from 'antd';
+import {
+    Button,
+    Checkbox,
+    DatePicker,
+    Input,
+    InputNumber,
+    Select,
+    Upload,
+} from 'antd';
 import moment from 'moment';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '../helpers/classHelper';
 import { unPascalCase } from '../helpers/textHelper';
 import LabelContainer from './LabelContainer';
+import { UploadOutlined } from '@ant-design/icons';
 import { IClientCms, IClientCmsField } from './types';
 
 function getDefaultValue(field: IClientCmsField) {
@@ -130,6 +139,22 @@ const Component = ({
     const type = field.type;
     const props = type.props ? type.props : ({} as any);
     switch (type.type) {
+        case 'upload':
+            return (
+                <Upload
+                    style={{ width: '100%' }}
+                    onChange={(e) =>
+                        onChangeProp(
+                            type.onChange
+                                ? type.onChange(e.fileList)
+                                : e.fileList
+                        )
+                    }
+                    {...props}
+                >
+                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                </Upload>
+            );
         case 'date':
             return (
                 <DatePicker
