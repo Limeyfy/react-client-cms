@@ -1,41 +1,26 @@
+import { UploadOutlined } from '@ant-design/icons';
 import {
     Button,
     Checkbox,
     DatePicker,
+    Form,
     Input,
     InputNumber,
     Select,
     Upload,
 } from 'antd';
-import moment from 'moment';
 import React, { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { classNames } from '../helpers/classHelper';
 import { unPascalCase } from '../helpers/textHelper';
-import LabelContainer from './LabelContainer';
-import { UploadOutlined } from '@ant-design/icons';
 import { IClientCms, IClientCmsField } from './types';
-
-function getDefaultValue(field: IClientCmsField) {
-    const type = field.type.type;
-    switch (type) {
-        case 'date':
-            return moment();
-        case 'boolean':
-            return false;
-        default:
-            return '';
-    }
-}
 
 const ClientCms = <T,>({
     fields,
     className,
     onSubmit,
     loading,
+    onFailed,
 }: IClientCms<T>) => {
-    const { control, handleSubmit: reactHookSubmit } = useForm();
-
+    const [form] = Form.useForm();
     useEffect(() => {
         const fieldNames = fields.map((field) => field.name);
         const uniqueFieldNames = new Set(fieldNames);
@@ -54,49 +39,39 @@ const ClientCms = <T,>({
     };
 
     return (
-        <form
-            onSubmit={reactHookSubmit((data) => handleSubmit(data as T))}
-            className={classNames(
-                className
-                    ? className
-                    : 'max-w-xl h-96 flex flex-col gap-y-4 w-full'
-            )}
+        <Form
+            name="basic"
+            onFinish={handleSubmit}
+            onFinishFailed={onFailed}
+            labelCol={{ span: 8 }}
+            initialValues={{ remember: true }}
+            wrapperCol={{ span: 16 }}
+            autoComplete="off"
+            className={className}
+            form={form}
+            onChange={(e) => console.log(e)}
         >
-            {fields.map((field, fieldIdx) =>
-                field.type.type === 'boolean' ? (
-                    <Controller
-                        key={fieldIdx}
-                        name={field.name}
-                        defaultValue={getDefaultValue(field)}
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <Component
-                                value={value}
-                                onChange={onChange}
-                                field={field}
-                            />
-                        )}
-                    />
-                ) : (
-                    <LabelContainer
+            {fields.map((field, fieldIdx) => {
+                const { label, type, defaultValue, ...restField } = field;
+                return field.type.type === 'boolean' ? (
+                    <Form.Item
                         key={fieldIdx}
                         label={field.label || unPascalCase(field.name)}
+                        valuePropName="boolean"
+                        {...restField}
                     >
-                        <Controller
-                            name={field.name}
-                            defaultValue={getDefaultValue(field)}
-                            control={control}
-                            render={({ field: { onChange, value } }) => (
-                                <Component
-                                    value={value}
-                                    onChange={onChange}
-                                    field={field}
-                                />
-                            )}
-                        />
-                    </LabelContainer>
-                )
-            )}
+                        {Component(field)}
+                    </Form.Item>
+                ) : (
+                    <Form.Item
+                        key={fieldIdx}
+                        label={field.label || unPascalCase(field.name)}
+                        {...restField}
+                    >
+                        {Component(field)}
+                    </Form.Item>
+                );
+            })}
             <div className="flex justify-end">
                 <button
                     type="submit"
@@ -124,66 +99,37 @@ const ClientCms = <T,>({
                     {loading ? 'Loading...' : 'Submit'}
                 </button>
             </div>
-        </form>
+        </Form>
     );
 };
 
-const Component = ({
-    field,
-    value,
-    onChange: onChangeProp,
-}: {
-    field: IClientCmsField;
-    value: any;
-    onChange: (value: any) => void;
-}) => {
+const Component = (field: IClientCmsField) => {
     const type = field.type;
     const props = type.props ? type.props : ({} as any);
     switch (type.type) {
         case 'upload':
             return (
-                <Upload
-                    onChange={(e) =>
-                        onChangeProp(
-                            type.onChange
-                                ? type.onChange(e.fileList)
-                                : e.fileList
-                        )
-                    }
-                    {...props}
-                >
+                <Upload {...props}>
                     <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
                         Click to Upload
                     </Button>
                 </Upload>
             );
         case 'date':
+            return <DatePicker style={{ width: '100%' }} {...props} />;
+        case 'boolean': {
             return (
-                <DatePicker
-                    style={{ width: '100%' }}
-                    value={value}
-                    onChange={(e) => onChangeProp(e)}
-                    {...props}
-                />
-            );
-        case 'boolean':
-            return (
-                <Checkbox
-                    style={{ width: '100%' }}
-                    value={value}
-                    onChange={(e) => onChangeProp(e)}
-                    {...props}
-                >
+                <Checkbox style={{ width: '100%' }}>
                     {field.label || unPascalCase(field.name)}
                 </Checkbox>
             );
+        }
+
         case 'select':
             return (
                 <Select
                     defaultValue={type.defaultValue || type.options[0]}
                     style={{ width: '100%' }}
-                    value={value}
-                    onChange={(val) => onChangeProp(val)}
                     {...props}
                 >
                     {type.options.map((option, optionIdx) => (
@@ -203,32 +149,11 @@ const Component = ({
                 </Select>
             );
         case 'number':
-            return (
-                <InputNumber
-                    style={{ width: '100%' }}
-                    value={value}
-                    onChange={(e) => onChangeProp(e)}
-                    {...props}
-                />
-            );
+            return <InputNumber style={{ width: '100%' }} {...props} />;
         case 'text':
-            return (
-                <Input.TextArea
-                    className="w-full"
-                    value={value}
-                    onChange={(e) => onChangeProp(e.target.value)}
-                    {...props}
-                />
-            );
+            return <Input.TextArea className="w-full" {...props} />;
         default:
-            return (
-                <Input
-                    className="w-full"
-                    value={value}
-                    onChange={(e) => onChangeProp(e.target.value)}
-                    {...props}
-                />
-            );
+            return <Input className="w-full" {...props} />;
     }
 };
 

@@ -1,4 +1,5 @@
 import { InputNumberProps, SelectProps, UploadFile, UploadProps } from "antd";
+import { Rule } from "antd/lib/form";
 import { TextAreaProps } from "antd/lib/input";
 
 export interface IClientCms<T = any> {
@@ -7,12 +8,19 @@ export interface IClientCms<T = any> {
     className?: string;
     submitButton?: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
     loading?: boolean;
+    name?: string;
+    onFailed?: (error: any) => void;
 }
 
 export interface IClientCmsField {
     name: string;
     label?: string;
     type: IClientCmsDefaultType | IClientCmsTextAreaType | IClientCmsNumberType | IClientCmsSelectType | IClientCmsUploadType;
+    defaultValue?: any;
+    rules?: Rule[];
+    required?: boolean;
+    className?: string;
+    id?: string;
 }
 
 export type IClientCmsDefaultType = {
