@@ -1,4 +1,4 @@
-import { Checkbox, Input, InputNumber, Select } from 'antd';
+import { Checkbox, DatePicker, Input, InputNumber, Select } from 'antd';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '../helpers/classHelper';
@@ -52,11 +52,8 @@ const ClientCms: React.FC<IClientCms> = <T,>({
                     : 'max-w-xl h-96 flex flex-col gap-y-4 w-full'
             )}
         >
-            {fields.map((field, fieldIdx) => (
-                <LabelContainer
-                    key={fieldIdx}
-                    label={field.label || unPascalCase(field.name)}
-                >
+            {fields.map((field, fieldIdx) =>
+                field.type.type === 'boolean' ? (
                     <Controller
                         name={field.name}
                         defaultValue={getDefaultValue(field)}
@@ -69,8 +66,26 @@ const ClientCms: React.FC<IClientCms> = <T,>({
                             />
                         )}
                     />
-                </LabelContainer>
-            ))}
+                ) : (
+                    <LabelContainer
+                        key={fieldIdx}
+                        label={field.label || unPascalCase(field.name)}
+                    >
+                        <Controller
+                            name={field.name}
+                            defaultValue={getDefaultValue(field)}
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                                <Component
+                                    value={value}
+                                    onChange={onChange}
+                                    field={field}
+                                />
+                            )}
+                        />
+                    </LabelContainer>
+                )
+            )}
             <div className="flex justify-end">
                 <button
                     type="submit"
@@ -114,6 +129,15 @@ const Component = ({
     const type = field.type;
     const props = type.props ? type.props : ({} as any);
     switch (type.type) {
+        case 'date':
+            return (
+                <DatePicker
+                    style={{ width: '100%' }}
+                    value={value}
+                    onChange={(e) => onChangeProp(e)}
+                    {...props}
+                />
+            );
         case 'boolean':
             return (
                 <Checkbox
