@@ -1,3 +1,4 @@
+import { InputNumberProps, SelectProps } from "antd";
 import { TextAreaProps } from "antd/lib/input";
 
 export interface IClientCms<T = unknown> {
@@ -11,11 +12,11 @@ export interface IClientCms<T = unknown> {
 export interface IClientCmsField {
     name: string;
     label?: string;
-    type: IClientCmsDefaultType | IClientCmsTextAreaType;
+    type: IClientCmsDefaultType | IClientCmsTextAreaType | IClientCmsNumberType | IClientCmsSelectType;
 }
 
 export type IClientCmsDefaultType = {
-    type: "string" | "number" | "boolean" | "date";
+    type: "string" | "boolean" | "date";
     props?: React.DetailedHTMLProps<
         React.InputHTMLAttributes<HTMLInputElement>,
         HTMLInputElement
@@ -25,4 +26,19 @@ export type IClientCmsDefaultType = {
 export type IClientCmsTextAreaType = {
     type: "text";
     props?: TextAreaProps;
+}
+
+export type IClientCmsNumberType = {
+    type: "number";
+    props?: InputNumberProps;
+}
+
+export type IClientCmsSelectType = {
+    type: "select";
+    options: any[];
+    onChange?: (value: any) => void;
+    defaultValue?: any;
+    getIdentify?: (value: any) => string;
+    getLabel?: (value: any) => string;
+    props?: SelectProps;
 }

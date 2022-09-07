@@ -1,4 +1,4 @@
-import { Input } from 'antd';
+import { Input, InputNumber, Select } from 'antd';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '../helpers/classHelper';
@@ -114,12 +114,45 @@ const Component = ({
     const type = field.type;
     const props = type.props ? type.props : ({} as any);
     switch (type.type) {
+        case 'select':
+            return (
+                <Select
+                    defaultValue={type.defaultValue || type.options[0]}
+                    style={{ width: '100%' }}
+                    onChange={(val) => onChangeProp(val)}
+                >
+                    {type.options.map((option, optionIdx) => (
+                        <Select.Option
+                            value={
+                                type.getIdentify
+                                    ? type.getIdentify(option)
+                                    : option
+                            }
+                            key={optionIdx}
+                        >
+                            {type.getLabel
+                                ? type.getLabel(option)
+                                : option.toString()}
+                        </Select.Option>
+                    ))}
+                </Select>
+            );
+        case 'number':
+            return (
+                <InputNumber
+                    style={{ width: '100%' }}
+                    value={value}
+                    onChange={(e) => onChangeProp(e)}
+                    {...props}
+                />
+            );
         case 'text':
             return (
                 <Input.TextArea
-                    {...props}
+                    className="w-full"
                     value={value}
                     onChange={(e) => onChangeProp(e.target.value)}
+                    {...props}
                 />
             );
         default:
@@ -128,6 +161,7 @@ const Component = ({
                     className="w-full"
                     value={value}
                     onChange={(e) => onChangeProp(e.target.value)}
+                    {...props}
                 />
             );
     }
