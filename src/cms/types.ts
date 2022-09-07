@@ -1,9 +1,11 @@
 import { TextAreaProps } from "antd/lib/input";
 
 export interface IClientCms<T = unknown> {
-    onSubmit?: (data: T) => void;
+    onSubmit?: (data: T) => void | Promise<unknown>;
     fields: IClientCmsField[];
     className?: string;
+    submitButton?: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+    loading?: boolean;
 }
 
 export interface IClientCmsField {
