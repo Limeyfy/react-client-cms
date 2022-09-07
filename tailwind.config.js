@@ -1,7 +1,6 @@
 module.exports = {
   mode: 'jit',
   content: ['./src/**/*.{js,jsx,ts,tsx}', './stories/*'],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -23,8 +22,4 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [
-    // ...
-    require('@tailwindcss/forms'),
-  ],
 }
