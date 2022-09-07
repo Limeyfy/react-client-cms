@@ -142,7 +142,6 @@ const Component = ({
         case 'upload':
             return (
                 <Upload
-                    style={{ width: '100%' }}
                     onChange={(e) =>
                         onChangeProp(
                             type.onChange
@@ -152,7 +151,9 @@ const Component = ({
                     }
                     {...props}
                 >
-                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                    <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
+                        Click to Upload
+                    </Button>
                 </Upload>
             );
         case 'date':
