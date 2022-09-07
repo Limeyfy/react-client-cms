@@ -1,5 +1,6 @@
-import { InputNumberProps, SelectProps, UploadFile, UploadProps } from "antd";
+import { ColProps, InputNumberProps, SelectProps, UploadFile, UploadProps } from "antd";
 import { Rule } from "antd/lib/form";
+import { FormLayout } from "antd/lib/form/Form";
 import { TextAreaProps } from "antd/lib/input";
 
 export interface IClientCms<T = any> {
@@ -10,6 +11,9 @@ export interface IClientCms<T = any> {
     loading?: boolean;
     name?: string;
     onFailed?: (error: any) => void;
+    labelCol?: ColProps;
+    wrapperCol?: ColProps;
+    layout?: FormLayout;
 }
 
 export interface IClientCmsField {

@@ -15,10 +15,13 @@ import { IClientCms, IClientCmsField } from './types';
 
 const ClientCms = <T,>({
     fields,
-    className,
     onSubmit,
     loading,
     onFailed,
+    labelCol,
+    wrapperCol,
+    layout,
+    className,
 }: IClientCms<T>) => {
     const [form] = Form.useForm();
     useEffect(() => {
@@ -43,13 +46,15 @@ const ClientCms = <T,>({
             name="basic"
             onFinish={handleSubmit}
             onFinishFailed={onFailed}
-            labelCol={{ span: 8 }}
+            layout={layout}
+            labelCol={labelCol}
+            wrapperCol={wrapperCol}
             initialValues={{ remember: true }}
-            wrapperCol={{ span: 16 }}
+            style={{ width: '100%' }}
             autoComplete="off"
-            className={className}
             form={form}
             onChange={(e) => console.log(e)}
+            className={className}
         >
             {fields.map((field, fieldIdx) => {
                 const { label, type, defaultValue, ...restField } = field;
