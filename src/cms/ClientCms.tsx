@@ -65,6 +65,7 @@ const ClientCms: React.FC<IClientCms> = <T,>({
             {fields.map((field, fieldIdx) =>
                 field.type.type === 'boolean' ? (
                     <Controller
+                        key={fieldIdx}
                         name={field.name}
                         defaultValue={getDefaultValue(field)}
                         control={control}
