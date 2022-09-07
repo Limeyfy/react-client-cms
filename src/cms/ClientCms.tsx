@@ -28,7 +28,7 @@ function getDefaultValue(field: IClientCmsField) {
     }
 }
 
-const ClientCms: React.FC<IClientCms> = <T,>({
+const ClientCms = <T,>({
     fields,
     className,
     onSubmit,

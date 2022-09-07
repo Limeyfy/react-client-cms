@@ -1,8 +1,8 @@
 import { InputNumberProps, SelectProps, UploadFile, UploadProps } from "antd";
 import { TextAreaProps } from "antd/lib/input";
 
-export interface IClientCms<T = unknown> {
-    onSubmit?: (data: T) => void | Promise<unknown>;
+export interface IClientCms<T = any> {
+    onSubmit?: (data: T) => void | Promise<any>;
     fields: IClientCmsField[];
     className?: string;
     submitButton?: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
