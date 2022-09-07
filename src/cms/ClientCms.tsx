@@ -95,7 +95,7 @@ const ClientCms: React.FC<IClientCms> = <T,>({
                             />
                         </svg>
                     )}
-                    {loading ? 'Loading...' : 'Button text'}
+                    {loading ? 'Loading...' : 'Submit'}
                 </button>
             </div>
         </form>
