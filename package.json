@@ -37,7 +37,7 @@
     "trailingComma": "es5",
     "tabWidth": 4
   },
-  "name": "@limeyfy/ui",
+  "name": "@limeyfy/react-client-cms",
   "author": "Martin Myhre",
   "private": false,
   "module": "dist/@limeyfy/ui.esm.js",
