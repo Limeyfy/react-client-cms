@@ -3,6 +3,7 @@ import React from 'react';
 import { IClientCms, IClientCmsField } from './types';
 import LabelContainer from './LabelContainer';
 import { classNames } from '../helpers/classHelper';
+import { unPascalCase } from '../helpers/textHelper';
 
 const ClientCms: React.FC<IClientCms> = <T,>({
     fields,
@@ -26,7 +27,7 @@ const ClientCms: React.FC<IClientCms> = <T,>({
             {fields.map((field, fieldIdx) => (
                 <LabelContainer
                     key={fieldIdx}
-                    label={field.label || field.name}
+                    label={field.label || unPascalCase(field.name)}
                 >
                     <Component field={field} />
                 </LabelContainer>

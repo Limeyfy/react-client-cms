@@ -8,7 +8,7 @@ export interface IClientCms<T = unknown> {
 
 export interface IClientCmsField {
     name: string;
-    label: string;
+    label?: string;
     type: IClientCmsDefaultType | IClientCmsTextAreaType;
 }
 
