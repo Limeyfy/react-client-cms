@@ -2,10 +2,27 @@ import { Input } from 'antd';
 import React from 'react';
 import { IClientCms, IClientCmsField } from './types';
 import LabelContainer from './LabelContainer';
+import { classNames } from '../helpers/classHelper';
 
-const ClientCms: React.FC<IClientCms> = <T,>({ fields }: IClientCms<T>) => {
+const ClientCms: React.FC<IClientCms> = <T,>({
+    fields,
+    className,
+    onSubmit,
+}: IClientCms<T>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        onSubmit ? onSubmit({} as T) : console.error('OnSubmit is not defined');
+    };
+
     return (
-        <div className="max-w-xl h-96 flex flex-col gap-y-4 w-full">
+        <form
+            onSubmit={handleSubmit}
+            className={classNames(
+                className
+                    ? className
+                    : 'max-w-xl h-96 flex flex-col gap-y-4 w-full'
+            )}
+        >
             {fields.map((field, fieldIdx) => (
                 <LabelContainer
                     key={fieldIdx}
@@ -14,7 +31,7 @@ const ClientCms: React.FC<IClientCms> = <T,>({ fields }: IClientCms<T>) => {
                     <Component field={field} />
                 </LabelContainer>
             ))}
-        </div>
+        </form>
     );
 };
 

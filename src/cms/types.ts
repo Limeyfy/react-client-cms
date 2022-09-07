@@ -3,6 +3,7 @@ import { TextAreaProps } from "antd/lib/input";
 export interface IClientCms<T = unknown> {
     onSubmit?: (data: T) => void;
     fields: IClientCmsField[];
+    className?: string;
 }
 
 export interface IClientCmsField {
