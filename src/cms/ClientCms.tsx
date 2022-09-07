@@ -1,10 +1,22 @@
 import { Input } from 'antd';
 import React, { useEffect } from 'react';
-import { useForm, UseFormRegisterReturn } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '../helpers/classHelper';
 import { unPascalCase } from '../helpers/textHelper';
 import LabelContainer from './LabelContainer';
 import { IClientCms, IClientCmsField } from './types';
+
+function getDefaultValue(field: IClientCmsField) {
+    const type = field.type.type;
+    switch (type) {
+        case 'date':
+            return new Date();
+        case 'boolean':
+            return false;
+        default:
+            return '';
+    }
+}
 
 const ClientCms: React.FC<IClientCms> = <T,>({
     fields,
@@ -12,7 +24,7 @@ const ClientCms: React.FC<IClientCms> = <T,>({
     onSubmit,
     loading,
 }: IClientCms<T>) => {
-    const { register, handleSubmit: reactHookSubmit } = useForm();
+    const { control, handleSubmit: reactHookSubmit } = useForm();
 
     useEffect(() => {
         const fieldNames = fields.map((field) => field.name);
@@ -45,7 +57,18 @@ const ClientCms: React.FC<IClientCms> = <T,>({
                     key={fieldIdx}
                     label={field.label || unPascalCase(field.name)}
                 >
-                    <Component register={register(field.name)} field={field} />
+                    <Controller
+                        name={field.name}
+                        defaultValue={getDefaultValue(field)}
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <Component
+                                value={value}
+                                onChange={onChange}
+                                field={field}
+                            />
+                        )}
+                    />
                 </LabelContainer>
             ))}
             <div className="flex justify-end">
@@ -81,18 +104,32 @@ const ClientCms: React.FC<IClientCms> = <T,>({
 
 const Component = ({
     field,
-    register,
+    value,
+    onChange: onChangeProp,
 }: {
     field: IClientCmsField;
-    register: UseFormRegisterReturn<any>;
+    value: any;
+    onChange: (value: any) => void;
 }) => {
     const type = field.type;
     const props = type.props ? type.props : ({} as any);
     switch (type.type) {
         case 'text':
-            return <Input.TextArea {...register} {...props} />;
+            return (
+                <Input.TextArea
+                    {...props}
+                    value={value}
+                    onChange={(e) => onChangeProp(e.target.value)}
+                />
+            );
         default:
-            return <Input {...register} className="w-full" />;
+            return (
+                <Input
+                    className="w-full"
+                    value={value}
+                    onChange={(e) => onChangeProp(e.target.value)}
+                />
+            );
     }
 };
 
