@@ -118,7 +118,11 @@ const Component = <T,>(
     switch (type.type) {
         case 'upload':
             return (
-                <Upload {...props} defaultFileList={type.initValue}>
+                <Upload
+                    {...props}
+                    defaultFileList={type.initValue}
+                    onChange={(e) => onChange(e.fileList)}
+                >
                     <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
                         Click to Upload
                     </Button>
@@ -141,6 +145,7 @@ const Component = <T,>(
                             className="h-4 w-4 rounded-sm border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                             defaultChecked={type.initValue}
                             {...props}
+                            onChange={(e) => onChange(e.target.checked)}
                         />
                     </div>
                     <div className="ml-3 text-sm">
