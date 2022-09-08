@@ -1,29 +1,30 @@
 import { UploadOutlined } from '@ant-design/icons';
-import {
-    Button,
-    Checkbox,
-    DatePicker,
-    Form,
-    Input,
-    InputNumber,
-    Select,
-    Upload,
-} from 'antd';
-import React, { useEffect } from 'react';
+import { Button, DatePicker, Input, InputNumber, Select, Upload } from 'antd';
+import React, { useEffect, useId } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { classNames } from '..';
+import { getDefaultValue } from '../helpers/data';
 import { unPascalCase } from '../helpers/textHelper';
+import LabelContainer from './LabelContainer';
 import { IClientCms, IClientCmsField } from './types';
 
 const ClientCms = <T,>({
     fields,
     onSubmit,
     loading,
-    onFailed,
-    labelCol,
-    wrapperCol,
-    layout,
     className,
 }: IClientCms<T>) => {
-    const [form] = Form.useForm();
+    const ID = useId();
+    const { control, handleSubmit: handleSubmitForm } = useForm<any, T>({
+        defaultValues: fields.reduce(
+            (acc, field) => ({
+                ...acc,
+                [field.name]:
+                    field.type.initValue ?? getDefaultValue(field.type),
+            }),
+            {}
+        ),
+    });
     useEffect(() => {
         const fieldNames = fields.map((field) => field.name);
         const uniqueFieldNames = new Set(fieldNames);
@@ -32,7 +33,7 @@ const ClientCms = <T,>({
         }
     }, [fields]);
 
-    const handleSubmit = (data: T) => {
+    const handleSubmit = (data: any) => {
         if (onSubmit === undefined) {
             console.error('OnSubmit is not defined');
             return;
@@ -42,41 +43,37 @@ const ClientCms = <T,>({
     };
 
     return (
-        <Form
-            name="basic"
-            onFinish={handleSubmit}
-            onFinishFailed={onFailed}
-            layout={layout}
-            labelCol={labelCol}
-            wrapperCol={wrapperCol}
-            initialValues={{ remember: true }}
-            style={{ width: '100%' }}
-            autoComplete="off"
-            form={form}
-            onChange={(e) => console.log(e)}
-            className={className}
+        <form
+            onSubmit={handleSubmitForm((data) => handleSubmit(data))}
+            className={classNames(
+                className ? className : 'flex flex-col gap-y-8 w-full'
+            )}
         >
-            {fields.map((field, fieldIdx) => {
-                const { label, type, defaultValue, ...restField } = field;
-                return field.type.type === 'boolean' ? (
-                    <Form.Item
+            {fields.map((field, fieldIdx) =>
+                field.type.type === 'boolean' ? (
+                    <Controller
                         key={fieldIdx}
-                        label={field.label || unPascalCase(field.name)}
-                        valuePropName="boolean"
-                        {...restField}
-                    >
-                        {Component(field)}
-                    </Form.Item>
+                        control={control}
+                        name={field.name}
+                        render={({ field: { onChange } }) =>
+                            Component(field, onChange, ID)
+                        }
+                    />
                 ) : (
-                    <Form.Item
+                    <LabelContainer
                         key={fieldIdx}
-                        label={field.label || unPascalCase(field.name)}
-                        {...restField}
+                        label={field.label ?? unPascalCase(field.name)}
                     >
-                        {Component(field)}
-                    </Form.Item>
-                );
-            })}
+                        <Controller
+                            control={control}
+                            name={field.name}
+                            render={({ field: { onChange } }) =>
+                                Component(field, onChange, ID)
+                            }
+                        />
+                    </LabelContainer>
+                )
+            )}
             <div className="flex justify-end">
                 <button
                     type="submit"
@@ -104,36 +101,61 @@ const ClientCms = <T,>({
                     {loading ? 'Loading...' : 'Submit'}
                 </button>
             </div>
-        </Form>
+        </form>
     );
 };
 
-const Component = (field: IClientCmsField) => {
+const Component = <T,>(
+    field: IClientCmsField<T>,
+    onChange: (value: any) => void,
+    id: string
+) => {
     const type = field.type;
-    const props = type.props ? type.props : ({} as any);
+    let props: any = type.props ? type.props : ({} as any);
+    props = { ...props, onChange };
+    props.id = props.id || id + '__' + field.name;
+
     switch (type.type) {
         case 'upload':
             return (
-                <Upload {...props}>
+                <Upload {...props} defaultFileList={type.initValue}>
                     <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
                         Click to Upload
                     </Button>
                 </Upload>
             );
         case 'date':
-            return <DatePicker style={{ width: '100%' }} {...props} />;
+            return (
+                <DatePicker
+                    defaultValue={type.initValue}
+                    style={{ width: '100%' }}
+                    {...props}
+                />
+            );
         case 'boolean': {
             return (
-                <Checkbox style={{ width: '100%' }}>
-                    {field.label || unPascalCase(field.name)}
-                </Checkbox>
+                <div className="relative flex items-start">
+                    <div className="flex h-5 items-center">
+                        <input
+                            type="checkbox"
+                            className="h-4 w-4 rounded-sm border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                            defaultChecked={type.initValue}
+                            {...props}
+                        />
+                    </div>
+                    <div className="ml-3 text-sm">
+                        <label htmlFor="candidates" className="text-gray-700">
+                            {field.label ?? unPascalCase(field.name)}
+                        </label>
+                    </div>
+                </div>
             );
         }
 
         case 'select':
             return (
                 <Select
-                    defaultValue={type.defaultValue || type.options[0]}
+                    defaultValue={type.initValue || type.options[0]}
                     style={{ width: '100%' }}
                     {...props}
                 >
@@ -154,11 +176,29 @@ const Component = (field: IClientCmsField) => {
                 </Select>
             );
         case 'number':
-            return <InputNumber style={{ width: '100%' }} {...props} />;
+            return (
+                <InputNumber
+                    defaultValue={type.initValue}
+                    style={{ width: '100%' }}
+                    {...props}
+                />
+            );
         case 'text':
-            return <Input.TextArea className="w-full" {...props} />;
+            return (
+                <Input.TextArea
+                    defaultValue={type.initValue}
+                    className="w-full"
+                    {...props}
+                />
+            );
         default:
-            return <Input className="w-full" {...props} />;
+            return (
+                <Input
+                    className="w-full"
+                    defaultValue={type.initValue}
+                    {...props}
+                />
+            );
     }
 };
 

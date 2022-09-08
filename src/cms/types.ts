@@ -1,26 +1,21 @@
-import { ColProps, InputNumberProps, SelectProps, UploadFile, UploadProps } from "antd";
+import { InputNumberProps, SelectProps, UploadFile, UploadProps } from "antd";
 import { Rule } from "antd/lib/form";
-import { FormLayout } from "antd/lib/form/Form";
-import { TextAreaProps } from "antd/lib/input";
+import { InputProps, TextAreaProps } from "antd/lib/input";
+import { Moment } from "moment";
 
-export interface IClientCms<T = any> {
-    onSubmit?: (data: T) => void | Promise<any>;
-    fields: IClientCmsField[];
+export interface IClientCms<T> {
+    onSubmit?: (data: T) => void;
+    fields: IClientCmsField<T>[];
     className?: string;
     submitButton?: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
     loading?: boolean;
     name?: string;
-    onFailed?: (error: any) => void;
-    labelCol?: ColProps;
-    wrapperCol?: ColProps;
-    layout?: FormLayout;
 }
 
-export interface IClientCmsField {
-    name: string;
+export interface IClientCmsField<T> {
+    name: Extract<keyof T, string>;
     label?: string;
-    type: IClientCmsDefaultType | IClientCmsTextAreaType | IClientCmsNumberType | IClientCmsSelectType | IClientCmsUploadType;
-    defaultValue?: any;
+    type: IClientCmsDefaultType | IClientCmsBooleanType | IClientCmsNumberType | IClientCmsSelectType | IClientCmsUploadType | IClientCmsDateType | IClientCmsTextAreaType;
     rules?: Rule[];
     required?: boolean;
     className?: string;
@@ -28,35 +23,67 @@ export interface IClientCmsField {
 }
 
 export type IClientCmsDefaultType = {
-    type: "string" | "boolean" | "date";
-    props?: React.DetailedHTMLProps<
-        React.InputHTMLAttributes<HTMLInputElement>,
-        HTMLInputElement
-    >
+    type: "string";
+    props?: ICCInputProps;
+    initValue?: string | boolean;
+    onChange?: (str: string) => any;
 }
+
+export type IClientCmsBooleanType = {
+    type: "boolean";
+    props?: ICCInputCheckboxProps;
+    initValue?: boolean;
+    onChange?: (bool: boolean) => any;
+}
+
+export type IClientCmsDateType = {
+    type: "date";
+    props?: ICCInputProps;
+    initValue?: Moment;
+    onChange?: (str: string) => any;
+}
+
 
 export type IClientCmsTextAreaType = {
     type: "text";
-    props?: TextAreaProps;
+    props?: ICCTextAreaProps;
+    initValue?: string;
+    onChange?: (str: string) => any;
 }
 
 export type IClientCmsNumberType = {
     type: "number";
-    props?: InputNumberProps;
+    initValue?: string;
+    props?: ICCInputNumberProps;
+    onChange?: (str: string | number) => any;
 }
 
 export type IClientCmsSelectType = {
     type: "select";
     options: any[];
-    onChange?: (value: any) => void;
-    defaultValue?: any;
+    onChange?: (value: any) => any;
+    initValue?: string | boolean;
     getIdentify?: (value: any) => string;
     getLabel?: (value: any) => string;
-    props?: SelectProps;
+    props?: ICCSelectProps;
 }
 
 export type IClientCmsUploadType = {
     type: "upload";
-    props?: UploadProps;
+    initValue?: {
+        uid: string;
+        name: string;
+        status: string;
+        url: string;
+    }[]
+    props?: ICCUploadProps;
     onChange?: (value: UploadFile<any>[]) => any;
 }
+
+// Types :O
+export type ICCSelectProps = Omit<SelectProps, "defaultValue" | "onChange">
+export type ICCTextAreaProps = Omit<TextAreaProps, "defaultValue" | "onChange">
+export type ICCInputNumberProps = Omit<InputNumberProps, "defaultValue" | "onChange">
+export type ICCUploadProps = Omit<UploadProps, "defaultFileList" | "onChange">
+export type ICCInputProps = Omit<InputProps, "defaultValue" | "onChange">
+export type ICCInputCheckboxProps = Omit<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "defaultValue" | "onChange" | "value">

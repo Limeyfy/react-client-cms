@@ -19,7 +19,7 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "build-tailwind": "NODE_ENV=production npx tailwindcss -o ./dist/main.css --minify",
-    "watch-tailwind": "tsdx watch --onSuccess yarn build-tailwind"
+    "watch": "tsdx watch --onSuccess yarn build-tailwind"
   },
   "peerDependencies": {
     "react": "^18.2.0",
