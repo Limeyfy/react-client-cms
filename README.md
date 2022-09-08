@@ -23,7 +23,6 @@ Types and interfaces: [./src/cms/types.ts](./src/cms/types.ts)
 ## Docs
 
 -   [File upload example](./docs/FileUploadExample.md)
--   Generic types example
 
 ## Example
 
