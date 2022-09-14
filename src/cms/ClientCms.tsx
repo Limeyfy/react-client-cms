@@ -1,10 +1,9 @@
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, DatePicker, Input, InputNumber, Select, Upload } from 'antd';
-import React, { useEffect, useId, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '..';
 import { getDefaultValue } from '../helpers/data';
 import { unPascalCase } from '../helpers/textHelper';
+import Input from './components/Input';
 import LabelContainer from './LabelContainer';
 import { IClientCms, IClientCmsField } from './types';
 
@@ -14,22 +13,19 @@ const ClientCms = <T,>({
     loading,
     className,
 }: IClientCms<T>) => {
-    const ID = useId();
     const form = useRef<HTMLFormElement>(null);
-    const {
-        control,
-        handleSubmit: handleSubmitForm,
-        formState: { errors },
-    } = useForm<any, T>({
+    const { handleSubmit: handleFormSubmit, control } = useForm<any, T>({
         defaultValues: fields.reduce(
             (acc, field) => ({
                 ...acc,
                 [field.name]:
-                    field.type.initValue ?? getDefaultValue(field.type),
+                    field.defaultValue ?? getDefaultValue(field.type ?? 'text'),
             }),
             {}
         ),
     });
+    const [errors, setErrors] = useState<any>(null);
+
     useEffect(() => {
         const fieldNames = fields.map((field) => field.name);
         const uniqueFieldNames = new Set(fieldNames);
@@ -38,14 +34,14 @@ const ClientCms = <T,>({
         }
     }, [fields]);
 
-    const handleSubmit = (data: any) => {
+    const handleErrors = (errors: any) => {
+        setErrors(errors);
+        console.log(errors);
+    };
+
+    const handleSubmit = (data: T) => {
         if (onSubmit === undefined) {
             console.error('OnSubmit is not defined');
-            return;
-        }
-        const hasErrors = Object.keys(errors).length > 0;
-        if (hasErrors) {
-            console.error('Form has errors');
             return;
         }
         onSubmit(data);
@@ -54,37 +50,33 @@ const ClientCms = <T,>({
 
     return (
         <form
-            onSubmit={handleSubmitForm((data) => handleSubmit(data))}
+            onSubmit={handleFormSubmit(
+                (data) => handleSubmit(data as T),
+                handleErrors
+            )}
             className={classNames(
-                className ? className : 'flex flex-col gap-y-8 w-full'
+                className
+                    ? className
+                    : 'flex flex-col max-w-2xl mx-auto gap-y-8 w-full'
             )}
             ref={form}
         >
-            {fields.map((field, fieldIdx) =>
-                field.type.type === 'boolean' ? (
+            {fields.map((field, fieldIdx) => (
+                <LabelContainer
+                    key={fieldIdx}
+                    label={field.label || unPascalCase(field.name)}
+                    error={errors?.[field.name]}
+                >
                     <Controller
-                        key={fieldIdx}
-                        control={control}
                         name={field.name}
-                        render={({ field: { onChange } }) =>
-                            Component(field, onChange, ID)
+                        control={control}
+                        rules={field.rules}
+                        render={({ field: { onChange, value } }) =>
+                            Component(field, onChange, value)
                         }
                     />
-                ) : (
-                    <LabelContainer
-                        key={fieldIdx}
-                        label={field.label ?? unPascalCase(field.name)}
-                    >
-                        <Controller
-                            control={control}
-                            name={field.name}
-                            render={({ field: { onChange } }) =>
-                                Component(field, onChange, ID)
-                            }
-                        />
-                    </LabelContainer>
-                )
-            )}
+                </LabelContainer>
+            ))}
             <div className="flex justify-end">
                 <button
                     type="submit"
@@ -119,100 +111,16 @@ const ClientCms = <T,>({
 const Component = <T,>(
     field: IClientCmsField<T>,
     onChange: (value: any) => void,
-    id: string
+    value: any
 ) => {
-    const type = field.type;
-    let props: any = type.props ? type.props : ({} as any);
-    props = { ...props, onChange };
-    props.id = props.id || id + '__' + field.name;
-
-    switch (type.type) {
-        case 'upload':
-            return (
-                <Upload
-                    {...props}
-                    defaultFileList={type.initValue}
-                    onChange={(e) => onChange(e.fileList)}
-                >
-                    <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
-                        Click to Upload
-                    </Button>
-                </Upload>
-            );
-        case 'date':
-            return (
-                <DatePicker
-                    defaultValue={type.initValue}
-                    style={{ width: '100%' }}
-                    {...props}
-                />
-            );
-        case 'boolean': {
-            return (
-                <div className="relative flex items-start">
-                    <div className="flex h-5 items-center">
-                        <input
-                            type="checkbox"
-                            className="h-4 w-4 rounded-sm border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-                            defaultChecked={type.initValue}
-                            {...props}
-                            onChange={(e) => onChange(e.target.checked)}
-                        />
-                    </div>
-                    <div className="ml-3 text-sm">
-                        <label htmlFor="candidates" className="text-gray-700">
-                            {field.label ?? unPascalCase(field.name)}
-                        </label>
-                    </div>
-                </div>
-            );
-        }
-
-        case 'select':
-            return (
-                <Select
-                    defaultValue={type.initValue || type.options[0]}
-                    style={{ width: '100%' }}
-                    {...props}
-                >
-                    {type.options.map((option, optionIdx) => (
-                        <Select.Option
-                            value={
-                                type.getIdentify
-                                    ? type.getIdentify(option)
-                                    : option
-                            }
-                            key={optionIdx}
-                        >
-                            {type.getLabel
-                                ? type.getLabel(option)
-                                : option.toString()}
-                        </Select.Option>
-                    ))}
-                </Select>
-            );
-        case 'number':
-            return (
-                <InputNumber
-                    defaultValue={type.initValue}
-                    style={{ width: '100%' }}
-                    {...props}
-                />
-            );
-        case 'text':
-            return (
-                <Input.TextArea
-                    defaultValue={type.initValue}
-                    className="w-full"
-                    {...props}
-                />
-            );
+    switch (field.type) {
         default:
             return (
                 <Input
-                    className="w-full"
-                    defaultValue={type.initValue}
-                    {...props}
+                    value={value ?? ''}
+                    type={field.type ?? 'text'}
+                    onChange={(e) => onChange(e.target.value)}
+                    {...field}
                 />
             );
     }
