@@ -9,7 +9,7 @@ export interface IClientCms<T> {
     name?: string;
 }
 
-export type IClientCmsField<T> = IClientCmsTextField<T> | IClientCmsSelectField<T>;
+export type IClientCmsField<T> = IClientCmsTextField<T> | IClientCmsSelectField<T> | IClientCmsFileField<T>;
 
 export type IClientCmsFieldDefaults<T> = {
     name: Extract<keyof T, string>;
@@ -23,8 +23,12 @@ export interface IClientCmsTextField<T = any> extends React.DetailedHTMLProps<
 
     name: Extract<keyof T, string>;
     label: string;
-    type?: "text" | "number" | "email" | "password" | "number" | "date" | "time" | "datetime-local" | "color" | "file";
+    type?: "text" | "number" | "email" | "password" | "number" | "date" | "time" | "datetime-local" | "color";
     rules?: ControllerProps["rules"];
+}
+
+export interface IClientCmsFileField<T = any> extends Omit<IClientCmsTextField<T>, "type"> {
+    type: "file";
 }
 
 export interface IClientCmsSelectField<T> {
@@ -35,6 +39,7 @@ export interface IClientCmsSelectField<T> {
     renderLabel?: (option: T) => React.ReactNode | string;
     renderValue?: (option: T) => string;
     onChange?: (option: T) => any;
+    value?: T;
     defaultValue?: T;
     rules?: ControllerProps["rules"];
 }

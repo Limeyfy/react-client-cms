@@ -117,7 +117,6 @@ const Component = <T,>(
             const { value: _, ...rest } = field;
             return (
                 <FileInput
-                    type={field.type ?? 'text'}
                     onChange={(e) => e.target.files && onChange(e.target.files)}
                     {...rest}
                     files={value}

@@ -6,7 +6,7 @@ const SelectComponent = <T,>(props: IClientCmsSelectField<T>) => {
     props.onChange && (extraProps.onChange = props.onChange);
     return (
         <select
-            className="w-full px-2 py-1 bg-white border-gray-300"
+            className="w-full px-2 py-1 bg-white border-gray-300 focus:outline-blue-600"
             {...extraProps}
         >
             {props.options.map((option, idx) => (
