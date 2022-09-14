@@ -1,5 +1,4 @@
 import { InputNumberProps, SelectProps, UploadFile, UploadProps } from "antd";
-import { Rule } from "antd/lib/form";
 import { InputProps, TextAreaProps } from "antd/lib/input";
 import { Moment } from "moment";
 
@@ -16,7 +15,6 @@ export interface IClientCmsField<T> {
     name: Extract<keyof T, string>;
     label?: string;
     type: IClientCmsDefaultType | IClientCmsBooleanType | IClientCmsNumberType | IClientCmsSelectType | IClientCmsUploadType | IClientCmsDateType | IClientCmsTextAreaType;
-    rules?: Rule[];
     required?: boolean;
     className?: string;
     id?: string;
@@ -40,7 +38,7 @@ export type IClientCmsDateType = {
     type: "date";
     props?: ICCInputProps;
     initValue?: Moment;
-    onChange?: (str: string) => any;
+    onChange?: (date: Moment) => any;
 }
 
 

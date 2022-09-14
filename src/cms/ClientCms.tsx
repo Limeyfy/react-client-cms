@@ -1,6 +1,6 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Input, InputNumber, Select, Upload } from 'antd';
-import React, { useEffect, useId } from 'react';
+import React, { useEffect, useId, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '..';
 import { getDefaultValue } from '../helpers/data';
@@ -15,7 +15,12 @@ const ClientCms = <T,>({
     className,
 }: IClientCms<T>) => {
     const ID = useId();
-    const { control, handleSubmit: handleSubmitForm } = useForm<any, T>({
+    const form = useRef<HTMLFormElement>(null);
+    const {
+        control,
+        handleSubmit: handleSubmitForm,
+        formState: { errors },
+    } = useForm<any, T>({
         defaultValues: fields.reduce(
             (acc, field) => ({
                 ...acc,
@@ -38,6 +43,11 @@ const ClientCms = <T,>({
             console.error('OnSubmit is not defined');
             return;
         }
+        const hasErrors = Object.keys(errors).length > 0;
+        if (hasErrors) {
+            console.error('Form has errors');
+            return;
+        }
         onSubmit(data);
         return;
     };
@@ -48,6 +58,7 @@ const ClientCms = <T,>({
             className={classNames(
                 className ? className : 'flex flex-col gap-y-8 w-full'
             )}
+            ref={form}
         >
             {fields.map((field, fieldIdx) =>
                 field.type.type === 'boolean' ? (
