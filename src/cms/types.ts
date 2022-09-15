@@ -1,5 +1,4 @@
 import { InputNumberProps, SelectProps, UploadFile, UploadProps } from "antd";
-import { Rule } from "antd/lib/form";
 import { InputProps, TextAreaProps } from "antd/lib/input";
 import { Moment } from "moment";
 
@@ -10,66 +9,85 @@ export interface IClientCms<T> {
     submitButton?: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
     loading?: boolean;
     name?: string;
+    noClassOverride?: boolean;
 }
 
-export interface IClientCmsField<T> {
+export type IClientCmsField<T> = IClientCmsDefaultType<T> | IClientCmsBooleanType<T> | IClientCmsNumberType<T> | IClientCmsSelectType<T> | IClientCmsUploadType<T> | IClientCmsDateType<T> | IClientCmsTextAreaType<T>;
+
+export type IClientCmsDefaultType<T> = {
     name: Extract<keyof T, string>;
     label?: string;
-    type: IClientCmsDefaultType | IClientCmsBooleanType | IClientCmsNumberType | IClientCmsSelectType | IClientCmsUploadType | IClientCmsDateType | IClientCmsTextAreaType;
-    rules?: Rule[];
-    required?: boolean;
+    type?: "string" | "color";
+    props?: ICCInputProps;
+    initValue?: string;
+    onChange?: (str: string) => any;
     className?: string;
     id?: string;
 }
 
-export type IClientCmsDefaultType = {
-    type: "string";
-    props?: ICCInputProps;
-    initValue?: string | boolean;
-    onChange?: (str: string) => any;
-}
-
-export type IClientCmsBooleanType = {
-    type: "boolean";
+export type IClientCmsBooleanType<T> = {
+    name: Extract<keyof T, string>;
+    label?: string;
+    type?: "boolean";
     props?: ICCInputCheckboxProps;
     initValue?: boolean;
     onChange?: (bool: boolean) => any;
+    className?: string;
+    id?: string;
 }
 
-export type IClientCmsDateType = {
-    type: "date";
+export type IClientCmsDateType<T> = {
+    name: Extract<keyof T, string>;
+    label?: string;
+    type?: "date";
     props?: ICCInputProps;
     initValue?: Moment;
     onChange?: (str: string) => any;
+    className?: string;
+    id?: string;
 }
 
 
-export type IClientCmsTextAreaType = {
-    type: "text";
+export type IClientCmsTextAreaType<T> = {
+    name: Extract<keyof T, string>;
+    label?: string;
+    type?: "text";
     props?: ICCTextAreaProps;
     initValue?: string;
     onChange?: (str: string) => any;
+    className?: string;
+    id?: string;
 }
 
-export type IClientCmsNumberType = {
-    type: "number";
+export type IClientCmsNumberType<T> = {
+    name: Extract<keyof T, string>;
+    label?: string;
+    type?: "number";
     initValue?: string;
     props?: ICCInputNumberProps;
     onChange?: (str: string | number) => any;
+    className?: string;
+    id?: string;
 }
 
-export type IClientCmsSelectType = {
-    type: "select";
+export type IClientCmsSelectType<T> = {
+    name: Extract<keyof T, string>;
+    label?: string;
+    type?: "select";
     options: any[];
     onChange?: (value: any) => any;
     initValue?: string | boolean;
     getIdentify?: (value: any) => string;
     getLabel?: (value: any) => string;
     props?: ICCSelectProps;
+    className?: string;
+    id?: string;
 }
 
-export type IClientCmsUploadType = {
-    type: "upload";
+export type IClientCmsUploadType<T> = {
+    name: Extract<keyof T, string>;
+    label?: string;
+    type?: "upload";
     initValue?: {
         uid: string;
         name: string;
@@ -78,6 +96,8 @@ export type IClientCmsUploadType = {
     }[]
     props?: ICCUploadProps;
     onChange?: (value: UploadFile<any>[]) => any;
+    className?: string;
+    id?: string;
 }
 
 // Types :O

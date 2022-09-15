@@ -13,6 +13,7 @@ const ClientCms = <T,>({
     onSubmit,
     loading,
     className,
+    noClassOverride = true,
 }: IClientCms<T>) => {
     const ID = useId();
     const { control, handleSubmit: handleSubmitForm } = useForm<any, T>({
@@ -20,7 +21,7 @@ const ClientCms = <T,>({
             (acc, field) => ({
                 ...acc,
                 [field.name]:
-                    field.type.initValue ?? getDefaultValue(field.type),
+                    field.initValue ?? getDefaultValue(field.type ?? 'string'),
             }),
             {}
         ),
@@ -46,11 +47,15 @@ const ClientCms = <T,>({
         <form
             onSubmit={handleSubmitForm((data) => handleSubmit(data))}
             className={classNames(
-                className ? className : 'flex flex-col gap-y-8 w-full'
+                className
+                    ? noClassOverride
+                        ? className
+                        : `flex flex-col gap-y-8 w-full ${className}`
+                    : 'flex flex-col gap-y-8 w-full'
             )}
         >
             {fields.map((field, fieldIdx) =>
-                field.type.type === 'boolean' ? (
+                field.type === 'boolean' ? (
                     <Controller
                         key={fieldIdx}
                         control={control}
@@ -110,17 +115,16 @@ const Component = <T,>(
     onChange: (value: any) => void,
     id: string
 ) => {
-    const type = field.type;
-    let props: any = type.props ? type.props : ({} as any);
+    let props: any = field.props ? field.props : ({} as any);
     props = { ...props, onChange };
     props.id = props.id || id + '__' + field.name;
 
-    switch (type.type) {
+    switch (field.type) {
         case 'upload':
             return (
                 <Upload
                     {...props}
-                    defaultFileList={type.initValue}
+                    defaultFileList={field.initValue}
                     onChange={(e) => onChange(e.fileList)}
                 >
                     <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
@@ -131,7 +135,7 @@ const Component = <T,>(
         case 'date':
             return (
                 <DatePicker
-                    defaultValue={type.initValue}
+                    defaultValue={field.initValue}
                     style={{ width: '100%' }}
                     {...props}
                 />
@@ -143,7 +147,7 @@ const Component = <T,>(
                         <input
                             type="checkbox"
                             className="h-4 w-4 rounded-sm border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-                            defaultChecked={type.initValue}
+                            defaultChecked={field.initValue}
                             {...props}
                             onChange={(e) => onChange(e.target.checked)}
                         />
@@ -160,21 +164,21 @@ const Component = <T,>(
         case 'select':
             return (
                 <Select
-                    defaultValue={type.initValue || type.options[0]}
+                    defaultValue={field.initValue || field.options[0]}
                     style={{ width: '100%' }}
                     {...props}
                 >
-                    {type.options.map((option, optionIdx) => (
+                    {field.options.map((option, optionIdx) => (
                         <Select.Option
                             value={
-                                type.getIdentify
-                                    ? type.getIdentify(option)
+                                field.getIdentify
+                                    ? field.getIdentify(option)
                                     : option
                             }
                             key={optionIdx}
                         >
-                            {type.getLabel
-                                ? type.getLabel(option)
+                            {field.getLabel
+                                ? field.getLabel(option)
                                 : option.toString()}
                         </Select.Option>
                     ))}
@@ -183,7 +187,7 @@ const Component = <T,>(
         case 'number':
             return (
                 <InputNumber
-                    defaultValue={type.initValue}
+                    defaultValue={field.initValue}
                     style={{ width: '100%' }}
                     {...props}
                 />
@@ -191,7 +195,7 @@ const Component = <T,>(
         case 'text':
             return (
                 <Input.TextArea
-                    defaultValue={type.initValue}
+                    defaultValue={field.initValue}
                     className="w-full"
                     {...props}
                 />
@@ -200,7 +204,7 @@ const Component = <T,>(
             return (
                 <Input
                     className="w-full"
-                    defaultValue={type.initValue}
+                    defaultValue={field.initValue}
                     {...props}
                 />
             );
