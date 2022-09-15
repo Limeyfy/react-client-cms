@@ -127,7 +127,11 @@ const Component = <T,>(
         case 'select': {
             const newOnChange = (e: any) =>
                 field.onChange ? onChange(field.onChange(e)) : onChange(e);
-            return SelectComponent<T>({ ...field, onChange: newOnChange });
+            return SelectComponent<T>({
+                ...field,
+                value,
+                onChange: newOnChange,
+            });
         }
         default:
             return (

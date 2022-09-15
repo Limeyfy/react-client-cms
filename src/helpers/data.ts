@@ -20,6 +20,7 @@ export function getDefaultValue(type: IClientCmsField<any>["type"]) {
             return "00:00";
         case "datetime-local":
             return toDateInputValue(new Date());
+        case "select": return null;
         default:
             return "";
     }

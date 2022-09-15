@@ -1,29 +1,105 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { IClientCmsSelectField } from '../types';
+import { Listbox, Transition } from '@headlessui/react';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { classNames } from '../..';
+import { unPascalCase } from '../../helpers/textHelper';
 
-const SelectComponent = <T,>(props: IClientCmsSelectField<T>) => {
+interface SelectComponentProps<T> extends IClientCmsSelectField<T> {
+    value: T | null;
+}
+
+const SelectComponent = <T,>(props: SelectComponentProps<T>) => {
     let extraProps: any = {};
     props.onChange && (extraProps.onChange = props.onChange);
     return (
-        <select
-            className="w-full px-2 py-1 bg-white border-gray-300"
-            {...extraProps}
+        <Listbox
+            value={props.value}
+            onChange={(e) => props.onChange && e && props.onChange(e)}
         >
-            {props.options.map((option, idx) => (
-                <option
-                    key={`option-${idx}`}
-                    value={
-                        props.renderValue
-                            ? props.renderValue(option)
-                            : (option as any)
-                    }
-                >
-                    {props.renderLabel
-                        ? props.renderLabel(option)
-                        : (option as any)}
-                </option>
-            ))}
-        </select>
+            {({ open }) => (
+                <>
+                    <Listbox.Label className="block text-sm font-medium text-gray-700">
+                        {props.label || unPascalCase(props.name)}
+                    </Listbox.Label>
+                    <div className="relative mt-1">
+                        <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm">
+                            <span className="block truncate">
+                                {props.value
+                                    ? props.renderLabel(props.value)
+                                    : 'None selected'}
+                            </span>
+                            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                <ChevronUpDownIcon
+                                    className="h-5 w-5 text-gray-400"
+                                    aria-hidden="true"
+                                />
+                            </span>
+                        </Listbox.Button>
+
+                        <Transition
+                            show={open}
+                            as={Fragment}
+                            leave="transition ease-in duration-100"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                        >
+                            <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                {props.options.map(
+                                    (option: T, index: number) => (
+                                        <Listbox.Option
+                                            key={index}
+                                            className={({ active }) =>
+                                                classNames(
+                                                    active
+                                                        ? 'text-white bg-blue-600'
+                                                        : 'text-gray-900',
+                                                    'relative cursor-default select-none py-2 pl-3 pr-9'
+                                                )
+                                            }
+                                            value={option}
+                                        >
+                                            {({ selected, active }) => (
+                                                <>
+                                                    <span
+                                                        className={classNames(
+                                                            selected
+                                                                ? 'font-semibold'
+                                                                : 'font-normal',
+                                                            'block truncate'
+                                                        )}
+                                                    >
+                                                        {props.renderLabel(
+                                                            option
+                                                        )}
+                                                    </span>
+
+                                                    {selected ? (
+                                                        <span
+                                                            className={classNames(
+                                                                active
+                                                                    ? 'text-white'
+                                                                    : 'text-blue-600',
+                                                                'absolute inset-y-0 right-0 flex items-center pr-4'
+                                                            )}
+                                                        >
+                                                            <CheckIcon
+                                                                className="h-5 w-5"
+                                                                aria-hidden="true"
+                                                            />
+                                                        </span>
+                                                    ) : null}
+                                                </>
+                                            )}
+                                        </Listbox.Option>
+                                    )
+                                )}
+                            </Listbox.Options>
+                        </Transition>
+                    </div>
+                </>
+            )}
+        </Listbox>
     );
 };
 

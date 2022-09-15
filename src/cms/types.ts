@@ -11,11 +11,6 @@ export interface IClientCms<T> {
 
 export type IClientCmsField<T> = IClientCmsTextField<T> | IClientCmsSelectField<T>;
 
-export type IClientCmsFieldDefaults<T> = {
-    name: Extract<keyof T, string>;
-    label: string;
-}
-
 export interface IClientCmsTextField<T = any> extends React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -32,8 +27,8 @@ export interface IClientCmsSelectField<T> {
     label: string;
     type: "select";
     options: T[];
-    renderLabel?: (option: T) => React.ReactNode | string;
-    renderValue?: (option: T) => string;
+    renderLabel: (option: T) => React.ReactNode | string;
+    renderValue: (option: T) => string;
     onChange?: (option: T) => any;
     defaultValue?: T;
     rules?: ControllerProps["rules"];
