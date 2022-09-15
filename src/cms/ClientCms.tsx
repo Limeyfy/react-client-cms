@@ -3,9 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '..';
 import { getDefaultValue } from '../helpers/data';
 import { unPascalCase } from '../helpers/textHelper';
-import FileInput from './components/FileInput';
 import Input from './components/Input';
-import SelectComponent from './components/SelectComponent';
 import LabelContainer from './LabelContainer';
 import { IClientCms, IClientCmsField } from './types';
 
@@ -36,7 +34,10 @@ const ClientCms = <T,>({
         }
     }, [fields]);
 
-    const handleErrors = (errors: any) => setErrors(errors);
+    const handleErrors = (errors: any) => {
+        setErrors(errors);
+        console.log(errors);
+    };
 
     const handleSubmit = (data: T) => {
         if (onSubmit === undefined) {
@@ -113,22 +114,6 @@ const Component = <T,>(
     value: any
 ) => {
     switch (field.type) {
-        case 'file':
-            const { value: _, ...rest } = field;
-            return (
-                <FileInput
-                    type={field.type ?? 'text'}
-                    onChange={(e) => e.target.files && onChange(e.target.files)}
-                    {...rest}
-                    files={value}
-                />
-            );
-
-        case 'select': {
-            const newOnChange = (e: any) =>
-                field.onChange ? onChange(field.onChange(e)) : onChange(e);
-            return SelectComponent<T>({ ...field, onChange: newOnChange });
-        }
         default:
             return (
                 <Input
