@@ -9,12 +9,11 @@ export interface IClientCmsFileProps
         'value'
     > {
     files: FileList | null;
+    beforeUpload?: (file: File) => boolean;
 }
 
 const File = (props: IClientCmsFileProps) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
-
-    console.log(props.files);
 
     const removeFile = (index: number) => {
         const newFiles = new DataTransfer();
@@ -35,7 +34,23 @@ const File = (props: IClientCmsFileProps) => {
 
     return (
         <div>
-            <input {...props} className="sr-only" type="file" ref={inputRef} />
+            <input
+                {...props}
+                onChange={(e) => {
+                    if (!e.target.files) return;
+                    if (props.beforeUpload) {
+                        const files = e.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            const file = files[i];
+                            if (!props.beforeUpload(file)) return;
+                        }
+                    }
+                    props.onChange?.(e);
+                }}
+                className="sr-only"
+                type="file"
+                ref={inputRef}
+            />
             <button
                 type="button"
                 onClick={() => inputRef.current?.click()}

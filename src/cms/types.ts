@@ -9,7 +9,7 @@ export interface IClientCms<T> {
     name?: string;
 }
 
-export type IClientCmsField<T> = IClientCmsTextField<T> | IClientCmsSelectField<T>;
+export type IClientCmsField<T> = IClientCmsTextField<T> | IClientCmsSelectField<T> | IClientCmsFileField<T>;
 
 export interface IClientCmsTextField<T = any> extends React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
@@ -18,7 +18,7 @@ export interface IClientCmsTextField<T = any> extends React.DetailedHTMLProps<
 
     name: Extract<keyof T, string>;
     label: string;
-    type?: "text" | "number" | "email" | "password" | "number" | "date" | "time" | "datetime-local" | "color" | "file";
+    type?: "text" | "number" | "email" | "password" | "number" | "date" | "time" | "datetime-local" | "color";
     rules?: ControllerProps["rules"];
 }
 
@@ -31,4 +31,16 @@ export interface IClientCmsSelectField<T> {
     onChange?: (option: T) => any;
     defaultValue?: T;
     rules?: ControllerProps["rules"];
+}
+
+export interface IClientCmsFileField<T = any> extends React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+> {
+
+    name: Extract<keyof T, string>;
+    label: string;
+    type: "file";
+    rules?: ControllerProps["rules"];
+    beforeUpload?: (file: File) => boolean;
 }
