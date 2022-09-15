@@ -1,7 +1,8 @@
 import moment from "moment";
+import { IClientCmsField } from "../cms";
 
-export function getDefaultValue(type: string) {
-    switch (type) {
+export function getDefaultValue(type: IClientCmsField<any>["type"]) {
+    switch (type.type) {
         case "string":
         case "text":
             return "";
@@ -11,6 +12,8 @@ export function getDefaultValue(type: string) {
             return "";
         case "date":
             return moment();
+        case "select":
+            return type.options[0];
         case "upload": return [];
         default:
             return "";
