@@ -64,14 +64,18 @@ const ClientCms = <T,>({
                 <LabelContainer
                     key={fieldIdx}
                     label={field.label || unPascalCase(field.name)}
-                    error={errors?.[field.name]}
                 >
                     <Controller
                         name={field.name}
                         control={control}
                         rules={field.rules}
                         render={({ field: { onChange, value } }) =>
-                            Component(field, onChange, value)
+                            Component(
+                                field,
+                                onChange,
+                                value,
+                                errors?.[field.name]
+                            )
                         }
                     />
                 </LabelContainer>
@@ -110,7 +114,8 @@ const ClientCms = <T,>({
 const Component = <T,>(
     field: IClientCmsField<T>,
     onChange: (value: any) => void,
-    value: any
+    value: any,
+    error?: string
 ) => {
     switch (field.type) {
         case 'file':
@@ -140,6 +145,7 @@ const Component = <T,>(
                     type={field.type ?? 'text'}
                     onChange={(e) => onChange(e.target.value)}
                     {...field}
+                    error={error}
                 />
             );
     }
