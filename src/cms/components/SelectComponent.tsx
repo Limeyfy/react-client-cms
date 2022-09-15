@@ -1,9 +1,8 @@
-import React, { Fragment } from 'react';
-import { IClientCmsSelectField } from '../types';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import React, { Fragment } from 'react';
 import { classNames } from '../..';
-import { unPascalCase } from '../../helpers/textHelper';
+import { IClientCmsSelectField } from '../types';
 
 interface SelectComponentProps<T> extends IClientCmsSelectField<T> {
     value: T | null;
@@ -15,13 +14,12 @@ const SelectComponent = <T,>(props: SelectComponentProps<T>) => {
     return (
         <Listbox
             value={props.value}
-            onChange={(e) => props.onChange && e && props.onChange(e)}
+            onChange={(e) => {
+                props.onChange && e && props.onChange(e);
+            }}
         >
             {({ open }) => (
                 <>
-                    <Listbox.Label className="block text-sm font-medium text-gray-700">
-                        {props.label || unPascalCase(props.name)}
-                    </Listbox.Label>
                     <div className="relative mt-1">
                         <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm">
                             <span className="block truncate">

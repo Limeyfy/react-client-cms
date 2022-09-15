@@ -28,7 +28,6 @@ export interface IClientCmsSelectField<T> {
     type: "select";
     options: T[];
     renderLabel: (option: T) => React.ReactNode | string;
-    renderValue: (option: T) => string;
     onChange?: (option: T) => any;
     defaultValue?: T;
     rules?: ControllerProps["rules"];
