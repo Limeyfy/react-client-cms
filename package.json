@@ -21,8 +21,9 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "build-tailwind": "NODE_ENV=production npx tailwindcss -o ./dist/tailwind.css --minify"
+    "build-storybook": "build-storybook && yarn build-storybook-tailwind",
+    "build-tailwind": "NODE_ENV=production npx tailwindcss -o ./dist/tailwind.css --minify",
+    "build-storybook-tailwind": "NODE_ENV=production npx tailwindcss -o ./storybook-static/tailwind.css --minify"
   },
   "peerDependencies": {
     "react": ">=16"
@@ -61,6 +62,7 @@
     "@storybook/addon-essentials": "^6.5.12",
     "@storybook/addon-info": "^5.3.21",
     "@storybook/addon-links": "^6.5.12",
+    "@storybook/addon-postcss": "^2.0.0",
     "@storybook/addons": "^6.5.12",
     "@storybook/react": "^6.5.12",
     "@tailwindcss/forms": "^0.5.3",
