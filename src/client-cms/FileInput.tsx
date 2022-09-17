@@ -53,7 +53,11 @@ const File = (props: IClientCmsFileProps) => {
         type="file"
         ref={inputRef}
       />
-      <Button type="button" onClick={() => inputRef.current?.click()}>
+      <Button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        variant="outline"
+      >
         Upload file
       </Button>
       {props.files && (
