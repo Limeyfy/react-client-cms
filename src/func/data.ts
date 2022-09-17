@@ -1,4 +1,4 @@
-import { IClientCmsField } from "../cms";
+import { IClientCmsField } from "../client-cms/types";
 
 function toDateInputValue(date: Date) {
     var local = new Date(date);
