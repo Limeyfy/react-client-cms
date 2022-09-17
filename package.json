@@ -13,6 +13,7 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "NODE_ENV=production tsdx build",
+    "build-size": "yarn build && yarn size",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
     "prepare": "tsdx build",
@@ -35,8 +36,8 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "react-client-cms",
-  "author": "Martin Myhre",
+  "name": "@limeyfy/react-client-cms",
+  "author": "Limeyfy",
   "module": "dist/react-client-cms.esm.js",
   "size-limit": [
     {
