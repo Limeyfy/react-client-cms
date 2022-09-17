@@ -1,5 +1,5 @@
 {
-  "version": "1.5.2",
+  "version": "1.5.3",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -8,15 +8,9 @@
   },
   "pkgRoot": "dist",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.js"
-    },
-    "./*": "./dist/*"
-  },
   "scripts": {
     "start": "tsdx watch",
     "build": "NODE_ENV=production tsdx build",
