@@ -6,3 +6,6 @@ dist
 storybook-static
 .expo
 web-build
+
+# Local Netlify folder
+.netlify
