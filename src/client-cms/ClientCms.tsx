@@ -11,7 +11,7 @@ import SelectComponent from './SelectComponent';
 import { IClientCms, IClientCmsField } from './types';
 import '../tailwind.css';
 
-const ClientCms = <T,>({
+const ClientCms = <T = any>({
   fields,
   onSubmit,
   loading,
