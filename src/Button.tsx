@@ -35,7 +35,12 @@ export const Button: FC<ButtonProps> = ({
   ...props
 }) => (
   <button
-    className={clsx('rounded', colors[variant], sizes[size], props.className)}
+    className={clsx(
+      'rounded bg-blue-500',
+      colors[variant],
+      sizes[size],
+      props.className
+    )}
     {...props}
   >
     {children || 'My button'}

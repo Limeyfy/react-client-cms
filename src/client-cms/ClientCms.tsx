@@ -9,6 +9,7 @@ import FileInput from './FileInput';
 import LabelContainer from './LabelContainer';
 import SelectComponent from './SelectComponent';
 import { IClientCms, IClientCmsField } from './types';
+import '../tailwind.css';
 
 const ClientCms = <T,>({
   fields,

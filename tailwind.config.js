@@ -1,9 +1,9 @@
 module.exports = {
-  purge: [
-    './src/components/**/*.tsx',
-    './src/components/**/*.styled.tsx',
+  mode: "jit",
+  content: [
+    './src/**/*.tsx',
+    './src/**/*.styled.tsx',
   ],
-  darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
   },

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Button } from '../Button';
+import '../tailwind.css';
 
 export interface IClientCmsFileProps
   extends Omit<
@@ -51,13 +53,9 @@ const File = (props: IClientCmsFileProps) => {
         type="file"
         ref={inputRef}
       />
-      <button
-        type="button"
-        onClick={() => inputRef.current?.click()}
-        className="bg-white px-3 py-1 border border-gray-300 rounded-sm"
-      >
+      <Button type="button" onClick={() => inputRef.current?.click()}>
         Upload file
-      </button>
+      </Button>
       {props.files && (
         <ul className="mt-2">
           {Array.from(props.files).map((file, fileIdx) => (
