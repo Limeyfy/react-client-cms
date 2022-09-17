@@ -1,12 +1,11 @@
 {
-  "version": "1.5.3",
+  "version": "1.5.4",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "engines": {
     "node": ">=10"
   },
-  "pkgRoot": "dist",
   "files": [
     "dist",
     "src"
@@ -18,7 +17,7 @@
     "build-static-webapp": "npx expo export:web",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "prepare": "yarn build",
     "size": "size-limit",
     "analyze": "size-limit --why",
     "storybook": "start-storybook -p 6006",
