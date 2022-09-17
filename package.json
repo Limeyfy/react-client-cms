@@ -14,6 +14,7 @@
     "start": "tsdx watch",
     "build": "NODE_ENV=production tsdx build",
     "build-size": "yarn build && yarn size",
+    "build-static-webapp":"expo build:web",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
     "prepare": "tsdx build",
