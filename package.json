@@ -1,14 +1,21 @@
 {
-  "version": "1.5.0",
+  "version": "1.5.2",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
   "engines": {
     "node": ">=10"
+  },
+  "pkgRoot": "dist",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    },
+    "./*": "./dist/*"
   },
   "scripts": {
     "start": "tsdx watch",
