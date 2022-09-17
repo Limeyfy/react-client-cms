@@ -1,6 +1,9 @@
 import React, { ButtonHTMLAttributes, FC } from 'react';
 import clsx from 'clsx';
 
+// ! Add the CSS import statement !
+import './tailwind.css';
+
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'ghost' | 'outline';
@@ -20,9 +23,6 @@ const sizes = {
   md: 'px-3 py-2 text-sm',
   lg: 'px-4 py-2 text-base',
 };
-
-// ! Add the CSS import statement !
-import './tailwind.css';
 
 // ...
 

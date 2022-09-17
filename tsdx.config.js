@@ -12,7 +12,7 @@ module.exports = {
                 inject: {
                     insertAt: 'top',
                 },
-            })
+            }),
         );
         return config;
     },

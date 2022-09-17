@@ -5,6 +5,7 @@ import { Button } from '../Button';
 import { TextInput } from '../components';
 import { getDefaultValue } from '../func/data';
 import { unPascalCase } from '../func/textHelper';
+import FileInput from './FileInput';
 import LabelContainer from './LabelContainer';
 import SelectComponent from './SelectComponent';
 import { IClientCms, IClientCmsField } from './types';
@@ -109,16 +110,16 @@ const Component = <T,>(
   error?: string
 ) => {
   switch (field.type) {
-    // case 'file':
-    //   const { value: _, ...rest } = field;
-    //   return (
-    //     <FileInput
-    //       onChange={e => e.target.files && onChange(e.target.files)}
-    //       {...rest}
-    //       files={value}
-    //       beforeUpload={field.beforeUpload}
-    //     />
-    //   );
+    case 'file':
+      const { value: _, ...rest } = field;
+      return (
+        <FileInput
+          onChange={e => e.target.files && onChange(e.target.files)}
+          {...rest}
+          files={value}
+          beforeUpload={field.beforeUpload}
+        />
+      );
 
     case 'select': {
       const newOnChange = (e: any) =>

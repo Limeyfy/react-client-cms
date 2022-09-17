@@ -55,5 +55,9 @@ Default.args = {
       renderLabel: (option: any) => option.label,
       nullValueText: 'Select an option',
     },
+    {
+      name: 'image',
+      type: 'file',
+    },
   ],
 };
