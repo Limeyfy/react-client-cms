@@ -1,13 +1,13 @@
 import { Listbox, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import React, { Fragment } from 'react';
-import { IClientCmsSelectField } from './types';
+import { IClientCmsSelectField } from '../client-cms';
 
 interface SelectComponentProps<T> extends IClientCmsSelectField<T> {
-  value: T | null;
+  value?: T | null;
 }
 
-const SelectComponent = <T,>(props: SelectComponentProps<T>) => {
+export const SelectComponent = <T,>(props: SelectComponentProps<T>) => {
   let extraProps: any = {};
   props.onChange && (extraProps.onChange = props.onChange);
   return (
@@ -110,5 +110,3 @@ const SelectComponent = <T,>(props: SelectComponentProps<T>) => {
     </Listbox>
   );
 };
-
-export default SelectComponent;

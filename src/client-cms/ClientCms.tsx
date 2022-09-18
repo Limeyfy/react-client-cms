@@ -7,7 +7,7 @@ import { getDefaultValue } from '../func/data';
 import { unPascalCase } from '../func/textHelper';
 import {FileInput} from '../components';
 import LabelContainer from './LabelContainer';
-import SelectComponent from './SelectComponent';
+import {SelectComponent} from '../components';
 import { IClientCms, IClientCmsField } from './types';
 import '../tailwind.css';
 import { CheckBox } from '../components';
