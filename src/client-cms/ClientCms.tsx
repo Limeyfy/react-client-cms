@@ -1,37 +1,27 @@
 import clsx from 'clsx';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Button } from '../Button';
-import { TextInput } from '../components';
-import { getDefaultValue } from '../func/data';
+import { getDefaultValueForFields } from '../func/data';
 import { unPascalCase } from '../func/textHelper';
-import {FileInput} from '../components';
-import LabelContainer from './LabelContainer';
-import {SelectComponent} from '../components';
-import { IClientCms, IClientCmsField } from './types';
 import '../tailwind.css';
-import { CheckBox } from '../components';
+import LabelContainer from './LabelContainer';
+import { IClientCms } from './types';
+import { Component } from './CmsComponent';
 
-const ClientCms = <T = any>({
+export const ClientCms = <T,>({
   fields,
   onSubmit,
   loading,
   className,
 }: IClientCms<T>) => {
-  const form = useRef<HTMLFormElement>(null);
+  const form = React.useRef<HTMLFormElement>(null);
   const { handleSubmit: handleFormSubmit, control } = useForm<any, T>({
-    defaultValues: fields.reduce(
-      (acc, field) => ({
-        ...acc,
-        [field.name]:
-          field.defaultValue ?? getDefaultValue(field.type ?? 'text'),
-      }),
-      {}
-    ),
+    defaultValues: getDefaultValueForFields(fields),
   });
-  const [errors, setErrors] = useState<any>(null);
+  const [errors, setErrors] = React.useState<any>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fieldNames = fields.map(field => field.name);
     const uniqueFieldNames = new Set(fieldNames);
     if (fieldNames.length !== uniqueFieldNames.size) {
@@ -58,27 +48,46 @@ const ClientCms = <T = any>({
       )}
       ref={form}
     >
-      {fields.map((field, fieldIdx) => (
-        <LabelContainer
-          key={fieldIdx}
-          label={field.label || unPascalCase(field.name)}
-          show={field.type === 'boolean' ? false : true}
-        >
-          <Controller
-            name={field.name}
-            control={control}
-            rules={field.rules}
-            render={({ field: { onChange, value } }) =>
-              Component(
-                field,
-                onChange,
-                value,
-                errors?.[field.name] && (errors?.[field.name] as any).type
-              )
-            }
-          />
-        </LabelContainer>
-      ))}
+      {fields.map((field, fieldIdx) =>
+        field.type === 'object' ? (
+          <div key={fieldIdx} className="border-l border-gray-300">
+            <h2 className="text-xl font-semibold">{field.label}</h2>
+            <div className="ml-5">
+              {field.fields.map((f, fIdx) => (
+                <Controller
+                  key={fIdx}
+                  name={`${field.name}_${f.name}`}
+                  control={control}
+                  rules={(field as any).rules ?? undefined}
+                  render={({ field: { onChange, value } }) =>
+                    Component(f, onChange, value)
+                  }
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <LabelContainer
+            key={fieldIdx}
+            label={field.label || unPascalCase(field.name)}
+            show={field.type === 'boolean' ? false : true}
+          >
+            <Controller
+              name={field.name}
+              control={control}
+              rules={(field as any).rules ?? undefined}
+              render={({ field: { onChange, value } }) =>
+                Component(
+                  field,
+                  onChange,
+                  value,
+                  errors?.[field.name] && (errors?.[field.name] as any).type
+                )
+              }
+            />
+          </LabelContainer>
+        )
+      )}
       <div className="flex justify-end">
         <Button type="submit" disabled={loading}>
           {loading && (
@@ -105,80 +114,3 @@ const ClientCms = <T = any>({
     </form>
   );
 };
-
-const Component = <T,>(
-  field: IClientCmsField<T>,
-  onChange: (value: any) => void,
-  value: any,
-  error?: string
-) => {
-  switch (field.type) {
-    case 'file':
-      const { value: _, ...rest } = field;
-      return (
-        <FileInput
-          onChange={e => e.target.files && onChange(e.target.files)}
-          {...rest}
-          files={value}
-          beforeUpload={field.beforeUpload}
-        />
-      );
-
-    case 'select': {
-      const newOnChange = (e: any) =>
-        field.onChange ? onChange(field.onChange(e)) : onChange(e);
-      return SelectComponent<T>({
-        ...field,
-        value,
-        onChange: newOnChange,
-      });
-    }
-    case 'number':
-      return (
-        <TextInput
-          error={error}
-          {...(field as any)}
-          value={value.toString()}
-          onChange={e =>
-            field.onChange
-              ? onChange(
-                  (field.onChange as (e: any) => any)(parseInt(e.target.value))
-                )
-              : onChange(parseInt(e.target.value))
-          }
-        />
-      );
-    case 'boolean': 
-          return (
-            <CheckBox 
-              error={error}
-              {...(field as any)}
-              value={value}
-              label={field.label || unPascalCase(field.name)}
-              onChange={e =>
-                field.onChange
-                  ? onChange(
-                      (field.onChange as (e: any) => any)(e.target.checked)
-                    )
-                  : onChange(e.target.checked)
-              }
-            />
-          )
-    default: {
-      return (
-        <TextInput
-          error={error}
-          {...(field as any)}
-          value={value}
-          onChange={e =>
-            field.onChange
-              ? onChange((field.onChange as (e: any) => any)(e))
-              : onChange(e)
-          }
-        />
-      );
-    }
-  }
-};
-
-export default ClientCms;

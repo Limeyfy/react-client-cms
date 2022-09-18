@@ -1,4 +1,4 @@
-import ClientCms from './ClientCms';
+import { ClientCms } from './ClientCms';
 import LabelContainer from './LabelContainer';
 
 export * from './types';

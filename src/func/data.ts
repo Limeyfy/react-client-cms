@@ -1,4 +1,4 @@
-import { IClientCmsField } from '../client-cms/types';
+import { IClientCmsField, IClientCmsObjectField } from '../client-cms/types';
 
 function toDateInputValue(date: Date) {
   var local = new Date(date);
@@ -25,4 +25,29 @@ export function getDefaultValue(type: IClientCmsField<any>['type']) {
     default:
       return '';
   }
+}
+
+export function getDefaultValueForObject(
+  field: IClientCmsObjectField<any>,
+  defaultValue: any = {},
+) {
+  if (field.type === 'object') {
+    field.fields.forEach((f) => {
+      defaultValue[f.name] = f.defaultValue ?? getDefaultValue(f.type);
+    });
+  }
+  return defaultValue;
+}
+
+export function getDefaultValueForFields(fields: IClientCmsField<any>[]) {
+  return fields.reduce((acc: any, field) => {
+    if (field.type === 'object') {
+      field.fields.forEach((f) => {
+        acc[`${field.name}_${f.name}`] = f.defaultValue ?? getDefaultValue(f.type);
+      });
+    } else {
+      acc[field.name] = field.defaultValue ?? getDefaultValue(field.type);
+    }
+    return acc;
+  }, {});
 }

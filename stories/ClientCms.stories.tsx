@@ -25,7 +25,7 @@ const Template: Story<IClientCms<any>> = args => <ClientCms<any> {...args} />;
 // https://storybook.js.org/docs/react/workflows/unit-testing
 export const Default = Template.bind({});
 
-Default.args = {
+const props: IClientCms<any> = {
   fields: [
     {
       name: 'title',
@@ -63,5 +63,24 @@ Default.args = {
       name: 'checkbox',
       type: 'boolean',
     },
+    {
+      name: 'myCoolObject',
+      type: 'object',
+      fields: [
+        {
+          name: 'subTitle',
+          defaultValue: "I'm a default value",
+        },
+        {
+          name: 'total',
+          type: 'number',
+        },
+      ],
+    },
+    {
+      name: 'subTitle',
+    },
   ],
 };
+
+Default.args = props;

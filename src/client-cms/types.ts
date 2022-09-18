@@ -16,6 +16,12 @@ export interface IClientCms<T> {
 export type IClientCmsField<T> =
   | IClientCmsTextField<T>
   | IClientCmsSelectField<T>
+  | IClientCmsFileField<T>
+  | IClientCmsObjectField<T>;
+
+export type IClientCmsSimpleField<T> =
+  | IClientCmsTextField<T>
+  | IClientCmsSelectField<T>
   | IClientCmsFileField<T>;
 
 export interface IClientCmsTextField<T = any>
@@ -61,4 +67,11 @@ export interface IClientCmsFileField<T = any>
   type: 'file';
   rules?: ControllerProps['rules'];
   beforeUpload?: (file: File) => boolean;
+}
+
+export interface IClientCmsObjectField<T = any> {
+  name: Extract<keyof T, string>;
+  label?: string;
+  type: 'object';
+  fields: IClientCmsSimpleField<T>[];
 }
