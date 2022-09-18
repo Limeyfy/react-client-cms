@@ -14,7 +14,7 @@ export interface IClientCmsFileProps
   beforeUpload?: (file: File) => boolean;
 }
 
-const File = (props: IClientCmsFileProps) => {
+export const FileInput = (props: IClientCmsFileProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const removeFile = (index: number) => {
@@ -82,5 +82,3 @@ const File = (props: IClientCmsFileProps) => {
     </div>
   );
 };
-
-export default File;

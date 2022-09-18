@@ -5,7 +5,7 @@ import { Button } from '../Button';
 import { TextInput } from '../components';
 import { getDefaultValue } from '../func/data';
 import { unPascalCase } from '../func/textHelper';
-import FileInput from './FileInput';
+import {FileInput} from '../components';
 import LabelContainer from './LabelContainer';
 import SelectComponent from './SelectComponent';
 import { IClientCms, IClientCmsField } from './types';
