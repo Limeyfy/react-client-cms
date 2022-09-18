@@ -34,10 +34,12 @@ export const FileInput = (props: IClientCmsFileProps) => {
     } as any);
   };
 
+  const { beforeUpload, files, onChange, ...rest } = props;
+
   return (
     <div>
       <input
-        {...props}
+        {...rest}
         onChange={e => {
           if (!e.target.files) return;
           if (props.beforeUpload) {

@@ -51,3 +51,21 @@ export function getDefaultValueForFields(fields: IClientCmsField<any>[]) {
     return acc;
   }, {});
 }
+
+export function formatDataOnSubmit(data: any, fields: IClientCmsField<any>[]) {
+  let formattedData: any = {}
+  for (let i = 0; i < fields.length; i++) {
+    const field = fields[i]
+    if (field.type === 'object') {
+      field.fields.forEach((f) => {
+        if (!formattedData[field.name]) {
+          formattedData[field.name] = {}
+        }
+        formattedData[field.name][f.name] = data[`${field.name}_${f.name}`]
+      });
+    } else {
+      formattedData[field.name] = data[field.name]
+    }
+  }
+  return formattedData;
+}

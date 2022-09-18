@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Button } from '../Button';
-import { getDefaultValueForFields } from '../func/data';
+import { formatDataOnSubmit, getDefaultValueForFields } from '../func/data';
 import { unPascalCase } from '../func/textHelper';
 import '../tailwind.css';
 import LabelContainer from './LabelContainer';
@@ -36,7 +36,9 @@ export const ClientCms = <T,>({
       console.error('OnSubmit is not defined');
       return;
     }
-    onSubmit(data);
+    const formattedData = formatDataOnSubmit(data, fields);
+    console.log(formattedData);
+    onSubmit(formattedData);
     return;
   };
 
@@ -51,7 +53,9 @@ export const ClientCms = <T,>({
       {fields.map((field, fieldIdx) =>
         field.type === 'object' ? (
           <div key={fieldIdx} className="border-l border-gray-300">
-            <h2 className="text-xl font-semibold">{field.label}</h2>
+            <h2 className="text-xl font-semibold">
+              {field.label || unPascalCase(field.name)}
+            </h2>
             <div className="ml-5">
               {field.fields.map((f, fIdx) => (
                 <Controller
