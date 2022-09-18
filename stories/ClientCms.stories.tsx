@@ -59,5 +59,9 @@ Default.args = {
       name: 'image',
       type: 'file',
     },
+    {
+      name: 'checkbox',
+      type: 'boolean',
+    },
   ],
 };

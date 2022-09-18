@@ -26,15 +26,16 @@ export interface IClientCmsTextField<T = any>
   name: Extract<keyof T, string>;
   label?: string;
   type?:
-    | 'text'
-    | 'number'
-    | 'email'
-    | 'password'
-    | 'number'
-    | 'date'
-    | 'time'
-    | 'datetime-local'
-    | 'color';
+  | 'text'
+  | 'number'
+  | 'email'
+  | 'password'
+  | 'number'
+  | 'date'
+  | 'time'
+  | 'datetime-local'
+  | 'color'
+  | 'boolean';
   rules?: ControllerProps['rules'];
 }
 

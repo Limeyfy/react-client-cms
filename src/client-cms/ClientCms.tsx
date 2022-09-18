@@ -10,6 +10,7 @@ import LabelContainer from './LabelContainer';
 import SelectComponent from './SelectComponent';
 import { IClientCms, IClientCmsField } from './types';
 import '../tailwind.css';
+import { CheckBox } from '../components';
 
 const ClientCms = <T = any>({
   fields,
@@ -61,6 +62,7 @@ const ClientCms = <T = any>({
         <LabelContainer
           key={fieldIdx}
           label={field.label || unPascalCase(field.name)}
+          show={field.type === 'boolean' ? false : true}
         >
           <Controller
             name={field.name}
@@ -146,6 +148,22 @@ const Component = <T,>(
           }
         />
       );
+    case 'boolean': 
+          return (
+            <CheckBox 
+              error={error}
+              {...(field as any)}
+              value={value}
+              label={field.label || unPascalCase(field.name)}
+              onChange={e =>
+                field.onChange
+                  ? onChange(
+                      (field.onChange as (e: any) => any)(e.target.checked)
+                    )
+                  : onChange(e.target.checked)
+              }
+            />
+          )
     default: {
       return (
         <TextInput
