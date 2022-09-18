@@ -3,6 +3,8 @@ import { Meta, Story } from '@storybook/react';
 import {
   TextInput as TextInputComponent,
   IClientCmsInputPropsDetailed,
+  CheckBoxProps,
+  CheckBox,
 } from '../src';
 import {
   ErrorMessage as ErrorMessageComponent,
@@ -33,10 +35,16 @@ const StoryErrorMessage: Story<ErrorMessageProps> = args => (
   <ErrorMessageComponent {...args} />
 );
 
+const SBCheckbox: Story<CheckBoxProps> = args => <CheckBox {...args} />;
+
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
 // https://storybook.js.org/docs/react/workflows/unit-testing
 export const TextInput = StoryTextInput.bind({});
 export const ErrorMessage = StoryErrorMessage.bind({});
+export const Checkbox = SBCheckbox.bind({});
 
 TextInput.args = {};
 ErrorMessage.args = {};
+Checkbox.args = {
+  label: 'Checkbox',
+};

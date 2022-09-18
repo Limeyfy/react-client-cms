@@ -35,13 +35,13 @@ export const Button: FC<ButtonProps> = ({
   ...props
 }) => (
   <button
+    {...props}
     className={clsx(
       'rounded bg-blue-500',
       colors[variant],
       sizes[size],
       props.className
     )}
-    {...props}
   >
     {children || 'My button'}
   </button>
