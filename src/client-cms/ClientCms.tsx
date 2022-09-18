@@ -52,11 +52,11 @@ export const ClientCms = <T,>({
     >
       {fields.map((field, fieldIdx) =>
         field.type === 'object' ? (
-          <div key={fieldIdx} className="border-l border-gray-300">
-            <h2 className="text-xl font-semibold">
+          <div key={fieldIdx} className="border-l border-gray-300 py-3">
+            <h2 className="text-lg font-semibold ml-5  mb-3">
               {field.label || unPascalCase(field.name)}
             </h2>
-            <div className="ml-5">
+            <div className="ml-5 flex flex-col gap-y-3">
               {field.fields.map((f, fIdx) => (
                 <Controller
                   key={fIdx}
