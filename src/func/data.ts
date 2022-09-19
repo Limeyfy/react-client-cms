@@ -8,8 +8,6 @@ function toDateInputValue(date: Date) {
 
 export function getDefaultValue(type: IClientCmsField<any>['type']) {
   switch (type) {
-    case 'text':
-      return '';
     case 'number':
       return 0;
     case 'file':

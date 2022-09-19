@@ -14,18 +14,20 @@ export interface IClientCms<T> {
 }
 
 export type IClientCmsField<T> =
-  | IClientCmsTextField<T>
+  | IClientCmsStringField<T>
   | IClientCmsSelectField<T>
   | IClientCmsFileField<T>
   | IClientCmsObjectField<T>
-  | IClientCmsArrayField<T>;
+  | IClientCmsArrayField<T>
+  | IClientCmsTextAreaField<T>;
 
 export type IClientCmsSimpleField<T> =
-  | IClientCmsTextField<T>
+  | IClientCmsStringField<T>
   | IClientCmsSelectField<T>
-  | IClientCmsFileField<T>;
+  | IClientCmsFileField<T>
+  | IClientCmsTextAreaField<T>;
 
-export interface IClientCmsTextField<T = any>
+export interface IClientCmsStringField<T = any>
   extends React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -33,7 +35,7 @@ export interface IClientCmsTextField<T = any>
   name: Extract<keyof T, string>;
   label?: string;
   type?:
-  | 'text'
+  | 'string'
   | 'number'
   | 'email'
   | 'password'
@@ -56,6 +58,17 @@ export interface IClientCmsSelectField<T> {
   defaultValue?: T;
   rules?: ControllerProps['rules'];
   nullValueText?: string;
+}
+
+export interface IClientCmsTextAreaField<T = any>
+  extends React.DetailedHTMLProps<
+    React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+    HTMLTextAreaElement
+  > {
+  name: Extract<keyof T, string>;
+  label?: string;
+  type: "text";
+  rules?: ControllerProps['rules'];
 }
 
 export interface IClientCmsFileField<T = any>

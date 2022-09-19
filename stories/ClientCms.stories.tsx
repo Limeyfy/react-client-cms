@@ -31,6 +31,10 @@ const props: IClientCms<any> = {
       name: 'title',
     },
     {
+      name: 'description',
+      type: 'text',
+    },
+    {
       name: 'total',
       type: 'number',
       rules: {
