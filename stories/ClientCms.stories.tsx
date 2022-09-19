@@ -81,7 +81,7 @@ const props: IClientCms<any> = {
       name: 'myArray',
       type: 'array',
       arrayType: 'string',
-      defaultValue: ['one', 'two'],
+      defaultValue: [5032, 2012],
     },
   ],
 };
