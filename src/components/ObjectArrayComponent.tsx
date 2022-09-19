@@ -75,15 +75,19 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
         </div>
       ))}
       <div className="px-4 py-3 flex flex-col gap-y-2">
-        {fields.map((f, fIdx) => (
-          <LabelContainer key={fIdx} label={f.label ?? unPascalCase(f.name)}>
-            {Component(
-              { ...f, name: `${f.name}-f-object-array-${name}-${fIdx}` },
-              val => setItem((prev: any) => ({ ...prev, [f.name]: val })),
-              item[f.name]
-            )}
-          </LabelContainer>
-        ))}
+        {fields.map((f, fIdx) => {
+          let fField = f;
+          fField.name = `${name}.${f.name}.${fIdx}`;
+          return (
+            <LabelContainer key={fIdx} label={f.label ?? unPascalCase(f.name)}>
+              {Component(
+                fField,
+                val => setItem((prev: any) => ({ ...prev, [f.name]: val })),
+                item[f.name]
+              )}
+            </LabelContainer>
+          );
+        })}
         <Button variant="secondary" onClick={handleAdd}>
           Add Item
         </Button>
