@@ -22,6 +22,8 @@ export function getDefaultValue(type: IClientCmsField<any>['type']) {
       return toDateInputValue(new Date());
     case 'select':
       return null;
+    case 'array':
+      return [];
     default:
       return '';
   }

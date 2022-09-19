@@ -78,7 +78,10 @@ const props: IClientCms<any> = {
       ],
     },
     {
-      name: 'subTitle',
+      name: 'myArray',
+      type: 'array',
+      arrayType: 'string',
+      defaultValue: ['one', 'two'],
     },
   ],
 };

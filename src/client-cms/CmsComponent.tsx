@@ -1,10 +1,11 @@
 import React from 'react';
 import { CheckBox, FileInput, SelectComponent, TextInput } from '../components';
+import ArrayComponent from '../components/ArrayComponent';
 import { unPascalCase } from '../func/textHelper';
-import { IClientCmsSimpleField } from './types';
+import { IClientCmsArrayField, IClientCmsSimpleField } from './types';
 
 export const Component = <T,>(
-  field: IClientCmsSimpleField<T>,
+  field: IClientCmsSimpleField<T> | IClientCmsArrayField<T>,
   onChange: (value: any) => void,
   value: any,
   error?: string
@@ -60,6 +61,8 @@ export const Component = <T,>(
           }
         />
       );
+    case 'array':
+      return <ArrayComponent {...field} value={value} onChange={onChange} />;
     default: {
       return (
         <TextInput

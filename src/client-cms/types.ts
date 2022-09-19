@@ -17,7 +17,8 @@ export type IClientCmsField<T> =
   | IClientCmsTextField<T>
   | IClientCmsSelectField<T>
   | IClientCmsFileField<T>
-  | IClientCmsObjectField<T>;
+  | IClientCmsObjectField<T>
+  | IClientCmsArrayField<T>;
 
 export type IClientCmsSimpleField<T> =
   | IClientCmsTextField<T>
@@ -74,4 +75,23 @@ export interface IClientCmsObjectField<T = any> {
   label?: string;
   type: 'object';
   fields: IClientCmsSimpleField<T>[];
+}
+
+export interface IClientCmsArrayField<T = any> {
+  name: Extract<keyof T, string>;
+  label?: string;
+  type: 'array';
+  arrayType: 'string' | 'number';
+  defaultValue?: (string | number)[];
+  onChange?: (data: string | number) => string | number;
+}
+
+export interface IClientCmsObjectArrayField<T = any> {
+  name: Extract<keyof T, string>;
+  label?: string;
+  type: 'object-array';
+  fields: IClientCmsSimpleField<T>[];
+  defaultValue?: T[];
+  onChange?: (data: T) => T;
+  renderLabel?: (data: T) => React.ReactNode | string;
 }
