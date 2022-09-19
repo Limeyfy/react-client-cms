@@ -1,13 +1,12 @@
 import clsx from 'clsx';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Button } from '../Button';
 import { formatDataOnSubmit, getDefaultValueForFields } from '../func/data';
 import { unPascalCase } from '../func/textHelper';
 import '../tailwind.css';
+import { Component } from './CmsComponent';
 import LabelContainer from './LabelContainer';
 import { IClientCms } from './types';
-import { Component } from './CmsComponent';
 
 export const ClientCms = <T,>({
   fields,
@@ -74,7 +73,7 @@ export const ClientCms = <T,>({
         ) : (
           <LabelContainer
             key={fieldIdx}
-            label={field.label || unPascalCase(field.name)}
+            label={field.label ?? unPascalCase(field.name)}
             show={field.type === 'boolean' ? false : true}
           >
             <Controller
@@ -94,7 +93,7 @@ export const ClientCms = <T,>({
         )
       )}
       <div className="flex justify-end">
-        <Button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="submitButton">
           {loading && (
             <svg
               role="status"
@@ -114,7 +113,7 @@ export const ClientCms = <T,>({
             </svg>
           )}
           {loading ? 'Loading...' : 'Submit'}
-        </Button>
+        </button>
       </div>
     </form>
   );

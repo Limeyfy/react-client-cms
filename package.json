@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "2.1.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -26,7 +26,8 @@
     "build-storybook-tailwind": "NODE_ENV=production npx tailwindcss -o ./storybook-static/tailwind.css --minify"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": "^18",
+    "react-dom": "^18"
   },
   "husky": {
     "hooks": {
@@ -55,7 +56,6 @@
   "devDependencies": {
     "@babel/core": "^7.19.1",
     "@expo/webpack-config": "^0.17.0",
-    "@headlessui/react": "^1.7.2",
     "@size-limit/preset-small-lib": "^8.1.0",
     "@size-limit/webpack": "^8.1.0",
     "@size-limit/webpack-why": "^8.1.0",
@@ -73,14 +73,12 @@
     "@types/react-dom": "^18.0.6",
     "autoprefixer": "^10.4.11",
     "babel-loader": "^8.2.5",
-    "clsx": "^1.2.1",
     "expo": "^46.0.10",
     "husky": "^8.0.1",
     "identity-obj-proxy": "^3.0.0",
     "postcss": "^8.4.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.35.0",
     "react-is": "^18.2.0",
     "react-native-web": "~0.18.7",
     "rollup-plugin-import-css": "^3.0.3",
@@ -98,6 +96,8 @@
     }
   },
   "dependencies": {
-    "global": "^4.4.0"
+    "@headlessui/react": "^1.7.2",
+    "clsx": "^1.2.1",
+    "react-hook-form": "^7.35.0"
   }
 }

@@ -77,7 +77,7 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
       <div className="px-4 py-3 flex flex-col gap-y-2">
         {fields.map((f, fIdx) => {
           let fField = f;
-          fField.name = `${name}.${f.name}.${fIdx}`;
+          f.name = `${name}.${f.name}`;
           return (
             <LabelContainer key={fIdx} label={f.label ?? unPascalCase(f.name)}>
               {Component(
