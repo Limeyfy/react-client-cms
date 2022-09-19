@@ -1,4 +1,4 @@
-import { IClientCmsField, IClientCmsObjectField } from '../client-cms/types';
+import { IClientCmsField, IClientCmsObjectField, IClientCmsSimpleField } from '../client-cms/types';
 
 function toDateInputValue(date: Date) {
   var local = new Date(date);
@@ -20,8 +20,8 @@ export function getDefaultValue(type: IClientCmsField<any>['type']) {
       return toDateInputValue(new Date());
     case 'select':
       return null;
-    case 'array':
-      return [];
+    case 'array': return [];
+    case "object-array": return []
     default:
       return '';
   }
@@ -68,4 +68,11 @@ export function formatDataOnSubmit(data: any, fields: IClientCmsField<any>[]) {
     }
   }
   return formattedData;
+}
+
+export function getDefaultValueForSimpleFields(fields: IClientCmsSimpleField<any>[]) {
+  return fields.reduce((acc: any, field) => {
+    acc[field.name] = field.defaultValue ?? getDefaultValue(field.type);
+    return acc;
+  }, {});
 }

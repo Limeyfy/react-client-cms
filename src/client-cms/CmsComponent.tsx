@@ -1,12 +1,20 @@
 import React from 'react';
 import { CheckBox, FileInput, SelectComponent, TextInput } from '../components';
 import ArrayComponent from '../components/ArrayComponent';
+import ObjectArrayComponent from '../components/ObjectArrayComponent';
 import TextComponent from '../components/TextComponent';
 import { unPascalCase } from '../func/textHelper';
-import { IClientCmsArrayField, IClientCmsSimpleField } from './types';
+import {
+  IClientCmsArrayField,
+  IClientCmsObjectArrayField,
+  IClientCmsSimpleField,
+} from './types';
 
 export const Component = <T,>(
-  field: IClientCmsSimpleField<T> | IClientCmsArrayField<T>,
+  field:
+    | IClientCmsSimpleField<T>
+    | IClientCmsArrayField<T>
+    | IClientCmsObjectArrayField<T>,
   onChange: (value: any) => void,
   value: any,
   error?: string
@@ -64,6 +72,10 @@ export const Component = <T,>(
       );
     case 'array':
       return <ArrayComponent {...field} value={value} onChange={onChange} />;
+    case 'object-array':
+      return (
+        <ObjectArrayComponent {...field} value={value} onChange={onChange} />
+      );
     case 'text':
       return (
         <TextComponent
@@ -73,7 +85,7 @@ export const Component = <T,>(
           onChange={e =>
             field.onChange
               ? onChange((field.onChange as (e: any) => any)(e))
-              : onChange(e)
+              : onChange(e.target.value)
           }
         />
       );
@@ -86,7 +98,7 @@ export const Component = <T,>(
           onChange={e =>
             field.onChange
               ? onChange((field.onChange as (e: any) => any)(e))
-              : onChange(e)
+              : onChange(e.target.value)
           }
         />
       );

@@ -19,7 +19,8 @@ export type IClientCmsField<T> =
   | IClientCmsFileField<T>
   | IClientCmsObjectField<T>
   | IClientCmsArrayField<T>
-  | IClientCmsTextAreaField<T>;
+  | IClientCmsTextAreaField<T>
+  | IClientCmsObjectArrayField<T>;
 
 export type IClientCmsSimpleField<T> =
   | IClientCmsStringField<T>
@@ -107,4 +108,7 @@ export interface IClientCmsObjectArrayField<T = any> {
   defaultValue?: T[];
   onChange?: (data: T) => T;
   renderLabel?: (data: T) => React.ReactNode | string;
+  options?: {
+    showItemIndex?: boolean;
+  }
 }

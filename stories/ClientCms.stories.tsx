@@ -87,6 +87,20 @@ const props: IClientCms<any> = {
       arrayType: 'string',
       defaultValue: [5032, 2012],
     },
+    {
+      name: 'myObjectArray',
+      type: 'object-array',
+      fields: [
+        {
+          name: 'subTitle',
+        },
+        {
+          name: 'total',
+          type: 'number',
+        },
+      ],
+      renderLabel: (item: any) => item.subTitle,
+    },
   ],
 };
 
