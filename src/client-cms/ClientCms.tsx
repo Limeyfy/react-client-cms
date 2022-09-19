@@ -46,7 +46,8 @@ export const ClientCms = <T,>({
     <form
       onSubmit={handleFormSubmit(data => handleSubmit(data as T), handleErrors)}
       className={clsx(
-        className ? className : 'flex flex-col max-w-2xl mx-auto gap-y-8 w-full'
+        'flex flex-col max-w-2xl mx-auto gap-y-8 w-full',
+        className
       )}
       ref={form}
     >
