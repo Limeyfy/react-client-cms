@@ -94,7 +94,11 @@ export const ClientCms = <T,>({
         )
       )}
       <div className="flex justify-end">
-        <Button type="submit" disabled={loading}>
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-500 text-white hover:bg-blue-600 px-3 py-2 text-sm"
+        >
           {loading && (
             <svg
               role="status"
@@ -114,7 +118,7 @@ export const ClientCms = <T,>({
             </svg>
           )}
           {loading ? 'Loading...' : 'Submit'}
-        </Button>
+        </button>
       </div>
     </form>
   );
