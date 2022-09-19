@@ -1,5 +1,5 @@
 {
-  "version": "2.0.6",
+  "version": "2.0.61",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -94,5 +94,10 @@
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
     }
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.2",
+    "clsx": "^1.2.1",
+    "react-hook-form": "^7.35.0"
   }
 }
