@@ -74,7 +74,11 @@ export const Component = <T,>(
       return <ArrayComponent {...field} value={value} onChange={onChange} />;
     case 'object-array':
       return (
-        <ObjectArrayComponent {...field} value={value} onChange={onChange} />
+        <ObjectArrayComponent
+          {...field}
+          value={value ?? []}
+          onChange={onChange}
+        />
       );
     case 'text':
       return (
