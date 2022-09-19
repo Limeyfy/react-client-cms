@@ -42,6 +42,11 @@
   },
   "name": "@limeyfy/react-client-cms",
   "author": "Limeyfy",
+  "repository": {
+    "directory": "https://github.com/Limeyfy/react-client-cms",
+    "url": "https://react-client-cms.limeyfy.com",
+    "type": "github"
+  },
   "module": "dist/react-client-cms.esm.js",
   "size-limit": [
     {
