@@ -46,7 +46,7 @@ export const Component = <T,>(
         <TextInput
           error={error}
           {...(restField as any)}
-          value={value.toString()}
+          value={value?.toString()}
           onChange={e =>
             field.onChange
               ? onChange(
@@ -74,11 +74,7 @@ export const Component = <T,>(
       return <ArrayComponent {...field} value={value} onChange={onChange} />;
     case 'object-array':
       return (
-        <ObjectArrayComponent
-          {...field}
-          value={value ?? []}
-          onChange={onChange}
-        />
+        <ObjectArrayComponent {...field} value={value} onChange={onChange} />
       );
     case 'text':
       return (
