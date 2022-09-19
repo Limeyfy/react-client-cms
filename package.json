@@ -1,5 +1,5 @@
 {
-  "version": "1.6.0",
+  "version": "2.0.6",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -26,7 +26,8 @@
     "build-storybook-tailwind": "NODE_ENV=production npx tailwindcss -o ./storybook-static/tailwind.css --minify"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": "^18",
+    "react-dom": "^18"
   },
   "husky": {
     "hooks": {
@@ -96,8 +97,5 @@
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
     }
-  },
-  "dependencies": {
-    "global": "^4.4.0"
   }
 }
