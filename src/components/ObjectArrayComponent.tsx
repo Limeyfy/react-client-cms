@@ -16,7 +16,6 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
   onChange,
   renderLabel,
   fields,
-  name,
   options,
 }) => {
   const [items, setItems] = useState<any[]>(value);
@@ -38,10 +37,6 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
     setItems(newArray);
     setItem(getDefaultValueForSimpleFields(fields));
   };
-
-  useEffect(() => {
-    console.dir(item);
-  }, [item]);
 
   return (
     <div className="flex flex-col bg-white border border-gray-300 shadow-md rounded divide-y divide-gray-300">
@@ -76,16 +71,12 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
       ))}
       <div className="px-4 py-3 flex flex-col gap-y-2">
         {fields.map((f, fIdx) => {
-          let fField = f;
-          fField.name = `${name}.${f.name}`;
+          let fName = f.name.split('.').pop() || '';
           return (
-            <LabelContainer
-              key={fIdx}
-              label={f.label ?? unPascalCase(f.name.split('.')[1])}
-            >
+            <LabelContainer key={fIdx} label={f.label ?? unPascalCase(fName)}>
               {Component(
-                fField,
-                val => setItem((prev: any) => ({ ...prev, [f.name]: val })),
+                { ...f, name: fName },
+                val => setItem((prev: any) => ({ ...prev, [fName]: val })),
                 item[f.name]
               )}
             </LabelContainer>
