@@ -65,10 +65,10 @@ export interface IClientCmsSelectField<T> {
   name: Extract<keyof T, string>;
   label?: string;
   type: 'select';
-  options: T[];
+  options: any[];
   renderLabel: (option: any) => React.ReactNode | string;
   onChange?: (option: any) => any;
-  defaultValue?: T;
+  defaultValue?: any;
   rules?: ControllerProps['rules'];
   nullValueText?: string;
 }
@@ -117,9 +117,9 @@ export interface IClientCmsObjectArrayField<T = any> {
   label?: string;
   type: 'object-array';
   fields: IClientCmsSimpleField<T>[];
-  defaultValue?: T[];
-  onChange?: (data: T) => T;
-  renderLabel?: (data: T) => React.ReactNode | string;
+  defaultValue?: any[];
+  onChange?: (data: any) => any;
+  renderLabel?: (data: any) => React.ReactNode | string;
   options?: {
     showItemIndex?: boolean;
   }
