@@ -49,6 +49,18 @@ export interface IClientCmsStringField<T = any>
   rules?: ControllerProps['rules'];
 }
 
+export interface IClientCmsBooleanField<T = any>
+  extends Omit<React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  >, "defaultValue"> {
+  name: Extract<keyof T, string>;
+  label?: string;
+  type: 'boolean';
+  defaultValue?: boolean;
+  rules?: ControllerProps['rules'];
+}
+
 export interface IClientCmsSelectField<T> {
   name: Extract<keyof T, string>;
   label?: string;
