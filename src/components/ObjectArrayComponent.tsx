@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '../Button';
 import { IClientCmsObjectArrayField, LabelContainer } from '../client-cms';
 import { Component } from '../client-cms/CmsComponent';
