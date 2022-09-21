@@ -21,6 +21,7 @@ export function getDefaultValue(type: IClientCmsField<any>['type']) {
     case 'select':
       return null;
     case 'array': return [];
+    case 'boolean': return false;
     case "object-array": return []
     default:
       return '';

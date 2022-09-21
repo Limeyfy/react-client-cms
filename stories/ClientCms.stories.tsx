@@ -66,6 +66,7 @@ const props: IClientCms<any> = {
     {
       name: 'checkbox',
       type: 'boolean',
+      defaultValue: true,
     },
     {
       name: 'myCoolObject',

@@ -20,6 +20,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ error, label, ...rest }) => (
         <input
           {...rest}
           type="checkbox"
+          checked={(rest.value as any) as boolean}
           className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
         />
       </div>

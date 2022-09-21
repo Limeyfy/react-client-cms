@@ -20,13 +20,15 @@ export type IClientCmsField<T> =
   | IClientCmsObjectField<T>
   | IClientCmsArrayField<T>
   | IClientCmsTextAreaField<T>
-  | IClientCmsObjectArrayField<T>;
+  | IClientCmsObjectArrayField<T>
+  | IClientCmsBooleanField<T>;
 
 export type IClientCmsSimpleField<T> =
   | IClientCmsStringField<T>
   | IClientCmsSelectField<T>
   | IClientCmsFileField<T>
-  | IClientCmsTextAreaField<T>;
+  | IClientCmsTextAreaField<T>
+  | IClientCmsBooleanField<T>;
 
 export interface IClientCmsStringField<T = any>
   extends React.DetailedHTMLProps<
@@ -45,7 +47,6 @@ export interface IClientCmsStringField<T = any>
   | 'time'
   | 'datetime-local'
   | 'color'
-  | 'boolean';
   rules?: ControllerProps['rules'];
 }
 
