@@ -117,7 +117,7 @@ export interface IClientCmsObjectArrayField<T = any> {
   name: Extract<keyof T, string>;
   label?: string;
   type: 'object-array';
-  fields: IClientCmsSimpleField<T>[];
+  fields: IClientCmsSimpleField<any>[];
   defaultValue?: any[];
   onChange?: (data: any) => any;
   renderLabel?: (data: any) => React.ReactNode | string;
