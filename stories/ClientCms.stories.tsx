@@ -93,11 +93,19 @@ const props: IClientCms<any> = {
       type: 'object-array',
       fields: [
         {
-          name: 'subTitle',
+          name: 'description',
+          type: 'text',
+          rows: 3,
         },
         {
-          name: 'total',
+          name: 'quantity',
           type: 'number',
+          defaultValue: 1,
+        },
+        {
+          name: 'price',
+          type: 'number',
+          defaultValue: 250,
         },
       ],
       renderLabel: (item: any) => item.subTitle,
