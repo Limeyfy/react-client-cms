@@ -10,6 +10,7 @@ const ArrayComponent: React.FC<IArrayComponentProps> = ({
   value,
   onChange,
   arrayType,
+  renderLabel,
 }) => {
   const [items, setItems] = useState<any[]>(value);
   const [text, setText] = useState('');
@@ -36,7 +37,7 @@ const ArrayComponent: React.FC<IArrayComponentProps> = ({
       {items.map((item, index) => (
         <div className="flex items-center px-3" key={index}>
           <span className="text-gray-600 py-2 w-full truncate">
-            {index}. {item}
+            {renderLabel ? renderLabel(item) : item}
           </span>
           {onChange && (
             <button
