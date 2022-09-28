@@ -36,7 +36,6 @@ export const ClientCms = <T,>({
       return;
     }
     const formattedData = formatDataOnSubmit(data, fields);
-    console.log(formattedData);
     onSubmit(formattedData);
     return;
   };

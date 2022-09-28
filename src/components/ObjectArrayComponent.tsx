@@ -50,6 +50,7 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
             <button
               className="p-1 rounded-md transition-all hover:bg-gray-100"
               onClick={() => handleOnRemove(index)}
+              type="button"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +83,7 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
             </LabelContainer>
           );
         })}
-        <Button variant="secondary" onClick={handleAdd}>
+        <Button variant="secondary" type="button" onClick={handleAdd}>
           Add Item
         </Button>
       </div>

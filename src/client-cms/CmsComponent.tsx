@@ -47,13 +47,11 @@ export const Component = <T,>(
           error={error}
           {...(restField as any)}
           value={value?.toString()}
-          onChange={e =>
-            field.onChange
-              ? onChange(
-                  (field.onChange as (e: any) => any)(parseInt(e.target.value))
-                )
-              : onChange(parseInt(e.target.value))
-          }
+          onChange={e => {
+            return field.onChange
+              ? onChange((field.onChange as (e: any) => any)(e.target.value))
+              : onChange(e.target.value);
+          }}
         />
       );
     case 'boolean':
@@ -95,6 +93,7 @@ export const Component = <T,>(
           error={error}
           {...(restField as any)}
           value={value}
+          type={'text'}
           onChange={e =>
             field.onChange
               ? onChange((field.onChange as (e: any) => any)(e))
