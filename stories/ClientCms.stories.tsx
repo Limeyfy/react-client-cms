@@ -69,6 +69,10 @@ const props: IClientCms<any> = {
       defaultValue: true,
     },
     {
+      name: 'myDate',
+      type: 'date',
+    },
+    {
       name: 'myCoolObject',
       type: 'object',
       fields: [

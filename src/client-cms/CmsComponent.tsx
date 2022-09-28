@@ -87,6 +87,21 @@ export const Component = <T,>(
           }
         />
       );
+    case 'date': {
+      return (
+        <TextInput
+          error={error}
+          {...(restField as any)}
+          type="date"
+          value={value}
+          onChange={e =>
+            field.onChange
+              ? onChange((field.onChange as (e: any) => any)(e))
+              : onChange(e.target.value)
+          }
+        />
+      );
+    }
     default: {
       return (
         <TextInput
