@@ -59,7 +59,7 @@ export const ClientCms = <T,>({
   const validateComponent = (
     val: any,
     name: string,
-    actionOnValid: () => void,
+    action: () => void,
     validate?: IClientCmsValidate<any>
   ) => {
     const existingError = errors.findIndex(x => x.id === name);
@@ -68,7 +68,8 @@ export const ClientCms = <T,>({
       return val;
     }
     const isValid = validate(val);
-    if (!isValid) {
+    console.log(isValid);
+    if (isValid !== true) {
       const obj = {
         id: name,
         message:
@@ -81,10 +82,13 @@ export const ClientCms = <T,>({
         let newErrors = [...errors];
         newErrors[existingError] = obj;
         setErrors(newErrors);
+      } else {
+        setErrors([...errors, obj]);
       }
+      action();
     } else {
       if (existingError !== -1) removeError(existingError);
-      actionOnValid();
+      action();
     }
   };
 

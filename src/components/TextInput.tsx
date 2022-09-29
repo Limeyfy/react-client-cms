@@ -47,8 +47,8 @@ export const TextInput = (props: IClientCmsInputPropsDetailed) => {
         )}
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-600">
-          <ErrorMessage error={error.type} key={error.message} />
+        <p className="mt-1 text-sm text-red-600">
+          <ErrorMessage error={error.type} message={error.message} />
         </p>
       )}
     </>
