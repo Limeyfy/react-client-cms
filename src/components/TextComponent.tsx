@@ -18,6 +18,7 @@ const TextComponent: React.FC<IClientCmsTextAreaPropsDetailed> = props => {
         {...props}
         className={clsx(
           'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm',
+          props.disabled ? 'bg-gray-100' : 'bg-white',
           props.className
         )}
       />
