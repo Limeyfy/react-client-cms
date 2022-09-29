@@ -29,10 +29,12 @@ const props: IClientCms<any> = {
   fields: [
     {
       name: 'title',
+      disabled: true,
     },
     {
       name: 'description',
       type: 'text',
+      disabled: true,
     },
     {
       name: 'total',
@@ -42,6 +44,7 @@ const props: IClientCms<any> = {
         min: 0,
         max: 100,
       },
+      disabled: true,
     },
     {
       name: 'selectBox',
@@ -56,21 +59,25 @@ const props: IClientCms<any> = {
           label: 'Two',
         },
       ],
+
       renderLabel: (option: any) => option.label,
       nullValueText: 'Select an option',
     },
     {
       name: 'image',
       type: 'file',
+      disabled: true,
     },
     {
       name: 'checkbox',
       type: 'boolean',
       defaultValue: true,
+      disabled: true,
     },
     {
       name: 'myDate',
       type: 'date',
+      disabled: true,
     },
     {
       name: 'myCoolObject',
@@ -95,6 +102,7 @@ const props: IClientCms<any> = {
     {
       name: 'myObjectArray',
       type: 'object-array',
+
       fields: [
         {
           name: 'description',
