@@ -19,11 +19,11 @@ export const TextInput = (props: IClientCmsInputPropsDetailed) => {
           type="text"
           {...rest}
           className={clsx(
+            'block w-full rounded-md shadow-sm sm:text-sm',
             error
-              ? 'border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500'
+              ? '!border-red-300 pr-10 !text-red-900 !placeholder-red-300 focus:!border-red-500 focus:!outline-none focus:!ring-red-500'
               : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500',
-            props.disabled ? 'bg-gray-100' : 'bg-white',
-            'block w-full rounded-md shadow-sm sm:text-sm'
+            props.disabled ? 'bg-gray-100' : 'bg-white'
           )}
         />
         {error && (

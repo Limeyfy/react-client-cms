@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
 import { formatDataOnSubmit, getDefaultValueForFields } from '../func/data';
 import { unPascalCase } from '../func/textHelper';
 import '../tailwind.css';
@@ -26,9 +25,7 @@ export const ClientCms = <T,>({
   ...cRest
 }: IClientCms<T>) => {
   const form = React.useRef<HTMLFormElement>(null);
-  const { handleSubmit: handleFormSubmit, control } = useForm<any, T>({
-    defaultValues: getDefaultValueForFields(fields),
-  });
+  const [data, setData] = React.useState<T>(getDefaultValueForFields(fields));
   const [errors, setErrors] = React.useState<FieldError[]>([]);
 
   React.useEffect(() => {
@@ -39,9 +36,8 @@ export const ClientCms = <T,>({
     }
   }, [fields]);
 
-  const handleErrors = (errors: any) => setErrors(errors);
-
-  const handleSubmit = (data: T) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (onSubmit === undefined) {
       console.error('OnSubmit is not defined');
       return;
@@ -107,72 +103,74 @@ export const ClientCms = <T,>({
       value={{ fields, onSubmit, loading, className, errors, ...cRest }}
     >
       <form
-        onSubmit={handleFormSubmit(
-          data => handleSubmit(data as T),
-          handleErrors
-        )}
+        onSubmit={handleSubmit}
         className={clsx(
           'flex flex-col max-w-2xl mx-auto gap-y-8 w-full',
           className
         )}
         ref={form}
       >
-        {fields.map((field, fieldIdx) =>
+        {fields.map(field =>
           field.type === 'object' ? (
-            <div key={fieldIdx} className="border-l border-gray-300 py-3">
+            <div
+              key={`form_obj_${field.name}`}
+              className="border-l border-gray-300 py-3"
+            >
               <h2 className="text-lg font-semibold ml-5  mb-3">
                 {field.label || unPascalCase(field.name)}
               </h2>
               <div className="ml-5 flex flex-col gap-y-3">
-                {field.fields.map((f, fIdx) => {
+                {field.fields.map(f => {
                   let mField = { ...f };
                   mField.disabled = field.disabled ?? f.disabled ?? false;
                   return (
-                    <Controller
-                      key={fIdx}
-                      name={`${field.name}_${f.name}`}
-                      control={control}
-                      render={({ field: { onChange, value } }) =>
-                        Component(
-                          mField,
-                          val =>
-                            validateComponent(
-                              val,
-                              `${field.name}_${f.name}`,
-                              () => onChange(val),
-                              field.validate
-                            ),
-                          value
-                        )
-                      }
-                    />
+                    <LabelContainer
+                      key={`form_elem_${field.name}_${f.name}`}
+                      label={f.label ?? unPascalCase(f.name)}
+                      show={f.type === 'boolean' ? false : true}
+                    >
+                      {Component(
+                        mField,
+                        val =>
+                          validateComponent(
+                            val,
+                            `${field.name}_${f.name}`,
+                            () =>
+                              setData(pd => ({
+                                ...pd,
+                                [field.name]: {
+                                  ...pd[field.name],
+                                  [f.name]: val,
+                                },
+                              })),
+                            field.validate
+                          ),
+                        (data as any)[field.name]
+                          ? (data as any)[field.name][f.name]
+                          : undefined
+                      )}
+                    </LabelContainer>
                   );
                 })}
               </div>
             </div>
           ) : (
             <LabelContainer
-              key={fieldIdx}
+              key={`form_elem_${field.name}`}
               label={field.label ?? unPascalCase(field.name)}
               show={field.type === 'boolean' ? false : true}
             >
-              <Controller
-                name={field.name}
-                control={control}
-                render={({ field: { onChange, value } }) =>
-                  Component(
-                    field,
-                    val =>
-                      validateComponent(
-                        val,
-                        field.name,
-                        () => onChange(val),
-                        field.validate
-                      ),
-                    value
-                  )
-                }
-              />
+              {Component(
+                field,
+                val =>
+                  validateComponent(
+                    val,
+                    field.name,
+                    () => setData(pd => ({ ...pd, [field.name]: val })),
+                    field.validate
+                  ),
+                (data as any)[field.name]
+              )}
             </LabelContainer>
           )
         )}
