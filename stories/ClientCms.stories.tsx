@@ -44,11 +44,6 @@ const props: IClientCms<any> = {
     {
       name: 'total',
       type: 'number',
-      rules: {
-        required: true,
-        min: 0,
-        max: 100,
-      },
     },
     {
       name: 'selectBox',
@@ -139,11 +134,6 @@ const readOnlyProps: IClientCms<any> = {
     {
       name: 'total',
       type: 'number',
-      rules: {
-        required: true,
-        min: 0,
-        max: 100,
-      },
       disabled: true,
     },
     {

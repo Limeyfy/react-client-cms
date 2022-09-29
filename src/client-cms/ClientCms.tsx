@@ -122,7 +122,6 @@ export const ClientCms = <T,>({
                       key={fIdx}
                       name={`${field.name}_${f.name}`}
                       control={control}
-                      rules={(field as any).rules ?? undefined}
                       render={({ field: { onChange, value } }) =>
                         Component(
                           mField,
@@ -150,7 +149,6 @@ export const ClientCms = <T,>({
               <Controller
                 name={field.name}
                 control={control}
-                rules={(field as any).rules ?? undefined}
                 render={({ field: { onChange, value } }) =>
                   Component(
                     field,

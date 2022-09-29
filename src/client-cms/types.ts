@@ -1,4 +1,3 @@
-import { ControllerProps } from 'react-hook-form';
 import React from 'react';
 
 export interface IClientCms<T> {
@@ -46,8 +45,7 @@ export interface IClientCmsStringField<T = any>
   | 'date'
   | 'time'
   | 'datetime-local'
-  | 'color'
-  rules?: ControllerProps['rules'];
+  | 'color';
   validate?: IClientCmsValidate<string>;
 }
 
@@ -60,7 +58,6 @@ export interface IClientCmsBooleanField<T = any>
   label?: string;
   type: 'boolean';
   defaultValue?: boolean;
-  rules?: ControllerProps['rules'];
   validate?: IClientCmsValidate<boolean>;
 }
 
@@ -72,7 +69,6 @@ export interface IClientCmsSelectField<T> {
   renderLabel: (option: any) => React.ReactNode | string;
   onChange?: (option: any) => any;
   defaultValue?: any;
-  rules?: ControllerProps['rules'];
   nullValueText?: string;
   disabled?: boolean;
   validate?: IClientCmsValidate<any>;
@@ -86,7 +82,6 @@ export interface IClientCmsTextAreaField<T = any>
   name: Extract<keyof T, string>;
   label?: string;
   type: "text";
-  rules?: ControllerProps['rules'];
   validate?: IClientCmsValidate<string>;
 }
 
@@ -98,7 +93,6 @@ export interface IClientCmsFileField<T = any>
   name: Extract<keyof T, string>;
   label?: string;
   type: 'file';
-  rules?: ControllerProps['rules'];
   validate?: IClientCmsValidate<File>;
   disabled?: boolean;
 }
