@@ -121,101 +121,10 @@ const props: IClientCms<any> = {
 };
 
 const readOnlyProps: IClientCms<any> = {
-  fields: [
-    {
-      name: 'title',
-      disabled: true,
-    },
-    {
-      name: 'description',
-      type: 'text',
-      disabled: true,
-    },
-    {
-      name: 'total',
-      type: 'number',
-      disabled: true,
-    },
-    {
-      name: 'selectBox',
-      type: 'select',
-      disabled: true,
-      options: [
-        {
-          value: '1',
-          label: 'One',
-        },
-        {
-          value: '2',
-          label: 'Two',
-        },
-      ],
-
-      renderLabel: (option: any) => option.label,
-      nullValueText: 'Select an option',
-    },
-    {
-      name: 'image',
-      type: 'file',
-      disabled: true,
-    },
-    {
-      name: 'checkbox',
-      type: 'boolean',
-      defaultValue: true,
-      disabled: true,
-    },
-    {
-      name: 'myDate',
-      type: 'date',
-      disabled: true,
-    },
-    {
-      name: 'myCoolObject',
-      type: 'object',
-      disabled: true,
-      fields: [
-        {
-          name: 'subTitle',
-          defaultValue: "I'm a default value",
-        },
-        {
-          name: 'total',
-          type: 'number',
-        },
-      ],
-    },
-    {
-      name: 'myArray',
-      type: 'array',
-      arrayType: 'string',
-      defaultValue: [5032, 2012],
-      disabled: true,
-    },
-    {
-      name: 'myObjectArray',
-      type: 'object-array',
-      disabled: true,
-      fields: [
-        {
-          name: 'description',
-          type: 'text',
-          rows: 3,
-        },
-        {
-          name: 'quantity',
-          type: 'number',
-          defaultValue: 1,
-        },
-        {
-          name: 'price',
-          type: 'number',
-          defaultValue: 250,
-        },
-      ],
-      renderLabel: (item: any) => item.subTitle,
-    },
-  ],
+  fields: props.fields.map(field => ({
+    ...field,
+    disabled: true,
+  })),
 };
 
 Default.args = props;
