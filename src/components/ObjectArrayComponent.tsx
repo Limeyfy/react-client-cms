@@ -17,12 +17,13 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
   renderLabel,
   fields,
   options,
+  disabled,
 }) => {
   const [items, setItems] = useState<any[]>(value);
   const [item, setItem] = useState<any>(getDefaultValueForSimpleFields(fields));
 
   const handleOnRemove = (idx: number) => {
-    if (!onChange) return;
+    if (!onChange || disabled) return;
     let newArray = [...items];
     newArray.splice(idx, 1);
     onChange(newArray);
@@ -30,7 +31,7 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
   };
 
   const handleAdd = () => {
-    if (!onChange) return;
+    if (!onChange || disabled) return;
     if (!item) return;
     let newArray = [...items, item];
     onChange(newArray);
@@ -46,7 +47,7 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
             {options?.showItemIndex && `${index}. `}
             {renderLabel ? renderLabel(item) : item}
           </span>
-          {onChange && (
+          {onChange && !disabled && (
             <button
               className="p-1 rounded-md transition-all hover:bg-gray-100"
               onClick={() => handleOnRemove(index)}
@@ -70,23 +71,25 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
           )}
         </div>
       ))}
-      <div className="px-4 py-3 flex flex-col gap-y-2">
-        {fields.map((f, fIdx) => {
-          let fName = f.name.split('.').pop() || '';
-          return (
-            <LabelContainer key={fIdx} label={f.label ?? unPascalCase(fName)}>
-              {Component(
-                { ...f, name: fName },
-                val => setItem((prev: any) => ({ ...prev, [fName]: val })),
-                item[f.name]
-              )}
-            </LabelContainer>
-          );
-        })}
-        <Button variant="secondary" type="button" onClick={handleAdd}>
-          Add Item
-        </Button>
-      </div>
+      {!disabled && (
+        <div className="px-4 py-3 flex flex-col gap-y-2">
+          {fields.map((f, fIdx) => {
+            let fName = f.name.split('.').pop() || '';
+            return (
+              <LabelContainer key={fIdx} label={f.label ?? unPascalCase(fName)}>
+                {Component(
+                  { ...f, name: fName },
+                  val => setItem((prev: any) => ({ ...prev, [fName]: val })),
+                  item[f.name]
+                )}
+              </LabelContainer>
+            );
+          })}
+          <Button variant="secondary" type="button" onClick={handleAdd}>
+            Add Item
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

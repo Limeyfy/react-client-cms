@@ -126,6 +126,7 @@ export interface IClientCmsObjectArrayField<T = any> {
   defaultValue?: any[];
   onChange?: (data: any) => any;
   renderLabel?: (data: any) => React.ReactNode | string;
+  disabled?: boolean;
   options?: {
     showItemIndex?: boolean;
   }

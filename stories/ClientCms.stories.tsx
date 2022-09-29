@@ -105,6 +105,7 @@ const props: IClientCms<any> = {
     {
       name: 'myObjectArray',
       type: 'object-array',
+      disabled: true,
       fields: [
         {
           name: 'description',
