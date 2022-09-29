@@ -10,6 +10,7 @@ export interface IClientCms<T> {
   >;
   loading?: boolean;
   name?: string;
+  logErrors?: boolean;
 }
 
 export type IClientCmsField<T> =

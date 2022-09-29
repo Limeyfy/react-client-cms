@@ -22,6 +22,7 @@ export const ClientCms = <T,>({
   onSubmit,
   loading,
   className,
+  logErrors = false,
   ...cRest
 }: IClientCms<T>) => {
   const form = React.useRef<HTMLFormElement>(null);
@@ -43,6 +44,15 @@ export const ClientCms = <T,>({
   const handleSubmit = (data: T) => {
     if (onSubmit === undefined) {
       console.error('OnSubmit is not defined');
+      return;
+    }
+    if (errors.length > 0) {
+      form.current?.scrollIntoView({ behavior: 'smooth' });
+      logErrors &&
+        console.error(
+          'Form could not submit because of these errors: ',
+          errors
+        );
       return;
     }
     const formattedData = formatDataOnSubmit(data, fields);
