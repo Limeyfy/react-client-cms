@@ -12,7 +12,7 @@ interface IArrayComponentProps extends Omit<IClientCmsArrayField, 'onChange'> {
 const ArrayComponent: React.FC<IArrayComponentProps> = ({
   value,
   onChange,
-  arrayType,
+  of,
   renderLabel,
   disabled,
   name,
@@ -32,7 +32,7 @@ const ArrayComponent: React.FC<IArrayComponentProps> = ({
 
   const handleAdd = () => {
     if (!onChange || disabled) return;
-    const val = arrayType === 'number' ? parseInt(text) : text;
+    const val = of === 'number' ? parseInt(text) : text;
     let newArray = [...items, val];
     onChange(newArray);
     setItems(newArray);

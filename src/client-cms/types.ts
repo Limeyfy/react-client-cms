@@ -110,7 +110,7 @@ export interface IClientCmsArrayField<T = any> {
   name: Extract<keyof T, string>;
   label?: string;
   type: 'array';
-  arrayType: 'string' | 'number';
+  of: 'string' | 'number';
   defaultValue?: (string | number)[];
   onChange?: (data: string | number) => string | number;
   renderLabel?: (data: string | number) => React.ReactNode | string;

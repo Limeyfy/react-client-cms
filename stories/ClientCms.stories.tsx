@@ -92,7 +92,7 @@ const props: IClientCms<any> = {
     {
       name: 'myArray',
       type: 'array',
-      arrayType: 'string',
+      of: 'string',
       defaultValue: [5032, 2012],
     },
     {
