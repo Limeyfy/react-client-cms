@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 import { ErrorMessage } from './ErrorMessage';
 
@@ -21,7 +22,11 @@ const CheckBox: React.FC<CheckBoxProps> = ({ error, label, ...rest }) => (
           {...rest}
           type="checkbox"
           checked={(rest.value as any) as boolean}
-          className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          className={clsx(
+            'h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500',
+            error ? 'border-red-300' : 'border-gray-300',
+            rest.disabled ? 'text-gray-300' : 'text-white'
+          )}
         />
       </div>
       <div className="ml-3 text-sm">
