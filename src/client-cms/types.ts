@@ -72,6 +72,7 @@ export interface IClientCmsSelectField<T> {
   defaultValue?: any;
   rules?: ControllerProps['rules'];
   nullValueText?: string;
+  disabled?: boolean;
 }
 
 export interface IClientCmsTextAreaField<T = any>

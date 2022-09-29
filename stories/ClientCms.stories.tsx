@@ -49,6 +49,7 @@ const props: IClientCms<any> = {
     {
       name: 'selectBox',
       type: 'select',
+      disabled: true,
       options: [
         {
           value: '1',
@@ -102,7 +103,6 @@ const props: IClientCms<any> = {
     {
       name: 'myObjectArray',
       type: 'object-array',
-
       fields: [
         {
           name: 'description',

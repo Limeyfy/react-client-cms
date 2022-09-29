@@ -16,11 +16,17 @@ export const SelectComponent = <T,>(props: SelectComponentProps<T>) => {
       onChange={e => {
         props.onChange && e && props.onChange(e);
       }}
+      disabled={props.disabled}
     >
       {({ open }) => (
         <>
           <div className="relative mt-1">
-            <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm">
+            <Listbox.Button
+              className={clsx(
+                'relative w-full cursor-default rounded-md border border-gray-300 py-2 pl-3 pr-10 text-left shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm',
+                props.disabled ? 'bg-gray-100' : 'bg-white'
+              )}
+            >
               <span className="block truncate">
                 {props.value
                   ? props.renderLabel(props.value)
