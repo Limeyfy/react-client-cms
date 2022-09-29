@@ -65,10 +65,10 @@ export const ClientCms = <T,>({
     const existingError = errors.findIndex(x => x.id === name);
     if (!validate) {
       if (existingError !== -1) removeError(existingError);
+      action();
       return val;
     }
     const isValid = validate(val);
-    console.log(isValid);
     if (isValid !== true) {
       const obj = {
         id: name,
