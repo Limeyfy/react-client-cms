@@ -56,17 +56,21 @@ export const ClientCms = <T,>({
               {field.label || unPascalCase(field.name)}
             </h2>
             <div className="ml-5 flex flex-col gap-y-3">
-              {field.fields.map((f, fIdx) => (
-                <Controller
-                  key={fIdx}
-                  name={`${field.name}_${f.name}`}
-                  control={control}
-                  rules={(field as any).rules ?? undefined}
-                  render={({ field: { onChange, value } }) =>
-                    Component(f, onChange, value)
-                  }
-                />
-              ))}
+              {field.fields.map((f, fIdx) => {
+                let mField = { ...f };
+                mField.disabled = field.disabled ?? f.disabled ?? false;
+                return (
+                  <Controller
+                    key={fIdx}
+                    name={`${field.name}_${f.name}`}
+                    control={control}
+                    rules={(field as any).rules ?? undefined}
+                    render={({ field: { onChange, value } }) =>
+                      Component(mField, onChange, value)
+                    }
+                  />
+                );
+              })}
             </div>
           </div>
         ) : (

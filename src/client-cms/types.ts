@@ -104,6 +104,7 @@ export interface IClientCmsObjectField<T = any> {
   label?: string;
   type: 'object';
   fields: IClientCmsSimpleField<T>[];
+  disabled?: boolean;
 }
 
 export interface IClientCmsArrayField<T = any> {

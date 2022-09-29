@@ -83,6 +83,7 @@ const props: IClientCms<any> = {
     {
       name: 'myCoolObject',
       type: 'object',
+      disabled: true,
       fields: [
         {
           name: 'subTitle',
