@@ -90,11 +90,13 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
             let fName = f.name.split('.').pop() || '';
             return (
               <LabelContainer key={fIdx} label={f.label ?? unPascalCase(fName)}>
-                {Component(
-                  { ...f, name: fName },
-                  val => setItem((prev: any) => ({ ...prev, [fName]: val })),
-                  item[f.name]
-                )}
+                <Component
+                  field={{ ...f, name: fName }}
+                  onChange={val =>
+                    setItem((prev: any) => ({ ...prev, [fName]: val }))
+                  }
+                  value={item[f.name]}
+                />
               </LabelContainer>
             );
           })}

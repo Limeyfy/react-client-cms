@@ -10,18 +10,20 @@ import {
   IClientCmsSimpleField,
 } from './types';
 
-export const Component = <T,>(
+interface IComponentProps<T> {
   field:
     | IClientCmsSimpleField<T>
     | IClientCmsArrayField<T>
-    | IClientCmsObjectArrayField<T>,
-  onChange: (value: any) => void,
-  value: any,
-  error?: {
-    type: string;
-    message?: string;
-  }
-) => {
+    | IClientCmsObjectArrayField<T>;
+  onChange: (value: any) => void;
+  value: any;
+}
+
+export const Component: React.FC<IComponentProps<any>> = <T,>({
+  field,
+  onChange,
+  value,
+}: IComponentProps<T>) => {
   const { defaultValue, ...restField } = field;
   switch (field.type) {
     case 'file':
@@ -46,7 +48,6 @@ export const Component = <T,>(
     case 'number':
       return (
         <TextInput
-          error={error}
           {...(restField as any)}
           value={value?.toString()}
           onChange={e => {
@@ -59,7 +60,6 @@ export const Component = <T,>(
     case 'boolean':
       return (
         <CheckBox
-          error={error}
           {...(restField as any)}
           value={value}
           label={field.label || unPascalCase(field.name)}
@@ -79,7 +79,6 @@ export const Component = <T,>(
     case 'text':
       return (
         <TextComponent
-          error={error}
           {...(restField as any)}
           value={value}
           onChange={e =>
@@ -92,7 +91,6 @@ export const Component = <T,>(
     case 'date': {
       return (
         <TextInput
-          error={error}
           {...(restField as any)}
           type="date"
           value={value}
@@ -107,7 +105,6 @@ export const Component = <T,>(
     default: {
       return (
         <TextInput
-          error={error}
           {...(restField as any)}
           value={value}
           type={'text'}

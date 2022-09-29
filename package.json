@@ -13,7 +13,7 @@
   "scripts": {
     "start": "tsdx watch --onSuccess yarn build-tailwind",
     "build": "NODE_ENV=production tsdx build && yarn build-tailwind",
-    "build-size": "yarn build && yarn size",
+    "debug": "yarn build && yarn size",
     "build-static-webapp": "npx expo export:web",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",

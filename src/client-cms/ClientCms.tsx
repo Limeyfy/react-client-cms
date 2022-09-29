@@ -116,7 +116,7 @@ export const ClientCms = <T,>({
               key={`form_obj_${field.name}`}
               className="border-l border-gray-300 py-3"
             >
-              <h2 className="text-lg font-semibold ml-5  mb-3">
+              <h2 className="text-lg font-semibold ml-5 mb-3">
                 {field.label || unPascalCase(field.name)}
               </h2>
               <div className="ml-5 flex flex-col gap-y-3">
@@ -129,9 +129,9 @@ export const ClientCms = <T,>({
                       label={f.label ?? unPascalCase(f.name)}
                       show={f.type === 'boolean' ? false : true}
                     >
-                      {Component(
-                        mField,
-                        val =>
+                      <Component
+                        field={mField}
+                        onChange={val =>
                           validateComponent(
                             val,
                             `${field.name}_${f.name}`,
@@ -144,11 +144,14 @@ export const ClientCms = <T,>({
                                 },
                               })),
                             field.validate
-                          ),
-                        (data as any)[field.name]
-                          ? (data as any)[field.name][f.name]
-                          : undefined
-                      )}
+                          )
+                        }
+                        value={
+                          (data as any)[field.name]
+                            ? (data as any)[field.name][f.name]
+                            : undefined
+                        }
+                      />
                     </LabelContainer>
                   );
                 })}
@@ -160,17 +163,18 @@ export const ClientCms = <T,>({
               label={field.label ?? unPascalCase(field.name)}
               show={field.type === 'boolean' ? false : true}
             >
-              {Component(
-                field,
-                val =>
+              <Component
+                field={field}
+                onChange={val =>
                   validateComponent(
                     val,
                     field.name,
                     () => setData(pd => ({ ...pd, [field.name]: val })),
                     field.validate
-                  ),
-                (data as any)[field.name]
-              )}
+                  )
+                }
+                value={(data as any)[field.name]}
+              />
             </LabelContainer>
           )
         )}
