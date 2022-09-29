@@ -48,6 +48,7 @@ export interface IClientCmsStringField<T = any>
   | 'datetime-local'
   | 'color'
   rules?: ControllerProps['rules'];
+  validate?: IClientCmsValidate<string>;
 }
 
 export interface IClientCmsBooleanField<T = any>
@@ -60,6 +61,7 @@ export interface IClientCmsBooleanField<T = any>
   type: 'boolean';
   defaultValue?: boolean;
   rules?: ControllerProps['rules'];
+  validate?: IClientCmsValidate<boolean>;
 }
 
 export interface IClientCmsSelectField<T> {
@@ -73,6 +75,7 @@ export interface IClientCmsSelectField<T> {
   rules?: ControllerProps['rules'];
   nullValueText?: string;
   disabled?: boolean;
+  validate?: IClientCmsValidate<any>;
 }
 
 export interface IClientCmsTextAreaField<T = any>
@@ -84,6 +87,7 @@ export interface IClientCmsTextAreaField<T = any>
   label?: string;
   type: "text";
   rules?: ControllerProps['rules'];
+  validate?: IClientCmsValidate<string>;
 }
 
 export interface IClientCmsFileField<T = any>
@@ -95,7 +99,7 @@ export interface IClientCmsFileField<T = any>
   label?: string;
   type: 'file';
   rules?: ControllerProps['rules'];
-  beforeUpload?: (file: File) => boolean;
+  validate?: IClientCmsValidate<File>;
   disabled?: boolean;
 }
 
@@ -105,6 +109,7 @@ export interface IClientCmsObjectField<T = any> {
   type: 'object';
   fields: IClientCmsSimpleField<T>[];
   disabled?: boolean;
+  validate?: IClientCmsValidate<any>;
 }
 
 export interface IClientCmsArrayField<T = any> {
@@ -116,6 +121,7 @@ export interface IClientCmsArrayField<T = any> {
   onChange?: (data: string | number) => string | number;
   renderLabel?: (data: string | number) => React.ReactNode | string;
   disabled?: boolean;
+  validate?: IClientCmsValidate<(string | number)[]>;
 }
 
 export interface IClientCmsObjectArrayField<T = any> {
@@ -130,4 +136,16 @@ export interface IClientCmsObjectArrayField<T = any> {
   options?: {
     showItemIndex?: boolean;
   }
+  validate?: IClientCmsValidate<any[]>;
+}
+
+
+export type IClientCmsValidate<T> = (data: T) => boolean | {
+  error?: string;
+}
+
+export type FieldError = {
+  id: string;
+  type: string;
+  message: string;
 }

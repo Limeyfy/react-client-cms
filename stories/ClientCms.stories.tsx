@@ -30,6 +30,12 @@ const props: IClientCms<any> = {
   fields: [
     {
       name: 'title',
+      validate: text =>
+        text.length > 4
+          ? true
+          : {
+              error: 'Text is to short',
+            },
     },
     {
       name: 'description',

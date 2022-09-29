@@ -1,16 +1,16 @@
 import clsx from 'clsx';
 import React from 'react';
+import useClientCms from '../hooks/useClientCms';
 import { ErrorMessage } from './ErrorMessage';
 
 export interface IClientCmsTextAreaPropsDetailed
   extends React.DetailedHTMLProps<
     React.TextareaHTMLAttributes<HTMLTextAreaElement>,
     HTMLTextAreaElement
-  > {
-  error?: string;
-}
+  > {}
 
 const TextComponent: React.FC<IClientCmsTextAreaPropsDetailed> = props => {
+  const { error } = useClientCms(props.name);
   return (
     <>
       <textarea
@@ -22,9 +22,9 @@ const TextComponent: React.FC<IClientCmsTextAreaPropsDetailed> = props => {
           props.className
         )}
       />
-      {props.error && (
-        <p className="mt-2 text-sm text-red-600" id="email-error">
-          <ErrorMessage error={props.error} />
+      {error && (
+        <p className="mt-2 text-sm text-red-600">
+          <ErrorMessage error={error.type} key={error.message} />
         </p>
       )}
     </>

@@ -1,5 +1,9 @@
-import { ClientCms } from './ClientCms';
+import {
+  ClientCms,
+  IClientCmsContext,
+  IClientCmsContextProps,
+} from './ClientCms';
 import LabelContainer from './LabelContainer';
 
 export * from './types';
-export { LabelContainer, ClientCms };
+export { LabelContainer, ClientCms, IClientCmsContext, IClientCmsContextProps };

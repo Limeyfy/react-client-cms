@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { IClientCmsArrayField } from '../client-cms';
+import useClientCms from '../hooks/useClientCms';
+import { ErrorMessage } from './ErrorMessage';
 
 interface IArrayComponentProps extends Omit<IClientCmsArrayField, 'onChange'> {
   value: (string | number)[];
@@ -18,6 +20,7 @@ const ArrayComponent: React.FC<IArrayComponentProps> = ({
 }) => {
   const [items, setItems] = useState<any[]>(value);
   const [text, setText] = useState('');
+  const { error } = useClientCms(name);
 
   const handleOnRemove = (idx: number) => {
     if (!onChange || disabled) return;
@@ -115,6 +118,11 @@ const ArrayComponent: React.FC<IArrayComponentProps> = ({
             </svg>
           </div>
         </div>
+      )}
+      {error && (
+        <p className="mt-2 text-sm text-red-600">
+          <ErrorMessage error={error.type} key={error.message} />
+        </p>
       )}
     </div>
   );

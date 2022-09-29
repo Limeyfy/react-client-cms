@@ -1,7 +1,9 @@
 import clsx from 'clsx';
 import React from 'react';
 import { Button } from '../Button';
+import useClientCms from '../hooks/useClientCms';
 import '../tailwind.css';
+import { ErrorMessage } from './ErrorMessage';
 
 export interface IClientCmsFileProps
   extends Omit<
@@ -17,6 +19,7 @@ export interface IClientCmsFileProps
 
 export const FileInput = (props: IClientCmsFileProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const { error } = useClientCms(props.name);
 
   const removeFile = (index: number) => {
     const newFiles = new DataTransfer();
@@ -86,6 +89,11 @@ export const FileInput = (props: IClientCmsFileProps) => {
             </li>
           ))}
         </ul>
+      )}
+      {error && (
+        <p className="mt-2 text-sm text-red-600">
+          <ErrorMessage error={error.type} key={error.message} />
+        </p>
       )}
     </div>
   );

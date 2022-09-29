@@ -4,6 +4,8 @@ import { IClientCmsObjectArrayField, LabelContainer } from '../client-cms';
 import { Component } from '../client-cms/CmsComponent';
 import { getDefaultValueForSimpleFields } from '../func/data';
 import { unPascalCase } from '../func/textHelper';
+import useClientCms from '../hooks/useClientCms';
+import { ErrorMessage } from './ErrorMessage';
 
 interface IObjectArrayComponentProps
   extends Omit<IClientCmsObjectArrayField, 'onChange'> {
@@ -23,6 +25,7 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
 }) => {
   const [items, setItems] = useState<any[]>(value);
   const [item, setItem] = useState<any>(getDefaultValueForSimpleFields(fields));
+  const { error } = useClientCms(name);
 
   const handleOnRemove = (idx: number) => {
     if (!onChange || disabled) return;
@@ -99,6 +102,11 @@ const ObjectArrayComponent: React.FC<IObjectArrayComponentProps> = ({
             Add Item
           </Button>
         </div>
+      )}
+      {error && (
+        <p className="mt-2 text-sm text-red-600">
+          <ErrorMessage error={error.type} key={error.message} />
+        </p>
       )}
     </div>
   );

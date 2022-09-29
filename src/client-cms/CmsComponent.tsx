@@ -17,7 +17,10 @@ export const Component = <T,>(
     | IClientCmsObjectArrayField<T>,
   onChange: (value: any) => void,
   value: any,
-  error?: string
+  error?: {
+    type: string;
+    message?: string;
+  }
 ) => {
   const { defaultValue, ...restField } = field;
   switch (field.type) {
@@ -28,7 +31,6 @@ export const Component = <T,>(
           onChange={e => e.target.files && onChange(e.target.files)}
           {...rest}
           files={value}
-          beforeUpload={field.beforeUpload}
         />
       );
 

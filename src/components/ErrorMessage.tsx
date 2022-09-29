@@ -1,7 +1,9 @@
 import React from 'react';
 
-function getMessage(type: string) {
+function getMessage(type: string, message?: string) {
   switch (type) {
+    case 'custom':
+      return message ?? 'This field is invalid';
     case 'required':
       return 'This field is required';
     case 'min':
@@ -31,8 +33,12 @@ export type ErrorMessageProps = {
     | 'pattern'
     | 'validate'
     | string;
+  message?: string;
 };
 
 export const ErrorMessage: React.FC<ErrorMessageProps> = ({
   error = 'validate',
-}) => <span className="text-sm text-red-400">{getMessage(error)}</span>;
+  message,
+}) => (
+  <span className="text-sm text-red-400">{getMessage(error, message)}</span>
+);
