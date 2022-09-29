@@ -96,6 +96,7 @@ export interface IClientCmsFileField<T = any>
   type: 'file';
   rules?: ControllerProps['rules'];
   beforeUpload?: (file: File) => boolean;
+  disabled?: boolean;
 }
 
 export interface IClientCmsObjectField<T = any> {

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 import { Button } from '../Button';
 import '../tailwind.css';
@@ -59,6 +60,11 @@ export const FileInput = (props: IClientCmsFileProps) => {
         type="button"
         onClick={() => inputRef.current?.click()}
         variant="outline"
+        disabled={props.disabled}
+        className={clsx(
+          props.disabled &&
+            'bg-gray-100 hover:bg-gray-100 border-none text-gray-600'
+        )}
       >
         Upload file
       </Button>
