@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { IClientCmsArrayField } from '../client-cms';
 
@@ -11,12 +12,13 @@ const ArrayComponent: React.FC<IArrayComponentProps> = ({
   onChange,
   arrayType,
   renderLabel,
+  disabled,
 }) => {
   const [items, setItems] = useState<any[]>(value);
   const [text, setText] = useState('');
 
   const handleOnRemove = (idx: number) => {
-    if (!onChange) return;
+    if (!onChange || disabled) return;
     let newArray = [...items];
     newArray.splice(idx, 1);
     onChange(newArray);
@@ -24,7 +26,7 @@ const ArrayComponent: React.FC<IArrayComponentProps> = ({
   };
 
   const handleAdd = () => {
-    if (!onChange) return;
+    if (!onChange || disabled) return;
     const val = arrayType === 'number' ? parseInt(text) : text;
     let newArray = [...items, val];
     onChange(newArray);
@@ -33,16 +35,22 @@ const ArrayComponent: React.FC<IArrayComponentProps> = ({
   };
 
   return (
-    <div className="flex flex-col bg-white border border-gray-300 shadow-md rounded divide-y divide-gray-300">
+    <div
+      className={clsx(
+        'flex flex-col border border-gray-300 shadow-md rounded divide-y divide-gray-300',
+        disabled ? 'bg-gray-100' : 'bg-white'
+      )}
+    >
       {items.map((item, index) => (
         <div className="flex items-center px-3" key={index}>
           <span className="text-gray-600 py-2 w-full truncate">
             {renderLabel ? renderLabel(item) : item}
           </span>
-          {onChange && (
+          {onChange && !disabled && (
             <button
               className="p-1 rounded-md transition-all hover:bg-gray-100"
-              onClick={() => handleOnRemove(index)}
+              onClick={() => !disabled && handleOnRemove(index)}
+              type="button"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -62,15 +70,19 @@ const ArrayComponent: React.FC<IArrayComponentProps> = ({
           )}
         </div>
       ))}
-      {onChange && (
+      {onChange && !disabled && (
         <div className="flex items-center justify-between px-3">
           <div className="w-full py-1">
             <input
               type="text"
-              className="border-none w-full focus:outline-none focus:border-none text-sm rounded-sm"
+              className={clsx(
+                'border-none w-full focus:outline-none focus:border-none text-sm rounded-sm',
+                disabled ? 'bg-gray-100' : 'bg-white'
+              )}
               placeholder="..."
               onChange={e => setText(e.target.value)}
               value={text}
+              disabled={disabled}
             />
           </div>
           <div

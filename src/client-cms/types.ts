@@ -115,6 +115,7 @@ export interface IClientCmsArrayField<T = any> {
   defaultValue?: (string | number)[];
   onChange?: (data: string | number) => string | number;
   renderLabel?: (data: string | number) => React.ReactNode | string;
+  disabled?: boolean;
 }
 
 export interface IClientCmsObjectArrayField<T = any> {

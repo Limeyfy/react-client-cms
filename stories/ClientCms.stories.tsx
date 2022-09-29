@@ -100,6 +100,7 @@ const props: IClientCms<any> = {
       type: 'array',
       arrayType: 'string',
       defaultValue: [5032, 2012],
+      disabled: true,
     },
     {
       name: 'myObjectArray',
