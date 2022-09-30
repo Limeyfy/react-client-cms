@@ -190,7 +190,7 @@ export const ClientCms = <T,>({
                 >
                   <TextInput
                     {...(field as any)}
-                    value={data[field.name] as string}
+                    value={data[field.name]}
                     disabled
                     type={'text'}
                     onChange={e =>
