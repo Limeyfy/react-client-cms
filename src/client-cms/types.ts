@@ -4,10 +4,7 @@ export interface IClientCms<T> {
   onSubmit?: (data: T) => void;
   fields: IClientCmsField<T>[];
   className?: string;
-  submitButton?: React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >;
+  bottomElement?: (props: { loading: boolean, data: T }) => React.ReactNode;
   loading?: boolean;
   name?: string;
   logErrors?: boolean;

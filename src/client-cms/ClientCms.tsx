@@ -23,6 +23,7 @@ export const ClientCms = <T,>({
   loading,
   className,
   logErrors = false,
+  bottomElement,
   ...cRest
 }: IClientCms<T>) => {
   const form = React.useRef<HTMLFormElement>(null);
@@ -172,7 +173,11 @@ export const ClientCms = <T,>({
             </LabelContainer>
           )
         )}
-        <CCSubmitBtn loading={loading} />
+        {bottomElement ? (
+          <div>{bottomElement({ loading: loading ? true : false, data })}</div>
+        ) : (
+          <CCSubmitBtn loading={loading} />
+        )}
       </form>
     </IClientCmsContext.Provider>
   );
