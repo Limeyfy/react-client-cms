@@ -4,7 +4,7 @@ export interface IClientCms<T> {
   onSubmit?: (data: T) => void;
   fields: IClientCmsField<T>[];
   className?: string;
-  bottomElement?: (props: { loading: boolean, data: T }) => React.ReactNode;
+  bottomElement?: ((props: { loading: boolean, data: T }) => React.ReactNode) | (() => React.ReactNode);
   loading?: boolean;
   name?: string;
   logErrors?: boolean;
