@@ -2,7 +2,11 @@ import clsx from 'clsx';
 import React from 'react';
 import { TextInput } from '../components';
 import CCSubmitBtn from '../components/CCSubmitBtn';
-import { formatDataOnSubmit, getDefaultValueForFields } from '../func/data';
+import {
+  checkForAnyErrors,
+  formatDataOnSubmit,
+  getDefaultValueForFields,
+} from '../func/data';
 import { unPascalCase } from '../func/textHelper';
 import '../tailwind.css';
 import { Component } from './CmsComponent';
@@ -45,16 +49,18 @@ export const ClientCms = <T,>({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const _errors = checkForAnyErrors(fields, data);
+    setErrors(_errors);
     if (onSubmit === undefined) {
       console.error('OnSubmit is not defined');
       return;
     }
-    if (errors.length > 0) {
+    if (_errors.length > 0) {
       form.current?.scrollIntoView({ behavior: 'smooth' });
       logErrors &&
         console.error(
           'Form could not submit because of these errors: ',
-          errors
+          _errors
         );
       return;
     }

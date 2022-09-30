@@ -1,4 +1,4 @@
-import { IClientCmsField, IClientCmsObjectField, IClientCmsSimpleField } from '../client-cms/types';
+import { FieldError, IClientCms, IClientCmsField, IClientCmsObjectField, IClientCmsSimpleField } from '../client-cms/types';
 
 function toDateInputValue(date: Date) {
   var local = new Date(date);
@@ -76,4 +76,34 @@ export function getDefaultValueForSimpleFields(fields: IClientCmsSimpleField<any
     acc[field.name] = field.defaultValue ?? getDefaultValue(field.type);
     return acc;
   }, {});
+}
+
+export function checkForAnyErrors(fields: IClientCms<any>["fields"], data: any) {
+  let errors: FieldError[] = [];
+  const fieldsWithValidation = fields.filter((f) => f.validate);
+  for (let i = 0; i < fieldsWithValidation.length; i++) {
+    const field = fieldsWithValidation[i];
+    if (field.type === 'object') {
+      field.fields.forEach((f) => {
+        const error = field.validate?.(data[`${field.name}_${f.name}`]);
+        if (error) {
+          errors.push({
+            id: `${field.name}_${f.name}`,
+            message: error !== true ? error.error ?? "Invalid field" : 'Invalid field',
+            type: "error"
+          });
+        }
+      });
+    } else {
+      const error = field.validate?.(data[field.name]);
+      if (error) {
+        errors.push({
+          id: field.name,
+          message: error !== true ? error.error ?? "Invalid field" : 'Invalid field',
+          type: "error"
+        });
+      }
+    }
+  }
+  return errors;
 }
