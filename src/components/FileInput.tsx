@@ -17,7 +17,7 @@ export interface IClientCmsFileProps
   beforeUpload?: (file: File) => boolean;
 }
 
-export const FileInput = (props: IClientCmsFileProps) => {
+export const FileInput: React.FC<IClientCmsFileProps> = props => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const { error } = useClientCms(props.name);
 
@@ -73,10 +73,7 @@ export const FileInput = (props: IClientCmsFileProps) => {
       </Button>
       {props.files && (
         <ul className="mt-2">
-          {(typeof props.files[0] === 'string'
-            ? (props.files as string[])
-            : Array.from(props.files as FileList)
-          ).map((file, fileIdx) => (
+          {Array.from(props.files as any[]).map((file, fileIdx) => (
             <li key={fileIdx} className="flex justify-between">
               <span className="truncate w-3/4">
                 {typeof file === 'string' ? file : file.name}
