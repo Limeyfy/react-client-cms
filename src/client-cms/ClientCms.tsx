@@ -49,9 +49,9 @@ export const ClientCms = <T,>({
     }
   }, [fields]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const _errors = checkForAnyErrors(fields, data);
+    const _errors = await checkForAnyErrors(fields, data);
     setErrors(_errors);
     if (onSubmit === undefined) {
       console.error('OnSubmit is not defined');

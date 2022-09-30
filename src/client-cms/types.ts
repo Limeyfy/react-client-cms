@@ -139,7 +139,9 @@ export interface IClientCmsSlugField<T = any> {
   type: 'slug';
   source: Extract<keyof T, string>;
   disabled?: boolean;
-  validate?: IClientCmsValidate<string>;
+  validate?: (data: string) => Promise<boolean | {
+    error: string;
+  }>;
   onChange?: (data: string) => string;
   defaultValue?: string;
 }

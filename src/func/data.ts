@@ -78,7 +78,7 @@ export function getDefaultValueForSimpleFields(fields: IClientCmsSimpleField<any
   }, {});
 }
 
-export function checkForAnyErrors(fields: IClientCms<any>["fields"], data: any) {
+export async function checkForAnyErrors(fields: IClientCms<any>["fields"], data: any) {
   let errors: FieldError[] = [];
   const fieldsWithValidation = fields.filter((f) => f.validate);
   for (let i = 0; i < fieldsWithValidation.length; i++) {
@@ -95,11 +95,12 @@ export function checkForAnyErrors(fields: IClientCms<any>["fields"], data: any) 
         }
       });
     } else {
-      const error = field.validate ? field.validate(data[field.name]) ?? false : false;
-      if (error !== true) {
+      const error = field.validate ? await field.validate(data[field.name]) ?? false : false;
+      let err = field.type === "slug" ? await error : error as { error?: string } | boolean;
+      if (err !== true) {
         errors.push({
           id: field.name,
-          message: typeof error === "boolean" ? "Invalid field" : (error.error ?? "Invalid field"),
+          message: typeof err === "boolean" ? "Invalid field" : (err.error ?? "Invalid field"),
           type: "error"
         });
       }

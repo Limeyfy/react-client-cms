@@ -18,42 +18,45 @@ export const TextInput = <T,>(props: IClientCmsInputPropsDetailed) => {
   const debounce = useDebounce(props.value as string, 500);
 
   React.useEffect(() => {
-    const slugs = fields.filter(
-      f => f.type === 'slug' && f.source === props.name
-    );
-    if (slugs.length > 0) {
+    const asyncDebounce = async () => {
+      const slugs = fields.filter(
+        f => f.type === 'slug' && f.source === props.name
+      );
+      if (slugs.length < 1) return;
       for (var s = 0; s < slugs.length; s++) {
         const slug = slugs[s];
         dispatch((prev: T) => ({
           ...prev,
           [slug.name]: slugify(debounce),
         }));
-        if (slug.validate !== undefined) {
-          const valid = slug.validate(slugify(debounce));
-          if (valid !== true) {
-            dispatchErrors((prev: FieldError[]) => [
-              ...prev,
-              {
-                type: 'errors',
-                message:
-                  typeof valid === 'boolean'
-                    ? 'Invalid slug'
-                    : valid.error ?? 'Invalid slug',
-                id: slug.name,
-              },
-            ]);
-          } else {
-            dispatchErrors((prev: FieldError[]) =>
-              prev.filter(x => x.id !== slug.name)
-            );
-          }
+        if (slug.validate === undefined) {
+          dispatchErrors((prev: FieldError[]) =>
+            prev.filter(x => x.id !== slug.name)
+          );
+          return;
+        }
+        const valid = await slug.validate(slugify(debounce));
+        if (valid !== true) {
+          const err = await valid;
+          dispatchErrors((prev: FieldError[]) => [
+            ...prev,
+            {
+              type: 'errors',
+              message:
+                typeof err === 'boolean'
+                  ? 'Invalid slug'
+                  : err.error ?? 'Invalid slug',
+              id: slug.name,
+            },
+          ]);
         } else {
           dispatchErrors((prev: FieldError[]) =>
             prev.filter(x => x.id !== slug.name)
           );
         }
       }
-    }
+    };
+    asyncDebounce();
   }, [debounce]);
 
   return (
