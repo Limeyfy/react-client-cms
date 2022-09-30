@@ -73,6 +73,8 @@ export const TextInput = <T,>(props: IClientCmsInputPropsDetailed) => {
         <input
           type="text"
           {...rest}
+          defaultValue={undefined}
+          value={props.value ?? ''}
           className={clsx(
             'block w-full rounded-md shadow-sm sm:text-sm',
             error
