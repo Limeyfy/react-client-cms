@@ -13,3 +13,7 @@ yarn add @limeyfy/react-client-cms
 or
 npm i --save @limeyfy/react-client-cms
 ```
+Remember to import css
+```
+import '@limeyfy/react-client-cms/dist/tailwind.css';
+```

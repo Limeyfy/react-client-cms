@@ -24,7 +24,7 @@ export const Component: React.FC<IComponentProps<any>> = <T,>({
   onChange,
   value,
 }: IComponentProps<T>) => {
-  const { defaultValue, ...restField } = field;
+  const { defaultValue, validate: _ignore_validate, ...restField } = field;
   switch (field.type) {
     case 'file':
       const { value: _, defaultValue, ...rest } = field;
