@@ -176,12 +176,24 @@ export const ClientCms = <T,>({
               );
             case 'slug': {
               const _onChange = (val: string) => {
-                validateComponent(
-                  val,
-                  field.name,
-                  () => setData(pd => ({ ...pd, [field.name]: val })),
-                  field.validate
-                );
+                const isValid = field.validate ? field.validate(val) : true;
+                if (isValid !== true) {
+                  const obj = {
+                    id: field.name,
+                    message:
+                      typeof isValid === 'boolean'
+                        ? 'Invalid'
+                        : (isValid as { error?: string }).error ?? 'Invalid',
+                    type: 'custom',
+                  };
+                  setErrors([...errors, obj]);
+                } else {
+                  removeErr(field.name);
+                }
+                setData(pd => ({
+                  ...pd,
+                  [field.name]: val,
+                }));
               };
               return (
                 <LabelContainer

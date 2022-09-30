@@ -1,5 +1,5 @@
 {
-  "version": "2.5.14",
+  "version": "2.5.15",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -51,7 +51,7 @@
   "size-limit": [
     {
       "path": "dist/react-client-cms.cjs.production.min.js",
-      "limit": "10 KB"
+      "limit": "27.50 KB"
     },
     {
       "path": "dist/react-client-cms.esm.js",

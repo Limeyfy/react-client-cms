@@ -86,20 +86,20 @@ export function checkForAnyErrors(fields: IClientCms<any>["fields"], data: any) 
     if (field.type === 'object') {
       field.fields.forEach((f) => {
         const error = field.validate?.(data[`${field.name}_${f.name}`]);
-        if (error) {
+        if (error !== true) {
           errors.push({
             id: `${field.name}_${f.name}`,
-            message: error !== true ? error.error ?? "Invalid field" : 'Invalid field',
+            message: typeof error === "boolean" ? "Invalid field" : (error?.error ?? "Invalid field"),
             type: "error"
           });
         }
       });
     } else {
-      const error = field.validate?.(data[field.name]);
-      if (error) {
+      const error = field.validate?.(data[field.name]) ?? false;
+      if (error !== true) {
         errors.push({
           id: field.name,
-          message: error !== true ? error.error ?? "Invalid field" : 'Invalid field',
+          message: typeof error === "boolean" ? "Invalid field" : (error.error ?? "Invalid field"),
           type: "error"
         });
       }
