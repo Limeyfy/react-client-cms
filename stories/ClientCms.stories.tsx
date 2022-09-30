@@ -41,6 +41,10 @@ const props: IClientCms<any> = {
       name: 'slug',
       type: 'slug',
       source: 'title',
+      validate: (value: string) => {
+        console.info('Validating slug', value);
+        return value.length > 0;
+      },
     },
     {
       name: 'description',

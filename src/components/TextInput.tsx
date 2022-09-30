@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
+import { FieldError } from '../client-cms';
 import { slugify } from '../func/textHelper';
 import useClientCms from '../hooks/useClientCms';
 import useDebounce from '../hooks/useDebounce';
@@ -12,8 +13,8 @@ export interface IClientCmsInputPropsDetailed
   > {}
 
 export const TextInput = <T,>(props: IClientCmsInputPropsDetailed) => {
-  const { children, ...rest } = props;
-  const { error, fields, dispatch } = useClientCms(props.name);
+  const { children, validate, unique, ...rest } = props as any;
+  const { error, fields, dispatch, dispatchErrors } = useClientCms(props.name);
   const debounce = useDebounce(props.value as string, 500);
 
   React.useEffect(() => {
@@ -27,6 +28,30 @@ export const TextInput = <T,>(props: IClientCmsInputPropsDetailed) => {
           ...prev,
           [slug.name]: slugify(debounce),
         }));
+        if (slug.validate !== undefined) {
+          const valid = slug.validate(slugify(debounce));
+          if (valid !== true) {
+            dispatchErrors((prev: FieldError[]) => [
+              ...prev,
+              {
+                type: 'errors',
+                message:
+                  typeof valid === 'boolean'
+                    ? 'Invalid slug'
+                    : valid.error ?? 'Invalid slug',
+                id: slug.name,
+              },
+            ]);
+          } else {
+            dispatchErrors((prev: FieldError[]) =>
+              prev.filter(x => x.id !== slug.name)
+            );
+          }
+        } else {
+          dispatchErrors((prev: FieldError[]) =>
+            prev.filter(x => x.id !== slug.name)
+          );
+        }
       }
     }
   }, [debounce]);

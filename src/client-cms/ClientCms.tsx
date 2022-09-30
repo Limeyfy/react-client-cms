@@ -16,6 +16,7 @@ import { FieldError, IClientCms, IClientCmsValidate } from './types';
 export interface IClientCmsContextProps<T> extends IClientCms<T> {
   errors: FieldError[];
   dispatch: React.Dispatch<React.SetStateAction<T>>;
+  dispatchErrors: React.Dispatch<React.SetStateAction<FieldError[]>>;
 }
 
 export const IClientCmsContext = React.createContext<
@@ -24,6 +25,7 @@ export const IClientCmsContext = React.createContext<
   fields: [],
   errors: [],
   dispatch: () => {},
+  dispatchErrors: () => {},
 });
 
 export const ClientCms = <T,>({
@@ -111,6 +113,7 @@ export const ClientCms = <T,>({
         fields,
         onSubmit,
         dispatch: setData,
+        dispatchErrors: setErrors,
         loading,
         className,
         errors,

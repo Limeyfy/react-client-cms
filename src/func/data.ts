@@ -95,7 +95,7 @@ export function checkForAnyErrors(fields: IClientCms<any>["fields"], data: any) 
         }
       });
     } else {
-      const error = field.validate?.(data[field.name]) ?? false;
+      const error = field.validate ? field.validate(data[field.name]) ?? false : false;
       if (error !== true) {
         errors.push({
           id: field.name,
