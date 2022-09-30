@@ -44,7 +44,10 @@ export function getDefaultValueForFields(fields: IClientCmsField<any>[]) {
   return fields.reduce((acc: any, field) => {
     if (field.type === 'object') {
       field.fields.forEach((f) => {
-        acc[`${field.name}_${f.name}`] = f.defaultValue ?? getDefaultValue(f.type);
+        if (!acc[field.name]) {
+          acc[field.name] = {}
+        }
+        acc[field.name][f.name] = f.defaultValue ?? getDefaultValue(f.type);
       });
     } else {
       acc[field.name] = field.defaultValue ?? getDefaultValue(field.type);
@@ -62,7 +65,7 @@ export function formatDataOnSubmit(data: any, fields: IClientCmsField<any>[]) {
         if (!formattedData[field.name]) {
           formattedData[field.name] = {}
         }
-        formattedData[field.name][f.name] = data[`${field.name}_${f.name}`]
+        formattedData[field.name][f.name] = data[field.name][f.name]
       });
     } else {
       formattedData[field.name] = data[field.name]
@@ -95,7 +98,14 @@ export async function checkForAnyErrors(fields: IClientCms<any>["fields"], data:
         }
       });
     } else {
-      const error = field.validate ? await field.validate(data[field.name]) ?? false : false;
+      let error: {
+        error?: string;
+      } | boolean | Promise<boolean | {
+        error?: string;
+      }> = false;
+      if (field.validate) {
+        error = field.validate(data[field.name]);
+      }
       let err = field.type === "slug" ? await error : error as ({ error?: string } | boolean);
       if (err !== true) {
         errors.push({
