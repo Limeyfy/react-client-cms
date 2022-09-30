@@ -96,7 +96,7 @@ export async function checkForAnyErrors(fields: IClientCms<any>["fields"], data:
       });
     } else {
       const error = field.validate ? await field.validate(data[field.name]) ?? false : false;
-      let err = field.type === "slug" ? await error : error as { error?: string } | boolean;
+      let err = field.type === "slug" ? await error : error as ({ error?: string } | boolean);
       if (err !== true) {
         errors.push({
           id: field.name,

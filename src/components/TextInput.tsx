@@ -12,12 +12,20 @@ export interface IClientCmsInputPropsDetailed
     HTMLInputElement
   > {}
 
+let render = 0;
+
 export const TextInput = <T,>(props: IClientCmsInputPropsDetailed) => {
-  const { children, validate, unique, ...rest } = props as any;
+  const { children, validate, unique, defaultValue, ...rest } = props as any;
   const { error, fields, dispatch, dispatchErrors } = useClientCms(props.name);
   const debounce = useDebounce(props.value as string, 500);
 
   React.useEffect(() => {
+    if (render === 0) {
+      setTimeout(() => {
+        render = 1;
+      }, 1000);
+      return;
+    }
     const asyncDebounce = async () => {
       const slugs = fields.filter(
         f => f.type === 'slug' && f.source === props.name
