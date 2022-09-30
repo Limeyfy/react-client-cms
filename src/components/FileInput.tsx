@@ -75,20 +75,36 @@ export const FileInput: React.FC<IClientCmsFileProps> = props => {
         <ul className="mt-2">
           {Array.from(props.files as any[]).map(
             (file: string | File | undefined, fileIdx) => (
-              <li key={fileIdx} className="flex justify-between">
+              <li key={fileIdx} className="flex justify-between mb-1">
                 <span className="truncate w-3/4">
-                  {typeof file === 'string' ? file : file?.name}
+                  {typeof file === 'string' ? (
+                    <a
+                      className="text-sm text-blue-500 hover:text-blue-600"
+                      href={file}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {file}
+                    </a>
+                  ) : (
+                    file?.name
+                  )}
                 </span>
-                <svg
+                <button
+                  type="button"
+                  className="p-1 bg-transparent hover:bg-gray-100 rounded-lg transition-colors"
                   onClick={() => removeFile(fileIdx)}
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  className="fill-red-400 cursor-pointer"
                 >
-                  <path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z"></path>
-                  <path d="M9 10h2v8H9zm4 0h2v8h-2z"></path>
-                </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    className="fill-red-400 cursor-pointer"
+                  >
+                    <path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z"></path>
+                    <path d="M9 10h2v8H9zm4 0h2v8h-2z"></path>
+                  </svg>
+                </button>
               </li>
             )
           )}
