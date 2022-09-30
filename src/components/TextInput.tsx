@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import React from 'react';
+import { slugify } from '../func/textHelper';
 import useClientCms from '../hooks/useClientCms';
+import useDebounce from '../hooks/useDebounce';
 import { ErrorMessage } from './ErrorMessage';
 
 export interface IClientCmsInputPropsDetailed
@@ -9,9 +11,26 @@ export interface IClientCmsInputPropsDetailed
     HTMLInputElement
   > {}
 
-export const TextInput = (props: IClientCmsInputPropsDetailed) => {
+export const TextInput = <T,>(props: IClientCmsInputPropsDetailed) => {
   const { children, ...rest } = props;
-  const { error } = useClientCms(props.name);
+  const { error, fields, dispatch } = useClientCms(props.name);
+  const debounce = useDebounce(props.value as string, 500);
+
+  React.useEffect(() => {
+    const slugs = fields.filter(
+      f => f.type === 'slug' && f.source === props.name
+    );
+    if (slugs.length > 0) {
+      for (var s = 0; s < slugs.length; s++) {
+        const slug = slugs[s];
+        dispatch((prev: T) => ({
+          ...prev,
+          [slug.name]: slugify(debounce),
+        }));
+      }
+    }
+  }, [debounce]);
+
   return (
     <>
       <div className="relative mt-1 rounded-md shadow-sm">

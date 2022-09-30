@@ -38,6 +38,11 @@ const props: IClientCms<any> = {
             },
     },
     {
+      name: 'slug',
+      type: 'slug',
+      source: 'title',
+    },
+    {
       name: 'description',
       type: 'text',
     },

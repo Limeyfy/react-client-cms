@@ -1,2 +1,19 @@
 export const unPascalCase = (str: string) =>
   str.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+
+
+// slugify function
+export const slugify = (str: string) => {
+  const a = 'àáäâãåăæąćčçđďèéëêěęģğĥìíïîįıĵķĺľłńňñòóöôõøœøŕřśşšťţùúüûůųűŷžźż·/_,:;'
+  const b = 'aaaaaaaacccddeeeeeeegghiiiiiijdklllnnnoooooooorrssssttuuuuuuuuyzzz------'
+  const p = new RegExp(a.split('').join('|'), 'g')
+
+  return str.toString().toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+    .replace(/&/g, '-and-') // Replace & with 'and'
+    .replace(/[^\w\-]+/g, '') // Remove all non-word characters
+    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, '') // Trim - from end of text
+}

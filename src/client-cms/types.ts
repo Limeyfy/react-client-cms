@@ -18,7 +18,8 @@ export type IClientCmsField<T> =
   | IClientCmsArrayField<T>
   | IClientCmsTextAreaField<T>
   | IClientCmsObjectArrayField<T>
-  | IClientCmsBooleanField<T>;
+  | IClientCmsBooleanField<T>
+  | IClientCmsSlugField<T>;
 
 export type IClientCmsSimpleField<T> =
   | IClientCmsStringField<T>
@@ -131,6 +132,17 @@ export interface IClientCmsObjectArrayField<T = any> {
   validate?: IClientCmsValidate<any[]>;
 }
 
+
+export interface IClientCmsSlugField<T = any> {
+  name: Extract<keyof T, string>;
+  label?: string;
+  type: 'slug';
+  source: Extract<keyof T, string>;
+  disabled?: boolean;
+  validate?: IClientCmsValidate<string>;
+  onChange?: (data: string) => string;
+  defaultValue?: string;
+}
 
 export type IClientCmsValidate<T> = (data: T) => boolean | {
   error?: string;
