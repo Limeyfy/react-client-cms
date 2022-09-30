@@ -13,7 +13,7 @@ export interface IClientCmsFileProps
     >,
     'value'
   > {
-  files: FileList | null;
+  files: FileList | null | string[];
   beforeUpload?: (file: File) => boolean;
 }
 
@@ -26,7 +26,7 @@ export const FileInput = (props: IClientCmsFileProps) => {
     const files = props.files;
     if (!files) return;
     for (let i = 0; i < files.length; i++) {
-      const file = files[i];
+      const file = files[i] as File;
       if (i !== index && file) {
         newFiles.items.add(file);
       }
@@ -73,9 +73,14 @@ export const FileInput = (props: IClientCmsFileProps) => {
       </Button>
       {props.files && (
         <ul className="mt-2">
-          {Array.from(props.files).map((file, fileIdx) => (
+          {(typeof props.files[0] === 'string'
+            ? (props.files as string[])
+            : Array.from(props.files as FileList)
+          ).map((file, fileIdx) => (
             <li key={fileIdx} className="flex justify-between">
-              <span>{file.name}</span>
+              <span className="truncate w-3/4">
+                {typeof file === 'string' ? file : file.name}
+              </span>
               <svg
                 onClick={() => removeFile(fileIdx)}
                 xmlns="http://www.w3.org/2000/svg"
